@@ -1,0 +1,867 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="39" passed="39">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Surefire suite" duration-ms="751" started-at="2022-03-04T23:09:14Z" finished-at="2022-03-04T23:09:15Z">
+    <groups>
+    </groups>
+    <test name="Surefire test" duration-ms="751" started-at="2022-03-04T23:09:14Z" finished-at="2022-03-04T23:09:15Z">
+      <class name="org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest">
+        <test-method status="PASS" signature="negativeOrZeroNumTimesToTrackShouldThrowIAE(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="negativeOrZeroNumTimesToTrackShouldThrowIAE" duration-ms="6" started-at="2022-03-04T17:09:14Z" data-provider="illegalNumTimesData" finished-at="2022-03-04T17:09:14Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[-10]]>
+              </value>
+            </param>
+          </params>
+          <exception class="java.lang.IllegalArgumentException">
+            <message>
+              <![CDATA[numTimesToTrack must be greater than zero (you requested -10)]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.IllegalArgumentException: numTimesToTrack must be greater than zero (you requested -10)
+	at org.apache.storm.starter.tools.NthLastModifiedTimeTracker.<init>(NthLastModifiedTimeTracker.java:34)
+	at org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest.negativeOrZeroNumTimesToTrackShouldThrowIAE(NthLastModifiedTimeTrackerTest.java:34)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:135)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeSingleClass(TestNGDirectoryTestSuite.java:112)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeLazy(TestNGDirectoryTestSuite.java:123)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:90)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:146)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:384)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:345)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:126)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:418)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.IllegalArgumentException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- negativeOrZeroNumTimesToTrackShouldThrowIAE -->
+        <test-method status="PASS" signature="negativeOrZeroNumTimesToTrackShouldThrowIAE(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="negativeOrZeroNumTimesToTrackShouldThrowIAE" duration-ms="0" started-at="2022-03-04T17:09:14Z" data-provider="illegalNumTimesData" finished-at="2022-03-04T17:09:14Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[-3]]>
+              </value>
+            </param>
+          </params>
+          <exception class="java.lang.IllegalArgumentException">
+            <message>
+              <![CDATA[numTimesToTrack must be greater than zero (you requested -3)]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.IllegalArgumentException: numTimesToTrack must be greater than zero (you requested -3)
+	at org.apache.storm.starter.tools.NthLastModifiedTimeTracker.<init>(NthLastModifiedTimeTracker.java:34)
+	at org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest.negativeOrZeroNumTimesToTrackShouldThrowIAE(NthLastModifiedTimeTrackerTest.java:34)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:135)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeSingleClass(TestNGDirectoryTestSuite.java:112)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeLazy(TestNGDirectoryTestSuite.java:123)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:90)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:146)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:384)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:345)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:126)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:418)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.IllegalArgumentException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- negativeOrZeroNumTimesToTrackShouldThrowIAE -->
+        <test-method status="PASS" signature="negativeOrZeroNumTimesToTrackShouldThrowIAE(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="negativeOrZeroNumTimesToTrackShouldThrowIAE" duration-ms="1" started-at="2022-03-04T17:09:14Z" data-provider="illegalNumTimesData" finished-at="2022-03-04T17:09:14Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[-1]]>
+              </value>
+            </param>
+          </params>
+          <exception class="java.lang.IllegalArgumentException">
+            <message>
+              <![CDATA[numTimesToTrack must be greater than zero (you requested -1)]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.IllegalArgumentException: numTimesToTrack must be greater than zero (you requested -1)
+	at org.apache.storm.starter.tools.NthLastModifiedTimeTracker.<init>(NthLastModifiedTimeTracker.java:34)
+	at org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest.negativeOrZeroNumTimesToTrackShouldThrowIAE(NthLastModifiedTimeTrackerTest.java:34)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:135)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeSingleClass(TestNGDirectoryTestSuite.java:112)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeLazy(TestNGDirectoryTestSuite.java:123)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:90)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:146)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:384)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:345)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:126)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:418)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.IllegalArgumentException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- negativeOrZeroNumTimesToTrackShouldThrowIAE -->
+        <test-method status="PASS" signature="negativeOrZeroNumTimesToTrackShouldThrowIAE(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="negativeOrZeroNumTimesToTrackShouldThrowIAE" duration-ms="0" started-at="2022-03-04T17:09:14Z" data-provider="illegalNumTimesData" finished-at="2022-03-04T17:09:14Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[-2]]>
+              </value>
+            </param>
+          </params>
+          <exception class="java.lang.IllegalArgumentException">
+            <message>
+              <![CDATA[numTimesToTrack must be greater than zero (you requested -2)]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.IllegalArgumentException: numTimesToTrack must be greater than zero (you requested -2)
+	at org.apache.storm.starter.tools.NthLastModifiedTimeTracker.<init>(NthLastModifiedTimeTracker.java:34)
+	at org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest.negativeOrZeroNumTimesToTrackShouldThrowIAE(NthLastModifiedTimeTrackerTest.java:34)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:135)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeSingleClass(TestNGDirectoryTestSuite.java:112)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeLazy(TestNGDirectoryTestSuite.java:123)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:90)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:146)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:384)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:345)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:126)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:418)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.IllegalArgumentException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- negativeOrZeroNumTimesToTrackShouldThrowIAE -->
+        <test-method status="PASS" signature="negativeOrZeroNumTimesToTrackShouldThrowIAE(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="negativeOrZeroNumTimesToTrackShouldThrowIAE" duration-ms="0" started-at="2022-03-04T17:09:14Z" data-provider="illegalNumTimesData" finished-at="2022-03-04T17:09:14Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[0]]>
+              </value>
+            </param>
+          </params>
+          <exception class="java.lang.IllegalArgumentException">
+            <message>
+              <![CDATA[numTimesToTrack must be greater than zero (you requested 0)]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.IllegalArgumentException: numTimesToTrack must be greater than zero (you requested 0)
+	at org.apache.storm.starter.tools.NthLastModifiedTimeTracker.<init>(NthLastModifiedTimeTracker.java:34)
+	at org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest.negativeOrZeroNumTimesToTrackShouldThrowIAE(NthLastModifiedTimeTrackerTest.java:34)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:135)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeSingleClass(TestNGDirectoryTestSuite.java:112)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.executeLazy(TestNGDirectoryTestSuite.java:123)
+	at org.apache.maven.surefire.testng.TestNGDirectoryTestSuite.execute(TestNGDirectoryTestSuite.java:90)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:146)
+	at org.apache.maven.surefire.booter.ForkedBooter.invokeProviderInSameClassLoader(ForkedBooter.java:384)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:345)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:126)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:418)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.IllegalArgumentException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- negativeOrZeroNumTimesToTrackShouldThrowIAE -->
+        <test-method status="PASS" signature="positiveNumTimesToTrackShouldBeOk(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="positiveNumTimesToTrackShouldBeOk" duration-ms="696" started-at="2022-03-04T17:09:14Z" data-provider="legalNumTimesData" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[1]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- positiveNumTimesToTrackShouldBeOk -->
+        <test-method status="PASS" signature="positiveNumTimesToTrackShouldBeOk(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="positiveNumTimesToTrackShouldBeOk" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="legalNumTimesData" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[2]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- positiveNumTimesToTrackShouldBeOk -->
+        <test-method status="PASS" signature="positiveNumTimesToTrackShouldBeOk(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="positiveNumTimesToTrackShouldBeOk" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="legalNumTimesData" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[3]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- positiveNumTimesToTrackShouldBeOk -->
+        <test-method status="PASS" signature="positiveNumTimesToTrackShouldBeOk(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="positiveNumTimesToTrackShouldBeOk" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="legalNumTimesData" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[20]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- positiveNumTimesToTrackShouldBeOk -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified" duration-ms="13" started-at="2022-03-04T17:09:15Z" data-provider="whenNotYetMarkedAsModifiedData" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[0]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="whenNotYetMarkedAsModifiedData" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[1]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="whenNotYetMarkedAsModifiedData" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[2]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified" duration-ms="1" started-at="2022-03-04T17:09:15Z" data-provider="whenNotYetMarkedAsModifiedData" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[4]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="whenNotYetMarkedAsModifiedData" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[3]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="whenNotYetMarkedAsModifiedData" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[5]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified" duration-ms="1" started-at="2022-03-04T17:09:15Z" data-provider="whenNotYetMarkedAsModifiedData" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[8]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified(int)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified" duration-ms="1" started-at="2022-03-04T17:09:15Z" data-provider="whenNotYetMarkedAsModifiedData" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[10]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeEvenWhenNotYetMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="3" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[1]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@18cc679e]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@2e77b8cf]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[2]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@7df587ef]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@6e57e95e]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[1]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@2c4ca0f9]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@67ef029]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[2]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@2755d705]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@56db847e]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="1" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[1]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@740abb5]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@560cbf1a]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="1" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[2]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@578524c3]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@64c2b546]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[1]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@5fe8b721]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@551a20d6]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[2]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@7e094740]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@7a11c4c7]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="1" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[2]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@4cc547a]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@7555b920]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[3]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@5398edd0]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@b5cc23a]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[3]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@4152d38d]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@3591009c]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="1" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[3]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@5cc5b667]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@61edc883]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="1" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[4]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@6928f576]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@660e9100]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[4]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@758f4f03]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@182f1e9a]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="1" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[4]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@69f63d95]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@9cd25ff]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="1" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[5]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@27e0f2f5]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@3574e198]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="1" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[5]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@2de366bb]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@3f093abe]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[5]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@6db66836]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@db44aa2]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="1" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[6]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@780ec4a5]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@e24ddd0]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[6]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@61a002b1]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@4eeea57d]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[3]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@5aabbb29]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@72c927f1]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+        <test-method status="PASS" signature="shouldReturnCorrectModifiedTimeWhenMarkedAsModified(int, [I, [I)[pri:0, instance:org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest@9ebe38b]" name="shouldReturnCorrectModifiedTimeWhenMarkedAsModified" duration-ms="0" started-at="2022-03-04T17:09:15Z" data-provider="simulatedTrackerIterations" finished-at="2022-03-04T17:09:15Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[6]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[[I@6f70f32f]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[[I@548e76f1]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldReturnCorrectModifiedTimeWhenMarkedAsModified -->
+      </class> <!-- org.apache.storm.starter.tools.NthLastModifiedTimeTrackerTest -->
+    </test> <!-- Surefire test -->
+  </suite> <!-- Surefire suite -->
+</testng-results>
