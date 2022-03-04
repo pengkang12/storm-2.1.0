@@ -1,6 +1,9 @@
 # Compiled class file
 *.class
 
+storm_rocks
+data
+logs/*
 # Log file
 *.log
 
