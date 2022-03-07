@@ -1,5 +1,4 @@
-package com.edited.tagawarescheduler;
-
+package sys.cloud.partitionscheduler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -380,7 +379,7 @@ public class TagAwareScheduler implements IScheduler {
                     topologyDetails
             );
 
-            // Get a map of tag to components
+            // Get a map of tag to
             Map<String, ArrayList<String>> componentsByTag = new HashMap<String, ArrayList<String>>();
             populateComponentsByTag(componentsByTag, bolts);
             populateComponentsByTag(componentsByTag, spouts);
