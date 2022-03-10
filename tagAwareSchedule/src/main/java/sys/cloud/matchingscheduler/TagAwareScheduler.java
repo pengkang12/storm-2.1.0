@@ -356,7 +356,11 @@ public class TagAwareScheduler implements IScheduler {
             ArrayList<ExecutorDetails> executorsToAssign = entry.getValue();
 
             // Assign the topology's executors to slots in the cluster's supervisors
-            componentExecutorsToSlotsMap.put(slotToAssign, executorsToAssign);
+            //componentExecutorsToSlotsMap.put(slotToAssign, executorsToAssign); 
+            if (!componentExecutorsToSlotsMap.containsKey(slotToAssign))
+                componentExecutorsToSlotsMap.put(slotToAssign, executorsToAssign);
+            else
+                componentExecutorsToSlotsMap.get(slotToAssign).addAll(executorsToAssign);
         }
     }
 
