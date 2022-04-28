@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.storm.Config;
 import org.apache.storm.generated.Bolt;
 import org.apache.storm.generated.ComponentCommon;
 import org.apache.storm.generated.SpoutSpec;
@@ -23,16 +22,20 @@ import org.apache.storm.scheduler.SupervisorDetails;
 import org.apache.storm.scheduler.Topologies;
 import org.apache.storm.scheduler.TopologyDetails;
 import org.apache.storm.scheduler.WorkerSlot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 
+
+
 @SuppressWarnings("unused")
-public class TagAwareScheduler implements IScheduler {
-    
-    
+public class MatchingScheduler implements IScheduler {
+    private static final Logger LOG = LoggerFactory.getLogger(MatchingScheduler.class);
+
     private final String untaggedTag = "untagged";
 
     private Map<String, ArrayList<SupervisorDetails>> getSupervisorsByTag(
@@ -356,7 +359,7 @@ public class TagAwareScheduler implements IScheduler {
             ArrayList<ExecutorDetails> executorsToAssign = entry.getValue();
 
             // Assign the topology's executors to slots in the cluster's supervisors
-            //componentExecutorsToSlotsMap.put(slotToAssign, executorsToAssign); 
+            //componentExecutorsToSlotsMap.put(slotToAssign, executorsToAssign);
             if (!componentExecutorsToSlotsMap.containsKey(slotToAssign))
                 componentExecutorsToSlotsMap.put(slotToAssign, executorsToAssign);
             else
@@ -364,9 +367,9 @@ public class TagAwareScheduler implements IScheduler {
         }
     }
 
-    private void tagAwareSchedule(Topologies topologies, Cluster cluster) {
+    private void MatchingSchedule(Topologies topologies, Cluster cluster) {
         Collection<SupervisorDetails> supervisorDetails = cluster.getSupervisors().values();
-
+        LOG.error(supervisorDetails.toString());
         // Get the lists of tagged and unreserved supervisors.
         Map<String, ArrayList<SupervisorDetails>> supervisorsByTag = getSupervisorsByTag(supervisorDetails);
 
@@ -377,7 +380,9 @@ public class TagAwareScheduler implements IScheduler {
             // Get components from topology
             Map<String, Bolt> bolts = stormTopology.get_bolts();
             Map<String, SpoutSpec> spouts = stormTopology.get_spouts();
-
+            LOG.error(bolts.toString());
+            LOG.error(spouts.toString());
+            LOG.error(topologyDetails.toString());
             // Get a map of component to executors
             Map<String, List<ExecutorDetails>> executorsByComponent = cluster.getNeedsSchedulingComponentToExecutors(
                     topologyDetails
@@ -447,6 +452,6 @@ public class TagAwareScheduler implements IScheduler {
 
     @Override
     public void schedule(Topologies topologies, Cluster cluster) {
-        tagAwareSchedule(topologies, cluster);
+        MatchingSchedule(topologies, cluster);
     }
 }
