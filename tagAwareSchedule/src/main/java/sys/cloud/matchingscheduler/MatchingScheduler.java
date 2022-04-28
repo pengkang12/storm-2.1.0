@@ -387,7 +387,7 @@ public class MatchingScheduler implements IScheduler {
             Map<String, List<ExecutorDetails>> executorsByComponent = cluster.getNeedsSchedulingComponentToExecutors(
                     topologyDetails
             );
-
+            LOG.info("executor by component "+executorsByComponent.toString());
             // Get a map of tag to
             Map<String, ArrayList<String>> componentsByTag = new HashMap<String, ArrayList<String>>();
             populateComponentsByTag(componentsByTag, bolts);

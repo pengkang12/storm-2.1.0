@@ -21,5 +21,6 @@ builder.setBolt("bolt3", new ExampleBolt3(), 1).shuffleGrouping("bolt2").addConf
 #copy lib file to storm/lib/
 cp target/tagawarescheduler-1.0.jar  $STORM_HOME/lib/
 
+
 #Running testing application
 bin/storm jar examples/storm-starter/target/storm-starter-2.1.0.jar org.apache.storm.starter.WordCountTopologyTagAware wordcountTagAware 
