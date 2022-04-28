@@ -1,0 +1,225 @@
+2022-04-28 15:20:34,216 [myid:] - INFO  [main:QuorumPeerConfig@136] - Reading configuration from: /home/cc/zookeeper/bin/../conf/zoo.cfg
+2022-04-28 15:20:34,220 [myid:] - INFO  [main:DatadirCleanupManager@78] - autopurge.snapRetainCount set to 3
+2022-04-28 15:20:34,220 [myid:] - INFO  [main:DatadirCleanupManager@79] - autopurge.purgeInterval set to 0
+2022-04-28 15:20:34,220 [myid:] - INFO  [main:DatadirCleanupManager@101] - Purge task is not scheduled.
+2022-04-28 15:20:34,221 [myid:] - WARN  [main:QuorumPeerMain@116] - Either no config or no quorum defined in config, running  in standalone mode
+2022-04-28 15:20:34,231 [myid:] - INFO  [main:QuorumPeerConfig@136] - Reading configuration from: /home/cc/zookeeper/bin/../conf/zoo.cfg
+2022-04-28 15:20:34,231 [myid:] - INFO  [main:ZooKeeperServerMain@98] - Starting server
+2022-04-28 15:20:34,238 [myid:] - INFO  [main:Environment@100] - Server environment:zookeeper.version=3.4.14-4c25d480e66aadd371de8bd2fd8da255ac140bcf, built on 03/06/2019 16:18 GMT
+2022-04-28 15:20:34,239 [myid:] - INFO  [main:Environment@100] - Server environment:host.name=master
+2022-04-28 15:20:34,239 [myid:] - INFO  [main:Environment@100] - Server environment:java.version=1.8.0_242
+2022-04-28 15:20:34,239 [myid:] - INFO  [main:Environment@100] - Server environment:java.vendor=Private Build
+2022-04-28 15:20:34,239 [myid:] - INFO  [main:Environment@100] - Server environment:java.home=/usr/lib/jvm/java-8-openjdk-amd64/jre
+2022-04-28 15:20:34,239 [myid:] - INFO  [main:Environment@100] - Server environment:java.class.path=/home/cc/zookeeper/bin/../zookeeper-server/target/classes:/home/cc/zookeeper/bin/../build/classes:/home/cc/zookeeper/bin/../zookeeper-server/target/lib/*.jar:/home/cc/zookeeper/bin/../build/lib/*.jar:/home/cc/zookeeper/bin/../lib/slf4j-log4j12-1.7.25.jar:/home/cc/zookeeper/bin/../lib/slf4j-api-1.7.25.jar:/home/cc/zookeeper/bin/../lib/netty-3.10.6.Final.jar:/home/cc/zookeeper/bin/../lib/log4j-1.2.17.jar:/home/cc/zookeeper/bin/../lib/jline-0.9.94.jar:/home/cc/zookeeper/bin/../lib/audience-annotations-0.5.0.jar:/home/cc/zookeeper/bin/../zookeeper-3.4.14.jar:/home/cc/zookeeper/bin/../zookeeper-server/src/main/resources/lib/*.jar:/home/cc/zookeeper/bin/../conf:
+2022-04-28 15:20:34,239 [myid:] - INFO  [main:Environment@100] - Server environment:java.library.path=/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+2022-04-28 15:20:34,239 [myid:] - INFO  [main:Environment@100] - Server environment:java.io.tmpdir=/tmp
+2022-04-28 15:20:34,239 [myid:] - INFO  [main:Environment@100] - Server environment:java.compiler=<NA>
+2022-04-28 15:20:34,241 [myid:] - INFO  [main:Environment@100] - Server environment:os.name=Linux
+2022-04-28 15:20:34,241 [myid:] - INFO  [main:Environment@100] - Server environment:os.arch=amd64
+2022-04-28 15:20:34,241 [myid:] - INFO  [main:Environment@100] - Server environment:os.version=4.4.0-142-generic
+2022-04-28 15:20:34,241 [myid:] - INFO  [main:Environment@100] - Server environment:user.name=cc
+2022-04-28 15:20:34,241 [myid:] - INFO  [main:Environment@100] - Server environment:user.home=/home/cc
+2022-04-28 15:20:34,241 [myid:] - INFO  [main:Environment@100] - Server environment:user.dir=/home/cc/storm/tagAwareSchedule/script
+2022-04-28 15:20:34,248 [myid:] - INFO  [main:ZooKeeperServer@836] - tickTime set to 2000
+2022-04-28 15:20:34,248 [myid:] - INFO  [main:ZooKeeperServer@845] - minSessionTimeout set to -1
+2022-04-28 15:20:34,248 [myid:] - INFO  [main:ZooKeeperServer@854] - maxSessionTimeout set to -1
+2022-04-28 15:20:34,255 [myid:] - INFO  [main:ServerCnxnFactory@117] - Using org.apache.zookeeper.server.NIOServerCnxnFactory as server connection factory
+2022-04-28 15:20:34,259 [myid:] - INFO  [main:NIOServerCnxnFactory@89] - binding to port 0.0.0.0/0.0.0.0:2181
+2022-04-28 15:20:35,001 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:33940
+2022-04-28 15:20:35,009 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.12:33940 as it has seen zxid 0x3e3 our last zxid is 0x0 client must try another server
+2022-04-28 15:20:35,009 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:33940 (no session established for client)
+2022-04-28 15:20:35,864 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:49940
+2022-04-28 15:20:35,865 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.130:49940 as it has seen zxid 0x3e4 our last zxid is 0x0 client must try another server
+2022-04-28 15:20:35,865 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:49940 (no session established for client)
+2022-04-28 15:20:37,022 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:33944
+2022-04-28 15:20:37,023 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.12:33944 as it has seen zxid 0x3e3 our last zxid is 0x0 client must try another server
+2022-04-28 15:20:37,023 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:33944 (no session established for client)
+2022-04-28 15:20:37,350 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:49944
+2022-04-28 15:20:37,350 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.130:49944 as it has seen zxid 0x3e4 our last zxid is 0x0 client must try another server
+2022-04-28 15:20:37,350 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:49944 (no session established for client)
+2022-04-28 15:20:38,242 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:33950
+2022-04-28 15:20:38,243 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.12:33950 as it has seen zxid 0x3e3 our last zxid is 0x0 client must try another server
+2022-04-28 15:20:38,243 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:33950 (no session established for client)
+2022-04-28 15:20:39,399 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:49950
+2022-04-28 15:20:39,400 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.130:49950 as it has seen zxid 0x3e4 our last zxid is 0x0 client must try another server
+2022-04-28 15:20:39,400 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:49950 (no session established for client)
+2022-04-28 15:20:40,345 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:33956
+2022-04-28 15:20:40,345 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.12:33956 as it has seen zxid 0x3e3 our last zxid is 0x0 client must try another server
+2022-04-28 15:20:40,346 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:33956 (no session established for client)
+2022-04-28 15:20:40,771 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.204:48666
+2022-04-28 15:20:40,774 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.204:48666
+2022-04-28 15:20:40,777 [myid:] - INFO  [SyncThread:0:FileTxnLog@216] - Creating new log file: log.1
+2022-04-28 15:20:40,789 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0000 with negotiated timeout 20000 for client /192.168.122.204:48666
+2022-04-28 15:20:40,848 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c0000
+2022-04-28 15:20:40,850 [myid:] - WARN  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@376] - Unable to read additional data from client sessionid 0x103d7a01b6c0000, likely client has closed socket
+2022-04-28 15:20:40,851 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.204:48666 which had sessionid 0x103d7a01b6c0000
+2022-04-28 15:20:40,854 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.204:48668
+2022-04-28 15:20:40,855 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.204:48668
+2022-04-28 15:20:40,857 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0001 with negotiated timeout 20000 for client /192.168.122.204:48668
+2022-04-28 15:20:40,859 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.204:48670
+2022-04-28 15:20:40,859 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.204:48670
+2022-04-28 15:20:40,861 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0002 with negotiated timeout 20000 for client /192.168.122.204:48670
+2022-04-28 15:20:40,902 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.204:48672
+2022-04-28 15:20:40,903 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.204:48672
+2022-04-28 15:20:40,905 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0003 with negotiated timeout 20000 for client /192.168.122.204:48672
+2022-04-28 15:20:40,916 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.204:48674
+2022-04-28 15:20:40,918 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.204:48674
+2022-04-28 15:20:40,920 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0004 with negotiated timeout 20000 for client /192.168.122.204:48674
+2022-04-28 15:20:40,960 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.204:48676
+2022-04-28 15:20:40,960 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.204:48676
+2022-04-28 15:20:40,962 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0005 with negotiated timeout 20000 for client /192.168.122.204:48676
+2022-04-28 15:20:40,968 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c0005
+2022-04-28 15:20:40,969 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.204:48676 which had sessionid 0x103d7a01b6c0005
+2022-04-28 15:20:40,972 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.204:48678
+2022-04-28 15:20:40,972 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.204:48678
+2022-04-28 15:20:40,974 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0006 with negotiated timeout 20000 for client /192.168.122.204:48678
+2022-04-28 15:20:40,977 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.204:48680
+2022-04-28 15:20:40,978 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.204:48680
+2022-04-28 15:20:40,979 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0007 with negotiated timeout 20000 for client /192.168.122.204:48680
+2022-04-28 15:20:41,044 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@653] - Got user-level KeeperException when processing sessionid:0x103d7a01b6c0003 type:create cxid:0x1 zxid:0x16 txntype:-1 reqpath:n/a Error Path:/storm/leader-lock Error:KeeperErrorCode = NoNode for /storm/leader-lock
+2022-04-28 15:20:41,078 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@653] - Got user-level KeeperException when processing sessionid:0x103d7a01b6c0003 type:create cxid:0x8 zxid:0x19 txntype:-1 reqpath:n/a Error Path:/storm/storm Error:KeeperErrorCode = NoNode for /storm/storm
+2022-04-28 15:20:41,169 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:49956
+2022-04-28 15:20:41,170 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.130:49956 as it has seen zxid 0x3e4 our last zxid is 0x1b client must try another server
+2022-04-28 15:20:41,170 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:49956 (no session established for client)
+2022-04-28 15:20:41,583 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:33960
+2022-04-28 15:20:41,584 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.12:33960 as it has seen zxid 0x3e3 our last zxid is 0x1b client must try another server
+2022-04-28 15:20:41,584 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:33960 (no session established for client)
+2022-04-28 15:20:43,126 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:49966
+2022-04-28 15:20:43,127 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.130:49966 as it has seen zxid 0x3e4 our last zxid is 0x1b client must try another server
+2022-04-28 15:20:43,128 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:49966 (no session established for client)
+2022-04-28 15:20:43,321 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:33968
+2022-04-28 15:20:43,322 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.12:33968 as it has seen zxid 0x3e3 our last zxid is 0x1b client must try another server
+2022-04-28 15:20:43,322 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:33968 (no session established for client)
+2022-04-28 15:20:45,221 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:49976
+2022-04-28 15:20:45,222 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.130:49976 as it has seen zxid 0x3e4 our last zxid is 0x1b client must try another server
+2022-04-28 15:20:45,222 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:49976 (no session established for client)
+2022-04-28 15:20:45,336 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:33974
+2022-04-28 15:20:45,336 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.12:33974 as it has seen zxid 0x3e3 our last zxid is 0x1b client must try another server
+2022-04-28 15:20:45,340 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:33974 (no session established for client)
+2022-04-28 15:20:46,316 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:33978
+2022-04-28 15:20:46,320 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.12:33978
+2022-04-28 15:20:46,322 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0008 with negotiated timeout 20000 for client /192.168.122.12:33978
+2022-04-28 15:20:46,356 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c0008
+2022-04-28 15:20:46,358 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:33978 which had sessionid 0x103d7a01b6c0008
+2022-04-28 15:20:46,363 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:33980
+2022-04-28 15:20:46,364 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.12:33980
+2022-04-28 15:20:46,366 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0009 with negotiated timeout 20000 for client /192.168.122.12:33980
+2022-04-28 15:20:46,560 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:33982
+2022-04-28 15:20:46,561 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.12:33982 as it has seen zxid 0x3e3 our last zxid is 0x1f client must try another server
+2022-04-28 15:20:46,561 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:33982 (no session established for client)
+2022-04-28 15:20:46,567 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c0009
+2022-04-28 15:20:46,570 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:33980 which had sessionid 0x103d7a01b6c0009
+2022-04-28 15:20:46,706 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:49982
+2022-04-28 15:20:46,710 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.130:49982
+2022-04-28 15:20:46,713 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c000a with negotiated timeout 20000 for client /192.168.122.130:49982
+2022-04-28 15:20:46,730 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:49984
+2022-04-28 15:20:46,730 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.130:49984 as it has seen zxid 0x3e4 our last zxid is 0x21 client must try another server
+2022-04-28 15:20:46,730 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:49984 (no session established for client)
+2022-04-28 15:20:46,742 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c000a
+2022-04-28 15:20:46,744 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:49982 which had sessionid 0x103d7a01b6c000a
+2022-04-28 15:20:46,748 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:49986
+2022-04-28 15:20:46,749 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.130:49986
+2022-04-28 15:20:46,751 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c000b with negotiated timeout 20000 for client /192.168.122.130:49986
+2022-04-28 15:20:46,922 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c000b
+2022-04-28 15:20:46,925 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:49986 which had sessionid 0x103d7a01b6c000b
+2022-04-28 15:20:48,379 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:49996
+2022-04-28 15:20:48,380 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.130:49996 as it has seen zxid 0x3e4 our last zxid is 0x25 client must try another server
+2022-04-28 15:20:48,380 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:49996 (no session established for client)
+2022-04-28 15:20:48,416 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:33990
+2022-04-28 15:20:48,417 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.12:33990 as it has seen zxid 0x3e3 our last zxid is 0x25 client must try another server
+2022-04-28 15:20:48,417 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:33990 (no session established for client)
+2022-04-28 15:20:50,002 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:33994
+2022-04-28 15:20:50,003 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.12:33994 as it has seen zxid 0x3e3 our last zxid is 0x25 client must try another server
+2022-04-28 15:20:50,003 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:33994 (no session established for client)
+2022-04-28 15:20:50,456 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:50010
+2022-04-28 15:20:50,457 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.130:50010 as it has seen zxid 0x3e4 our last zxid is 0x25 client must try another server
+2022-04-28 15:20:50,457 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:50010 (no session established for client)
+2022-04-28 15:20:51,603 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:34000
+2022-04-28 15:20:51,604 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.12:34000 as it has seen zxid 0x3e3 our last zxid is 0x25 client must try another server
+2022-04-28 15:20:51,604 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:34000 (no session established for client)
+2022-04-28 15:20:51,875 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:50016
+2022-04-28 15:20:51,876 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.130:50016 as it has seen zxid 0x3e4 our last zxid is 0x25 client must try another server
+2022-04-28 15:20:51,876 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:50016 (no session established for client)
+2022-04-28 15:20:53,002 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:34004
+2022-04-28 15:20:53,003 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.12:34004 as it has seen zxid 0x3e3 our last zxid is 0x25 client must try another server
+2022-04-28 15:20:53,004 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:34004 (no session established for client)
+2022-04-28 15:20:53,051 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:50022
+2022-04-28 15:20:53,051 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.130:50022 as it has seen zxid 0x3e4 our last zxid is 0x25 client must try another server
+2022-04-28 15:20:53,052 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:50022 (no session established for client)
+2022-04-28 15:20:54,414 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:50032
+2022-04-28 15:20:54,415 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.130:50032 as it has seen zxid 0x3e4 our last zxid is 0x25 client must try another server
+2022-04-28 15:20:54,416 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:50032 (no session established for client)
+2022-04-28 15:20:54,521 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:50034
+2022-04-28 15:20:54,521 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.130:50034
+2022-04-28 15:20:54,524 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c000c with negotiated timeout 20000 for client /192.168.122.130:50034
+2022-04-28 15:20:54,959 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:34010
+2022-04-28 15:20:54,960 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@922] - Refusing session request for client /192.168.122.12:34010 as it has seen zxid 0x3e3 our last zxid is 0x27 client must try another server
+2022-04-28 15:20:54,960 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:34010 (no session established for client)
+2022-04-28 15:20:55,068 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:34012
+2022-04-28 15:20:55,069 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.12:34012
+2022-04-28 15:20:55,072 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c000d with negotiated timeout 20000 for client /192.168.122.12:34012
+2022-04-28 15:21:16,475 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@653] - Got user-level KeeperException when processing sessionid:0x103d7a01b6c0004 type:create cxid:0xe zxid:0x32 txntype:-1 reqpath:n/a Error Path:/storm/blobstoremaxkeysequencenumber Error:KeeperErrorCode = NoNode for /storm/blobstoremaxkeysequencenumber
+2022-04-28 15:21:29,493 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:50204
+2022-04-28 15:21:29,497 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.130:50204
+2022-04-28 15:21:29,499 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c000e with negotiated timeout 20000 for client /192.168.122.130:50204
+2022-04-28 15:21:29,525 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c000e
+2022-04-28 15:21:29,527 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:50204 which had sessionid 0x103d7a01b6c000e
+2022-04-28 15:21:29,542 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:50210
+2022-04-28 15:21:29,553 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.130:50210
+2022-04-28 15:21:29,555 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c000f with negotiated timeout 20000 for client /192.168.122.130:50210
+2022-04-28 15:21:29,660 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:50214
+2022-04-28 15:21:29,663 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.130:50214
+2022-04-28 15:21:29,665 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0010 with negotiated timeout 20000 for client /192.168.122.130:50214
+2022-04-28 15:21:29,676 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:34098
+2022-04-28 15:21:29,680 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.12:34098
+2022-04-28 15:21:29,682 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0011 with negotiated timeout 20000 for client /192.168.122.12:34098
+2022-04-28 15:21:29,695 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c0010
+2022-04-28 15:21:29,697 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:50214 which had sessionid 0x103d7a01b6c0010
+2022-04-28 15:21:29,701 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:50220
+2022-04-28 15:21:29,704 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.130:50220
+2022-04-28 15:21:29,706 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0012 with negotiated timeout 20000 for client /192.168.122.130:50220
+2022-04-28 15:21:29,707 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c0011
+2022-04-28 15:21:29,708 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:34098 which had sessionid 0x103d7a01b6c0011
+2022-04-28 15:21:29,720 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:34102
+2022-04-28 15:21:29,724 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.12:34102
+2022-04-28 15:21:29,725 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0013 with negotiated timeout 20000 for client /192.168.122.12:34102
+2022-04-28 15:21:29,728 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:34104
+2022-04-28 15:21:29,730 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:50222
+2022-04-28 15:21:29,735 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.12:34104
+2022-04-28 15:21:29,737 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0014 with negotiated timeout 20000 for client /192.168.122.12:34104
+2022-04-28 15:21:29,752 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.130:50222
+2022-04-28 15:21:29,755 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0015 with negotiated timeout 20000 for client /192.168.122.130:50222
+2022-04-28 15:21:29,756 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:34106
+2022-04-28 15:21:29,759 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.12:34106
+2022-04-28 15:21:29,761 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0016 with negotiated timeout 20000 for client /192.168.122.12:34106
+2022-04-28 15:21:29,762 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c0013
+2022-04-28 15:21:29,764 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:34102 which had sessionid 0x103d7a01b6c0013
+2022-04-28 15:21:29,768 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:34108
+2022-04-28 15:21:29,768 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.12:34108
+2022-04-28 15:21:29,769 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0017 with negotiated timeout 20000 for client /192.168.122.12:34108
+2022-04-28 15:21:29,792 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c0015
+2022-04-28 15:21:29,794 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:50222 which had sessionid 0x103d7a01b6c0015
+2022-04-28 15:21:29,798 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c0016
+2022-04-28 15:21:29,799 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:34106 which had sessionid 0x103d7a01b6c0016
+2022-04-28 15:21:29,803 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.12:34110
+2022-04-28 15:21:29,804 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.12:34110
+2022-04-28 15:21:29,806 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0018 with negotiated timeout 20000 for client /192.168.122.12:34110
+2022-04-28 15:21:29,822 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory@222] - Accepted socket connection from /192.168.122.130:50226
+2022-04-28 15:21:29,823 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:ZooKeeperServer@949] - Client attempting to establish new session at /192.168.122.130:50226
+2022-04-28 15:21:29,824 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@694] - Established session 0x103d7a01b6c0019 with negotiated timeout 20000 for client /192.168.122.130:50226
+2022-04-28 15:22:24,057 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c0019
+2022-04-28 15:22:24,060 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:50226 which had sessionid 0x103d7a01b6c0019
+2022-04-28 15:22:24,078 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c0012
+2022-04-28 15:22:24,081 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:50220 which had sessionid 0x103d7a01b6c0012
+2022-04-28 15:22:24,147 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c000f
+2022-04-28 15:22:24,150 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.130:50210 which had sessionid 0x103d7a01b6c000f
+2022-04-28 15:22:24,877 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c0017
+2022-04-28 15:22:24,879 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:34108 which had sessionid 0x103d7a01b6c0017
+2022-04-28 15:22:24,903 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c0018
+2022-04-28 15:22:24,906 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:34110 which had sessionid 0x103d7a01b6c0018
+2022-04-28 15:22:24,907 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@487] - Processed session termination for sessionid: 0x103d7a01b6c0014
+2022-04-28 15:22:24,909 [myid:] - INFO  [NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2181:NIOServerCnxn@1056] - Closed socket connection for client /192.168.122.12:34104 which had sessionid 0x103d7a01b6c0014
+2022-04-28 15:26:22,741 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@653] - Got user-level KeeperException when processing sessionid:0x103d7a01b6c0001 type:delete cxid:0x31 zxid:0xec txntype:-1 reqpath:n/a Error Path:/storm/errors/wordcountTagAware-1-1651177276 Error:KeeperErrorCode = Directory not empty for /storm/errors/wordcountTagAware-1-1651177276
+2022-04-28 15:26:22,757 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@653] - Got user-level KeeperException when processing sessionid:0x103d7a01b6c0006 type:delete cxid:0x22 zxid:0xf0 txntype:-1 reqpath:n/a Error Path:/storm/blobstore/wordcountTagAware-1-1651177276-stormconf.ser Error:KeeperErrorCode = Directory not empty for /storm/blobstore/wordcountTagAware-1-1651177276-stormconf.ser
+2022-04-28 15:26:22,769 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@653] - Got user-level KeeperException when processing sessionid:0x103d7a01b6c0006 type:delete cxid:0x2a zxid:0xf4 txntype:-1 reqpath:n/a Error Path:/storm/blobstore/wordcountTagAware-1-1651177276-stormcode.ser Error:KeeperErrorCode = Directory not empty for /storm/blobstore/wordcountTagAware-1-1651177276-stormcode.ser
+2022-04-28 15:26:22,805 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@653] - Got user-level KeeperException when processing sessionid:0x103d7a01b6c0006 type:delete cxid:0x32 zxid:0xf8 txntype:-1 reqpath:n/a Error Path:/storm/blobstore/wordcountTagAware-1-1651177276-stormjar.jar Error:KeeperErrorCode = Directory not empty for /storm/blobstore/wordcountTagAware-1-1651177276-stormjar.jar

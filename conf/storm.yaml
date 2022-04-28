@@ -115,5 +115,5 @@ supervisor.slots.ports:
     - 6702
     - 6703
 #storm.scheduler: "org.apache.storm.scheduler.resource.ResourceAwareScheduler"
-storm.scheduler: "com.edited.tagawarescheduler.TagAwareScheduler"
+storm.scheduler: "sys.cloud.matchingscheduler.MatchingScheduler"
 
