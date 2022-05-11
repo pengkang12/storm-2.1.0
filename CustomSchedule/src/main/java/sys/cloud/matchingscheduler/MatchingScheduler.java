@@ -140,9 +140,6 @@ public class MatchingScheduler implements IScheduler {
             Map<String, T> components,
             String topologyID
     ) {
-        // Type T can be either Bolt or SpoutSpec, so that this logic can be reused for both component types
-        JSONParser parser = new JSONParser();
-
         ArrayList<String> executorList = new ArrayList<String>();
         int count = 0;
 
@@ -152,7 +149,7 @@ public class MatchingScheduler implements IScheduler {
 
             String componentID = componentEntry.getKey();
             executorList.add(componentID);
-
+            LOG.info(executorList.toString());
             if (count %4 == 0){
                 if (componentsByContainer.containsKey(topologyID)) {
                     componentsByContainer.get(topologyID).add(new ArrayList<String>(executorList));
@@ -164,6 +161,7 @@ public class MatchingScheduler implements IScheduler {
                 executorList = new ArrayList<String>();
             }
         }
+        LOG.info(componentsByContainer.toString());
     }
     private void populateComponentsByTagWithStormInternals(
             Map<String, ArrayList<String>> componentsByTag,
