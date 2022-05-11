@@ -136,29 +136,42 @@ public class MatchingScheduler implements IScheduler {
         }
     }
     private <T> void populateComponentsByContainer(
-            Map<String, ArrayList<ArrayList<String>>> componentsByContainer,
+            Map<String, ArrayList<ArrayList<ExecutorDetails>>> componentsByContainer,
             Map<String, T> components,
-            String topologyID
+            String topologyID,
+            Map<String, List<ExecutorDetails>> executorsByComponent
     ) {
-        ArrayList<String> executorList = new ArrayList<String>();
-        int count = 0;
+        ArrayList<ExecutorDetails> executorList = new ArrayList<ExecutorDetails>();
 
         for (Entry<String, T> componentEntry : components.entrySet()) {
-
-            count += 1;
-
             String componentID = componentEntry.getKey();
-            executorList.add(componentID);
-            LOG.info(executorList.toString());
+
+            // Fetch the executors for the current component ID
+            List<ExecutorDetails> executorsForComponent = executorsByComponent.get(componentID);
+
+            if (executorsForComponent == null) {
+                continue;
+            }
+            // Add the component's waiting to be assigned executors to the current container
+            executorList.addAll(executorsForComponent);
+        }
+        LOG.info(executorList.toString());
+        ArrayList<String> executorPerContainerList = new ArrayList<String>();
+        int count = 0;
+        ArrayList<ExecutorDetails> newExecutorList = new ArrayList<ExecutorDetails>();
+
+        for (ExecutorDetails executorDetail: executorList){
+            count += 1;
+            newExecutorList.add(executorDetail);
             if (count %4 == 0){
                 if (componentsByContainer.containsKey(topologyID)) {
-                    componentsByContainer.get(topologyID).add(new ArrayList<String>(executorList));
+                    componentsByContainer.get(topologyID).add(new ArrayList<ExecutorDetails>(newExecutorList));
                 } else {
-                    ArrayList<ArrayList<String>> newComponentList = new ArrayList<ArrayList<String>>();
-                    newComponentList.add(new ArrayList<String>(executorList));
+                    ArrayList<ArrayList<ExecutorDetails>> newComponentList = new ArrayList<ArrayList<ExecutorDetails>>();
+                    newComponentList.add(new ArrayList<ExecutorDetails>(newExecutorList));
                     componentsByContainer.put(topologyID, newComponentList);
                 }
-                executorList = new ArrayList<String>();
+                newExecutorList = new ArrayList<ExecutorDetails>();
             }
         }
         LOG.info(componentsByContainer.toString());
@@ -426,7 +439,7 @@ public class MatchingScheduler implements IScheduler {
 
 
         //PengAddStart
-        Map<String, ArrayList<ArrayList<String>>> executorsByContainer = new HashMap<String, ArrayList<ArrayList<String>>>();
+        Map<String, ArrayList<ArrayList<ExecutorDetails>>> executorsByContainer = new HashMap<String, ArrayList<ArrayList<ExecutorDetails>>>();
 
         for (TopologyDetails topologyDetails: cluster.needsSchedulingTopologies()) {
             StormTopology stormTopology = topologyDetails.getTopology();
@@ -438,8 +451,8 @@ public class MatchingScheduler implements IScheduler {
             LOG.info(spouts.toString());
             // get A map of component to executors
             Map<String, List<ExecutorDetails>> executorsByComponent = cluster.getNeedsSchedulingComponentToExecutors(topologyDetails);
-            populateComponentsByContainer(executorsByContainer, spouts, topologyID);
-            populateComponentsByContainer(executorsByContainer, bolts, topologyID);
+            populateComponentsByContainer(executorsByContainer, spouts, topologyID, executorsByComponent);
+            populateComponentsByContainer(executorsByContainer, bolts, topologyID, executorsByComponent);
         }
         LOG.info("componentsByContainer " + executorsByContainer.toString());
         ///PengAddEnd
