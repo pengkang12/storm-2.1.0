@@ -150,23 +150,18 @@ public class MatchingScheduler implements IScheduler {
 
             count += 1;
 
-
-            JSONObject conf = null;
-
             String componentID = componentEntry.getKey();
-            T component = componentEntry.getValue();
+            executorList.add(componentID);
 
-            if (count %4 != 0){
-                executorList.add(componentID);
-                executorList = new ArrayList<String>();
-            } else {
+            if (count %4 == 0){
                 if (componentsByContainer.containsKey(topologyID)) {
-                    componentsByContainer.get(topologyID).add(executorList);
+                    componentsByContainer.get(topologyID).add(new ArrayList<String>(executorList));
                 } else {
                     ArrayList<ArrayList<String>> newComponentList = new ArrayList<ArrayList<String>>();
-                    newComponentList.add(executorList);
+                    newComponentList.add(new ArrayList<String>(executorList));
                     componentsByContainer.put(topologyID, newComponentList);
                 }
+                executorList = new ArrayList<String>();
             }
         }
     }
