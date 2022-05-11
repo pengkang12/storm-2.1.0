@@ -37,6 +37,7 @@ public class MatchingScheduler implements IScheduler {
     private static final Logger LOG = LoggerFactory.getLogger(MatchingScheduler.class);
 
     private final String untaggedTag = "untagged";
+    private final String unKnownTag = "unknown_tag";
 
     private Map<String, ArrayList<SupervisorDetails>> getSupervisorsByTag(
             Collection<SupervisorDetails> supervisorDetails
@@ -134,7 +135,41 @@ public class MatchingScheduler implements IScheduler {
             }
         }
     }
+    private <T> void populateComponentsByContainer(
+            Map<String, ArrayList<ArrayList<String>>> componentsByContainer,
+            Map<String, T> components,
+            String topologyID
+    ) {
+        // Type T can be either Bolt or SpoutSpec, so that this logic can be reused for both component types
+        JSONParser parser = new JSONParser();
 
+        ArrayList<String> executorList = new ArrayList<String>();
+        int count = 0;
+
+        for (Entry<String, T> componentEntry : components.entrySet()) {
+
+            count += 1;
+
+
+            JSONObject conf = null;
+
+            String componentID = componentEntry.getKey();
+            T component = componentEntry.getValue();
+
+            if (count %4 != 0){
+                executorList.add(componentID);
+                executorList = new ArrayList<String>();
+            } else {
+                if (componentsByContainer.containsKey(topologyID)) {
+                    componentsByContainer.get(topologyID).add(executorList);
+                } else {
+                    ArrayList<ArrayList<String>> newComponentList = new ArrayList<ArrayList<String>>();
+                    newComponentList.add(executorList);
+                    componentsByContainer.put(topologyID, newComponentList);
+                }
+            }
+        }
+    }
     private void populateComponentsByTagWithStormInternals(
             Map<String, ArrayList<String>> componentsByTag,
             Set<String> components
@@ -227,6 +262,7 @@ public class MatchingScheduler implements IScheduler {
         return executorsByTag;
     }
 
+
     private void handleUnsuccessfulScheduling(
             Cluster cluster,
             TopologyDetails topologyDetails,
@@ -300,6 +336,25 @@ public class MatchingScheduler implements IScheduler {
             List<WorkerSlot> slots,
             List<ExecutorDetails> executors
     ) {
+        // todo: use two matching algorithm to reschedule it.
+        // todo: need to sort slot by resources.
+//        Initialize all men and women to free
+//        while there exist a free man m who still has a woman w to propose to
+//        {
+//            w = m's highest ranked such woman to whom he has not yet proposed
+//            if w is free
+//                (m, w) become engaged
+//            else some pair (m', w) already exists
+//                if w prefers m to m'
+//                      (m, w) become engaged
+//                      m' becomes free
+//                else
+//                      (m', w) remain engaged
+//        }
+        // men is executor
+        // women is slot.
+        // 1. merge executor to a group
+
         Map<WorkerSlot, ArrayList<ExecutorDetails>> assignments = new HashMap<WorkerSlot, ArrayList<ExecutorDetails>>();
 
         int numberOfSlots = slots.size();
@@ -350,6 +405,9 @@ public class MatchingScheduler implements IScheduler {
         );
 
         // Divide the executors evenly across the slots and get a map of slot to executors
+        // using two side matching algorithm
+
+
         Map<WorkerSlot, ArrayList<ExecutorDetails>> executorsBySlot = getExecutorsBySlot(
                 slotsToAssign, executors
         );
@@ -373,6 +431,26 @@ public class MatchingScheduler implements IScheduler {
         // Get the lists of tagged and unreserved supervisors.
         Map<String, ArrayList<SupervisorDetails>> supervisorsByTag = getSupervisorsByTag(supervisorDetails);
 
+
+        //PengAddStart
+        Map<String, ArrayList<ArrayList<String>>> executorsByContainer = new HashMap<String, ArrayList<ArrayList<String>>>();
+
+        for (TopologyDetails topologyDetails: cluster.needsSchedulingTopologies()) {
+            StormTopology stormTopology = topologyDetails.getTopology();
+            String topologyID = topologyDetails.getId();
+            //get components from topology
+            Map<String, Bolt> bolts = stormTopology.get_bolts();
+            Map<String, SpoutSpec> spouts = stormTopology.get_spouts();
+            LOG.info(bolts.toString());
+            LOG.info(spouts.toString());
+            // get A map of component to executors
+            Map<String, List<ExecutorDetails>> executorsByComponent = cluster.getNeedsSchedulingComponentToExecutors(topologyDetails);
+            populateComponentsByContainer(executorsByContainer, spouts, topologyID);
+            populateComponentsByContainer(executorsByContainer, bolts, topologyID);
+        }
+        LOG.info("componentsByContainer " + executorsByContainer.toString());
+        ///PengAddEnd
+
         for (TopologyDetails topologyDetails : cluster.needsSchedulingTopologies()) {
             StormTopology stormTopology = topologyDetails.getTopology();
             String topologyID = topologyDetails.getId();
@@ -380,9 +458,6 @@ public class MatchingScheduler implements IScheduler {
             // Get components from topology
             Map<String, Bolt> bolts = stormTopology.get_bolts();
             Map<String, SpoutSpec> spouts = stormTopology.get_spouts();
-            LOG.error(bolts.toString());
-            LOG.error(spouts.toString());
-            LOG.error(topologyDetails.toString());
             // Get a map of component to executors
             Map<String, List<ExecutorDetails>> executorsByComponent = cluster.getNeedsSchedulingComponentToExecutors(
                     topologyDetails
@@ -439,6 +514,65 @@ public class MatchingScheduler implements IScheduler {
             // If we've reached this far, then scheduling must have been successful
             cluster.setStatus(topologyID, "SCHEDULING SUCCESSFUL");
         }
+    }
+
+
+    private Map<String, ArrayList<SupervisorDetails>> getSupervisorsConfiguration(
+            Collection<SupervisorDetails> supervisorDetails
+    ){
+        Map<String, ArrayList<SupervisorDetails>> supervisorsConf = new HashMap<String,ArrayList<SupervisorDetails>>();
+        for (SupervisorDetails supervisor : supervisorDetails) {
+            Map<String, String> metadata = (Map<String, String>) supervisor.getSchedulerMeta();
+            String metaConf = null;
+            if (metadata == null){
+                metaConf = unKnownTag;
+            } else {
+                metaConf = metadata.get("tags");
+                if (metaConf == null){
+                    metaConf = unKnownTag;
+                }
+            }
+
+            for (String conf : metaConf.split(",")){
+                conf = conf.trim();
+                if ( supervisorsConf.containsKey(conf) ){
+                    supervisorsConf.get(conf).add(supervisor);
+                } else {
+                    ArrayList<SupervisorDetails> newSupervisorList = new ArrayList<SupervisorDetails>();
+                    newSupervisorList.add(supervisor);
+                    supervisorsConf.put(conf, newSupervisorList);
+                }
+            }
+        }
+        return supervisorsConf;
+    }
+
+    private void TwoSideMatching(StormTopology stormTopology){
+        // Microservices will prefer the cheapest resoruces. Microserivces also want to spend less money.
+        // resrouce preference is the microservice request smalledst resource. Each resource want to hold as much as possible microservices.
+        // using matching algorithm to find a good match.
+    }
+
+    private void MatchingSchedule2(Topologies topologies, Cluster cluster) {
+        Collection<SupervisorDetails> supervisorDetails = cluster.getSupervisors().values();
+        LOG.info(supervisorDetails.toString());
+        // get the supervisor's configuration information.
+        Map<String, ArrayList<SupervisorDetails>> supervisorConfInfo = getSupervisorsConfiguration(supervisorDetails);
+        //1. define allocation array
+        //2. sort the application by end to end latency requirement
+        //3. for topology in topologies_list:
+        //4.    while True do until finding the satisfied configurations.
+        //5.        alloc = two side matching(app)
+        //6.        if check_allocation(alloc) is satifisy:
+        //7.            set status
+        //8.        else:
+        //9.            remove the smallestNode from resource List
+
+        //1. group each topology by our configuration.
+        //2. combine all topology as a forest.
+        //3. for each layer, using matching algorithm. container prefer resource. resource prefer less usage for bandwidth.
+        //3.1 for the intermediate layer, we need to consider the predecessor container.
+
     }
 
     @Override
