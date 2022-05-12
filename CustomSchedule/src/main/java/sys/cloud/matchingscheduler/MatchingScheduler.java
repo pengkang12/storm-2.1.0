@@ -29,7 +29,32 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+class Pair<A, B> {
+    A first = null;
+    B second = null;
 
+    Pair(A first, B second) {
+        this.first = first;
+        this.second = second;
+    }
+
+    public A getFirst() {
+        return first;
+    }
+
+    public void setFirst(A first) {
+        this.first = first;
+    }
+
+    public B getSecond() {
+        return second;
+    }
+
+    public void setSecond(B second) {
+        this.second = second;
+    }
+
+}
 
 
 @SuppressWarnings("unused")
@@ -470,6 +495,9 @@ public class MatchingScheduler implements IScheduler {
             availableSlots.addAll(cluster.getAvailableSlots(supervisor));
         }
         List<WorkerSlot> allocatedSlots = new ArrayList<>();
+        //store the map of workerslot and executors.
+        Map<WorkerSlot, Pair<String, ArrayList<ExecutorDetails>>> containerExecutorsToSlotsMap = (new HashMap<WorkerSlot, Pair<String, ArrayList<ExecutorDetails>>>());
+
         // need to machine
         int layer_number = 0;
         while (true) {
@@ -496,14 +524,24 @@ public class MatchingScheduler implements IScheduler {
                 break;
             }
 
-
-            Map<WorkerSlot, ArrayList<ExecutorDetails>> containerExecutorsToSlotsMap = (new HashMap<WorkerSlot, ArrayList<ExecutorDetails>>());
             List<WorkerSlot> newAllocatedSlots = TwoSideMatching(cluster, containerExecutorsToSlotsMap, executorByContainerForLayer, availableSlots, allocatedSlots);
             allocatedSlots.addAll(newAllocatedSlots);
             layer_number += 1;
             LOG.info("PengAllocatedConf" + executorByContainerForLayer);
         }
 
+        LOG.info("Peng " + executorsByContainer.toString());
+        for (Entry<WorkerSlot, Pair<String, ArrayList<ExecutorDetails>>> entry : containerExecutorsToSlotsMap.entrySet()) {
+            WorkerSlot slotToAssign = entry.getKey();
+            Pair<String, ArrayList<ExecutorDetails>> pair = entry.getValue();
+            String topologyID = pair.getFirst();
+            ArrayList<ExecutorDetails> executorsToAssign = pair.getSecond();
+            LOG.info("PengAllocated " + topologyID + "  " + executorsToAssign.toString());
+            //cluster.assign(slotToAssign, topologyID, executorsToAssign);
+        }
+
+        // If we've reached this far, then scheduling must have been successful
+        //cluster.setStatus(topologyID, "SCHEDULING SUCCESSFUL");
 
         ///PengAddEnd
 
@@ -604,7 +642,7 @@ public class MatchingScheduler implements IScheduler {
     }
 
     private List<WorkerSlot> TwoSideMatching(Cluster cluster,
-                                             Map<WorkerSlot, ArrayList<ExecutorDetails>> containerExecutorsToSlotsMap,
+                                             Map<WorkerSlot, Pair<String, ArrayList<ExecutorDetails>>> assignments,
                                              HashMap<String, ArrayList<ArrayList<ExecutorDetails>>> executorByContainerForLayer,
                                              List<WorkerSlot> allAvailableSlots, List<WorkerSlot> allocatedSlots)
     {
@@ -626,7 +664,7 @@ public class MatchingScheduler implements IScheduler {
 
         // Divide the executors evenly across the slots and get a map of slot to executors
         // using two side matching algorithm
-        Map<WorkerSlot, ArrayList<ExecutorDetails>> assignments = new HashMap<WorkerSlot, ArrayList<ExecutorDetails>>();
+        //Map<WorkerSlot, ArrayList<ExecutorDetails>> assignments = new HashMap<WorkerSlot, ArrayList<ExecutorDetails>>();
 
         int currentSlotIndex = 0;
         for (Entry<String, ArrayList<ArrayList<ExecutorDetails>>> entry : executorByContainerForLayer.entrySet()) {
@@ -639,13 +677,15 @@ public class MatchingScheduler implements IScheduler {
                 for (ExecutorDetails containerExecutor : containerExecutorList){
                     if (assignments.containsKey(slotToAssign)) {
                         // If we've already seen this slot, then just add the executor to the existing ArrayList.
-                        assignments.get(slotToAssign).add(containerExecutor);
+                        ArrayList<ExecutorDetails> oldExecutorList = assignments.get(slotToAssign).getSecond();
+                        oldExecutorList.add(containerExecutor);
+                        assignments.get(slotToAssign).setSecond(oldExecutorList);
                     } else {
                         // If this slot is new, then create a new ArrayList,
                         // add the current executor, and populate the map's slot entry with it.
                         ArrayList<ExecutorDetails> newExecutorList = new ArrayList<ExecutorDetails>();
                         newExecutorList.add(containerExecutor);
-                        assignments.put(slotToAssign, newExecutorList);
+                        assignments.put(slotToAssign, new Pair<String, ArrayList<ExecutorDetails>>(toplogyID, newExecutorList));
                     }
                 }
                 currentSlotIndex += 1;
