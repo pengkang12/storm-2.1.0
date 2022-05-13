@@ -464,7 +464,6 @@ public class MatchingScheduler implements IScheduler {
 
     private void MatchingSchedule(Topologies topologies, Cluster cluster) {
         Collection<SupervisorDetails> supervisorDetails = cluster.getSupervisors().values();
-        LOG.error(supervisorDetails.toString());
         // Get the lists of tagged and unreserved supervisors.
         Map<String, ArrayList<SupervisorDetails>> supervisorsByTag = getSupervisorsByTag(supervisorDetails);
 
@@ -487,8 +486,6 @@ public class MatchingScheduler implements IScheduler {
 
             //Todo: we ignore internal components, like __acker, etc. need to do in the future.
         }
-        LOG.info("componentsByContainer " + executorsByContainer.toString());
-
         // get all available slots
         List<WorkerSlot> availableSlots = new ArrayList<WorkerSlot>();
         for (SupervisorDetails supervisor : supervisorDetails) {
@@ -530,7 +527,6 @@ public class MatchingScheduler implements IScheduler {
             LOG.info("PengAllocatedConf" + executorByContainerForLayer);
         }
 
-        LOG.info("Peng " + containerExecutorsToSlotsMap.toString());
         HashSet<String> topologyIDSet = new HashSet<>();
 
         for (Entry<WorkerSlot, Pair<String, ArrayList<ExecutorDetails>>> entry : containerExecutorsToSlotsMap.entrySet()) {
@@ -538,7 +534,7 @@ public class MatchingScheduler implements IScheduler {
             Pair<String, ArrayList<ExecutorDetails>> pair = entry.getValue();
             String topologyID = pair.getFirst();
             ArrayList<ExecutorDetails> executorsToAssign = pair.getSecond();
-            LOG.info("PengAllocated " + topologyID + "  " + executorsToAssign.toString());
+            LOG.info("PengAllocated " + topologyID + " \n executor " + executorsToAssign.toString() + "\nSlot " +slotToAssign);
             cluster.assign(slotToAssign, topologyID, executorsToAssign);
             topologyIDSet.add(topologyID);
         }
@@ -546,6 +542,7 @@ public class MatchingScheduler implements IScheduler {
         // If we've reached this far, then scheduling must have been successful
         for(String topologyID : topologyIDSet){
             cluster.setStatus(topologyID, "SCHEDULING SUCCESSFUL");
+            LOG.info("PengSchedule Successfully " + topologyID);
         }
         return ;
         ///PengAddEnd
@@ -673,7 +670,6 @@ public class MatchingScheduler implements IScheduler {
         //Map<WorkerSlot, ArrayList<ExecutorDetails>> assignments = new HashMap<WorkerSlot, ArrayList<ExecutorDetails>>();
 
         int currentSlotIndex = 0;
-        LOG.info("Peng ExecutorByContainer" + executorByContainerForLayer.toString());
         for (Entry<String, ArrayList<ArrayList<ExecutorDetails>>> entry : executorByContainerForLayer.entrySet()) {
             String topologyID = entry.getKey();
             ArrayList<ArrayList<ExecutorDetails>> executorsToAssignList = entry.getValue();
@@ -681,7 +677,6 @@ public class MatchingScheduler implements IScheduler {
             for (ArrayList<ExecutorDetails> containerExecutorList: executorsToAssignList){
                 WorkerSlot slotToAssign = availableSlots.get(currentSlotIndex);
                 newAllocatedSlots.add(slotToAssign);
-                LOG.info("Peng containerExecutorList" + containerExecutorList);
                 for (ExecutorDetails containerExecutor : containerExecutorList){
                     if (assignments.containsKey(slotToAssign)) {
                         // If we've already seen this slot, then just add the executor to the existing ArrayList.
