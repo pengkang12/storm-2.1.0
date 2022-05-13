@@ -22,6 +22,7 @@ import org.apache.storm.scheduler.SupervisorDetails;
 import org.apache.storm.scheduler.Topologies;
 import org.apache.storm.scheduler.TopologyDetails;
 import org.apache.storm.scheduler.WorkerSlot;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -164,11 +165,15 @@ public class MatchingScheduler implements IScheduler {
             Map<String, ArrayList<ArrayList<ExecutorDetails>>> componentsByContainer,
             Map<String, T> components,
             String topologyID,
-            Map<String, List<ExecutorDetails>> executorsByComponent
+            Map<String, List<ExecutorDetails>> executorsByComponent,
+            Boolean check
     ) {
         ArrayList<ExecutorDetails> executorList = new ArrayList<ExecutorDetails>();
 
         for (Entry<String, T> componentEntry : components.entrySet()) {
+            if (check){
+                continue;
+            }
             String componentID = componentEntry.getKey();
 
             // Fetch the executors for the current component ID
@@ -481,8 +486,8 @@ public class MatchingScheduler implements IScheduler {
             LOG.info(spouts.toString());
             // get A map of component to executors
             Map<String, List<ExecutorDetails>> executorsByComponent = cluster.getNeedsSchedulingComponentToExecutors(topologyDetails);
-            populateComponentsByContainer(executorsByContainer, spouts, topologyID, executorsByComponent);
-            populateComponentsByContainer(executorsByContainer, bolts, topologyID, executorsByComponent);
+            populateComponentsByContainer(executorsByContainer, spouts, topologyID, executorsByComponent, true);
+            populateComponentsByContainer(executorsByContainer, bolts, topologyID, executorsByComponent, false);
 
             //Todo: we ignore internal components, like __acker, etc. need to do in the future.
         }
@@ -535,81 +540,80 @@ public class MatchingScheduler implements IScheduler {
             String topologyID = pair.getFirst();
             ArrayList<ExecutorDetails> executorsToAssign = pair.getSecond();
             LOG.info("PengAllocated " + topologyID + " \n executor " + executorsToAssign.toString() + "\nSlot " +slotToAssign);
-            //cluster.assign(slotToAssign, topologyID, executorsToAssign);
+            cluster.assign(slotToAssign, topologyID, executorsToAssign);
             topologyIDSet.add(topologyID);
         }
 
         // If we've reached this far, then scheduling must have been successful
         for(String topologyID : topologyIDSet){
-            //cluster.setStatus(topologyID, "SCHEDULING SUCCESSFUL");
+            cluster.setStatus(topologyID, "SCHEDULING SUCCESSFUL");
             LOG.info("PengSchedule Successfully " + topologyID);
         }
-        //return ;
+        return ;
         ///PengAddEnd
 
-        for (TopologyDetails topologyDetails : cluster.needsSchedulingTopologies()) {
-            StormTopology stormTopology = topologyDetails.getTopology();
-            String topologyID = topologyDetails.getId();
-
-            // Get components from topology
-            Map<String, Bolt> bolts = stormTopology.get_bolts();
-            Map<String, SpoutSpec> spouts = stormTopology.get_spouts();
-            // Get a map of component to executors
-            Map<String, List<ExecutorDetails>> executorsByComponent = cluster.getNeedsSchedulingComponentToExecutors(
-                    topologyDetails
-            );
-            LOG.info("executor by component "+executorsByComponent.toString());
-            // Get a map of tag to
-            Map<String, ArrayList<String>> componentsByTag = new HashMap<String, ArrayList<String>>();
-            populateComponentsByTag(componentsByTag, bolts);
-            populateComponentsByTag(componentsByTag, spouts);
-            populateComponentsByTagWithStormInternals(componentsByTag, executorsByComponent.keySet());
-
-            // Get a map of tag to executors
-            Map<String, ArrayList<ExecutorDetails>> executorsToBeScheduledByTag = getExecutorsToBeScheduledByTag(
-                    cluster, topologyDetails, componentsByTag
-            );
-
-            // Initialise a map of slot -> executors
-            Map<WorkerSlot, ArrayList<ExecutorDetails>> componentExecutorsToSlotsMap = (
-                    new HashMap<WorkerSlot, ArrayList<ExecutorDetails>>()
-            );
-
-            // Time to match everything up!
-            for (Entry<String, ArrayList<ExecutorDetails>> entry : executorsToBeScheduledByTag.entrySet()) {
-                String tag = entry.getKey();
-
-                ArrayList<ExecutorDetails> executorsForTag = entry.getValue();
-                ArrayList<SupervisorDetails> supervisorsForTag = supervisorsByTag.get(tag);
-                ArrayList<String> componentsForTag = componentsByTag.get(tag);
-
-                try {
-                    populateComponentExecutorsToSlotsMap(
-                            componentExecutorsToSlotsMap,
-                            cluster, topologyDetails, supervisorsForTag, executorsForTag, componentsForTag, tag
-                    );
-                } catch (Exception e) {
-                    e.printStackTrace();
-
-                    // Cut this scheduling short to avoid partial scheduling.
-                    return;
-                }
-            }
-
-            // Do the actual assigning
-            // We do this as a separate step to only perform any assigning if there have been no issues so far.
-            // That's aimed at avoiding partial scheduling from occurring, with some components already scheduled
-            // and alive, while others cannot be scheduled.
-            for (Entry<WorkerSlot, ArrayList<ExecutorDetails>> entry : componentExecutorsToSlotsMap.entrySet()) {
-                WorkerSlot slotToAssign = entry.getKey();
-                ArrayList<ExecutorDetails> executorsToAssign = entry.getValue();
-
-                cluster.assign(slotToAssign, topologyID, executorsToAssign);
-            }
-
-            // If we've reached this far, then scheduling must have been successful
-            cluster.setStatus(topologyID, "SCHEDULING SUCCESSFUL");
-        }
+//        for (TopologyDetails topologyDetails : cluster.needsSchedulingTopologies()) {
+//            StormTopology stormTopology = topologyDetails.getTopology();
+//            String topologyID = topologyDetails.getId();
+//
+//            // Get components from topology
+//            Map<String, Bolt> bolts = stormTopology.get_bolts();
+//            Map<String, SpoutSpec> spouts = stormTopology.get_spouts();
+//            // Get a map of component to executors
+//            Map<String, List<ExecutorDetails>> executorsByComponent = cluster.getNeedsSchedulingComponentToExecutors(
+//                    topologyDetails
+//            );
+//            // Get a map of tag to
+//            Map<String, ArrayList<String>> componentsByTag = new HashMap<String, ArrayList<String>>();
+//            populateComponentsByTag(componentsByTag, bolts);
+//            populateComponentsByTag(componentsByTag, spouts);
+//            populateComponentsByTagWithStormInternals(componentsByTag, executorsByComponent.keySet());
+//
+//            // Get a map of tag to executors
+//            Map<String, ArrayList<ExecutorDetails>> executorsToBeScheduledByTag = getExecutorsToBeScheduledByTag(
+//                    cluster, topologyDetails, componentsByTag
+//            );
+//
+//            // Initialise a map of slot -> executors
+//            Map<WorkerSlot, ArrayList<ExecutorDetails>> componentExecutorsToSlotsMap = (
+//                    new HashMap<WorkerSlot, ArrayList<ExecutorDetails>>()
+//            );
+//
+//            // Time to match everything up!
+//            for (Entry<String, ArrayList<ExecutorDetails>> entry : executorsToBeScheduledByTag.entrySet()) {
+//                String tag = entry.getKey();
+//
+//                ArrayList<ExecutorDetails> executorsForTag = entry.getValue();
+//                ArrayList<SupervisorDetails> supervisorsForTag = supervisorsByTag.get(tag);
+//                ArrayList<String> componentsForTag = componentsByTag.get(tag);
+//
+//                try {
+//                    populateComponentExecutorsToSlotsMap(
+//                            componentExecutorsToSlotsMap,
+//                            cluster, topologyDetails, supervisorsForTag, executorsForTag, componentsForTag, tag
+//                    );
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//
+//                    // Cut this scheduling short to avoid partial scheduling.
+//                    return;
+//                }
+//            }
+//
+//            // Do the actual assigning
+//            // We do this as a separate step to only perform any assigning if there have been no issues so far.
+//            // That's aimed at avoiding partial scheduling from occurring, with some components already scheduled
+//            // and alive, while others cannot be scheduled.
+//            for (Entry<WorkerSlot, ArrayList<ExecutorDetails>> entry : componentExecutorsToSlotsMap.entrySet()) {
+//                WorkerSlot slotToAssign = entry.getKey();
+//                ArrayList<ExecutorDetails> executorsToAssign = entry.getValue();
+//
+//                cluster.assign(slotToAssign, topologyID, executorsToAssign);
+//            }
+//
+//            // If we've reached this far, then scheduling must have been successful
+//            cluster.setStatus(topologyID, "SCHEDULING SUCCESSFUL");
+//        }
     }
 
 
