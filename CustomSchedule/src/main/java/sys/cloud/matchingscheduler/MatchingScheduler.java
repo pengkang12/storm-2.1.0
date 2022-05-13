@@ -660,6 +660,7 @@ public class MatchingScheduler implements IScheduler {
         if (availableSlots.isEmpty()) {
             // This is bad, we have supervisors and executors to assign, but no available slots!
             String message = "No slots are available for assigning executors for (components)";
+            LOG.error("Peng " + message);
         }
 
         // Divide the executors evenly across the slots and get a map of slot to executors
@@ -667,13 +668,15 @@ public class MatchingScheduler implements IScheduler {
         //Map<WorkerSlot, ArrayList<ExecutorDetails>> assignments = new HashMap<WorkerSlot, ArrayList<ExecutorDetails>>();
 
         int currentSlotIndex = 0;
+        LOG.info("Peng ExecutorByContainer" + executorByContainerForLayer.toString());
         for (Entry<String, ArrayList<ArrayList<ExecutorDetails>>> entry : executorByContainerForLayer.entrySet()) {
-            String toplogyID = entry.getKey();
+            String topologyID = entry.getKey();
             ArrayList<ArrayList<ExecutorDetails>> executorsToAssignList = entry.getValue();
 
             for (ArrayList<ExecutorDetails> containerExecutorList: executorsToAssignList){
                 WorkerSlot slotToAssign = availableSlots.get(currentSlotIndex);
                 newAllocatedSlots.add(slotToAssign);
+                LOG.info("Peng containerExecutorList" + containerExecutorList);
                 for (ExecutorDetails containerExecutor : containerExecutorList){
                     if (assignments.containsKey(slotToAssign)) {
                         // If we've already seen this slot, then just add the executor to the existing ArrayList.
@@ -685,14 +688,14 @@ public class MatchingScheduler implements IScheduler {
                         // add the current executor, and populate the map's slot entry with it.
                         ArrayList<ExecutorDetails> newExecutorList = new ArrayList<ExecutorDetails>();
                         newExecutorList.add(containerExecutor);
-                        assignments.put(slotToAssign, new Pair<String, ArrayList<ExecutorDetails>>(toplogyID, newExecutorList));
+                        assignments.put(slotToAssign, new Pair<String, ArrayList<ExecutorDetails>>(topologyID, newExecutorList));
                     }
                 }
                 currentSlotIndex += 1;
             }
 
         }
-        LOG.info(assignments.toString());
+        LOG.info("PengAssignment" + assignments.toString());
 
         // We want to split the executors as evenly as possible, across each slot available,
         // so we assign each executor to a slot via round robin
