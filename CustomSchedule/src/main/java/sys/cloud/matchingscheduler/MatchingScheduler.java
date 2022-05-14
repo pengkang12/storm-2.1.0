@@ -736,8 +736,13 @@ public class MatchingScheduler implements IScheduler {
                 {0, 1, 3, 2}
         };
         StableMarriage sm = new StableMarriage();
-        sm.matchMaking(men, women);
+        HashMap<Integer, Integer> couples = sm.findCouples(men, women);
 
+        LOG.info("\n------------------Final Matching----------------------------");
+        Set<Integer> set = couples.keySet();
+        for (int key : set) {
+            LOG.info("Woman: " + key + " is engaged with man: " + couples.get(key));
+        }
 
         // Divide the executors evenly across the slots and get a map of slot to executors
         // using two side matching algorithm
@@ -793,18 +798,6 @@ public class MatchingScheduler implements IScheduler {
 }
 
 class StableMarriage {
-    private static final Logger LOG = LoggerFactory.getLogger(MatchingScheduler.class);
-
-    public void matchMaking(int [][] men, int [][] women){
-        HashMap<Integer, Integer> couples = findCouples(men, women);
-        LOG.info("\n------------------Final Matching----------------------------");
-        Set<Integer> set = couples.keySet();
-        Iterator<Integer> iterator = set.iterator();
-        while (iterator.hasNext()){
-            int key = iterator.next();
-            LOG.info("Woman: " + key + " is engaged with man: " + couples.get(key));
-        }
-    }
 
     public HashMap<Integer, Integer> findCouples(int [][] men, int [][] women){
 
