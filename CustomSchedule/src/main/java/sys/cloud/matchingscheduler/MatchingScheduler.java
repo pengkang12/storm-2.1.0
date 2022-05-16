@@ -31,6 +31,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.xml.soap.Node;
+
 
 @SuppressWarnings("unused")
 public class MatchingScheduler implements IScheduler {
@@ -136,7 +138,7 @@ public class MatchingScheduler implements IScheduler {
         }
     }
     private <T> void populateComponentsByContainer(
-            Map<String, ArrayList<ArrayList<ExecutorDetails>>> componentsByContainer,
+            Map<String, ArrayList<Container>>  componentsByContainer,
             Map<String, T> components,
             String topologyID,
             Map<String, List<ExecutorDetails>> executorsByComponent
@@ -171,23 +173,25 @@ public class MatchingScheduler implements IScheduler {
             count += 1;
             newExecutorList.add(executorDetail);
             if (count %4 == 0){
+                Container container = new Container(topologyID, newExecutorList);
                 if (componentsByContainer.containsKey(topologyID)) {
-                    componentsByContainer.get(topologyID).add(new ArrayList<ExecutorDetails>(newExecutorList));
+                    componentsByContainer.get(topologyID).add(container);
                 } else {
-                    ArrayList<ArrayList<ExecutorDetails>> newComponentList = new ArrayList<ArrayList<ExecutorDetails>>();
-                    newComponentList.add(new ArrayList<ExecutorDetails>(newExecutorList));
-                    componentsByContainer.put(topologyID, newComponentList);
+                    ArrayList<Container> containersList = new ArrayList<Container>();
+                    containersList.add(container);
+                    componentsByContainer.put(topologyID, containersList);
                 }
                 newExecutorList = new ArrayList<ExecutorDetails>();
             }
         }
         if (!newExecutorList.isEmpty()){
-            componentsByContainer.get(topologyID).add(new ArrayList<ExecutorDetails>(newExecutorList));
+            Container container = new Container(topologyID, newExecutorList);
+            componentsByContainer.get(topologyID).add(container);
         }
     }
 
     private <T> void populateComponentsByContainerForInternals(
-            Map<String, ArrayList<ArrayList<ExecutorDetails>>> componentsByContainer,
+            Map<String, ArrayList<Container>>  componentsByContainer,
             String topologyID,
             Map<String, List<ExecutorDetails>> executorsByComponent
 
@@ -220,12 +224,13 @@ public class MatchingScheduler implements IScheduler {
             count += 1;
             newExecutorList.add(executorDetail);
             if (count %4 == 0){
+                Container container = new Container(topologyID, newExecutorList);
                 if (componentsByContainer.containsKey(topologyID)) {
-                    componentsByContainer.get(topologyID).add(new ArrayList<ExecutorDetails>(newExecutorList));
+                    componentsByContainer.get(topologyID).add(container);
                 } else {
-                    ArrayList<ArrayList<ExecutorDetails>> newComponentList = new ArrayList<ArrayList<ExecutorDetails>>();
-                    newComponentList.add(new ArrayList<ExecutorDetails>(newExecutorList));
-                    componentsByContainer.put(topologyID, newComponentList);
+                    ArrayList<Container> containersList = new ArrayList<Container>();
+                    containersList.add(container);
+                    componentsByContainer.put(topologyID, containersList);
                 }
                 newExecutorList = new ArrayList<ExecutorDetails>();
             }
@@ -491,9 +496,8 @@ public class MatchingScheduler implements IScheduler {
         // Get the lists of tagged and unreserved supervisors.
         Map<String, ArrayList<SupervisorDetails>> supervisorsByTag = getSupervisorsByTag(supervisorDetails);
 
-
         //PengAddStart
-        Map<String, ArrayList<ArrayList<ExecutorDetails>>> executorsByContainer = new HashMap<String, ArrayList<ArrayList<ExecutorDetails>>>();
+        Map<String, ArrayList<Container>> executorsByContainer = new HashMap<String, ArrayList<Container>>();
 
         for (TopologyDetails topologyDetails: cluster.needsSchedulingTopologies()) {
             StormTopology stormTopology = topologyDetails.getTopology();
@@ -512,54 +516,55 @@ public class MatchingScheduler implements IScheduler {
             populateComponentsByContainerForInternals(executorsByContainer, topologyID, executorsByComponent);
             //Todo: we ignore internal components, like __acker, etc. need to do in the future.
         }
+
         // get all available slots
+        // get the resource usage for each Node(supervisor)
+        HashMap<String, NodeResource> nodeResourceList = new HashMap<String, NodeResource>();
         List<WorkerSlot> availableSlots = new ArrayList<WorkerSlot>();
         for (SupervisorDetails supervisor : supervisorDetails) {
             availableSlots.addAll(cluster.getAvailableSlots(supervisor));
+            nodeResourceList.put(supervisor.getId(), new NodeResource(2000, 200000));
         }
+
         List<WorkerSlot> allocatedSlots = new ArrayList<>();
         //store the map of workerslot and executors.
-        Map<WorkerSlot, Pair<String, ArrayList<ExecutorDetails>>> containerExecutorsToSlotsMap = (new HashMap<WorkerSlot, Pair<String, ArrayList<ExecutorDetails>>>());
+        Map<WorkerSlot, Container> containerToSlotsMap = (new HashMap<WorkerSlot, Container>());
+
 
         // need to machine
         int layer_number = 0;
         while (true) {
             // get each layer's container by topologyID
-            HashMap<String, ArrayList<ArrayList<ExecutorDetails>>> executorByContainerForLayer = new HashMap<String, ArrayList<ArrayList<ExecutorDetails>>>();
-            for (Entry<String, ArrayList<ArrayList<ExecutorDetails>>> entry : executorsByContainer.entrySet()) {
+            ArrayList<Container> containerForLayer = new ArrayList<Container>();
+            for (Entry<String, ArrayList<Container>> entry : executorsByContainer.entrySet()) {
                 // already reached the last layer.
                 if (layer_number >= entry.getValue().size()){
                     continue;
                 }
 
                 String topologyID = entry.getKey();
-                ArrayList<ExecutorDetails> executorByContainer = entry.getValue().get(layer_number);
-                if (executorByContainerForLayer.containsKey(topologyID)) {
-                    executorByContainerForLayer.get(topologyID).add(executorByContainer);
-                } else {
-                    ArrayList<ArrayList<ExecutorDetails>> newExecutorByContainerList = new ArrayList<ArrayList<ExecutorDetails>>();
-                    newExecutorByContainerList.add(executorByContainer);
-                    executorByContainerForLayer.put(topologyID, newExecutorByContainerList);
-                }
+                ArrayList<Container> containers = entry.getValue();
+                containerForLayer.add(containers.get(layer_number));
             }
             // we can't find a group of executor to match node.
-            if (executorByContainerForLayer.isEmpty()){
+            if (containerForLayer.isEmpty()){
                 break;
             }
 
-            List<WorkerSlot> newAllocatedSlots = TwoSideMatching(cluster, containerExecutorsToSlotsMap, executorByContainerForLayer, availableSlots, allocatedSlots);
+            List<WorkerSlot> newAllocatedSlots = TwoSideMatching(cluster, containerToSlotsMap, containerForLayer,
+                    availableSlots, allocatedSlots, nodeResourceList);
             allocatedSlots.addAll(newAllocatedSlots);
             layer_number += 1;
-            LOG.info("PengAllocatedConf" + executorByContainerForLayer);
+            LOG.info("PengAllocatedConf" + containerForLayer);
         }
 
         HashSet<String> topologyIDSet = new HashSet<>();
 
-        for (Entry<WorkerSlot, Pair<String, ArrayList<ExecutorDetails>>> entry : containerExecutorsToSlotsMap.entrySet()) {
+        for (Entry<WorkerSlot, Container> entry : containerToSlotsMap.entrySet()) {
             WorkerSlot slotToAssign = entry.getKey();
-            Pair<String, ArrayList<ExecutorDetails>> pair = entry.getValue();
-            String topologyID = pair.getFirst();
-            ArrayList<ExecutorDetails> executorsToAssign = pair.getSecond();
+            Container container = entry.getValue();
+            String topologyID = container.getTopologyId();
+            ArrayList<ExecutorDetails> executorsToAssign = container.getExecutorDetailsList();
             LOG.info("PengAllocated " + topologyID + " \n executor " + executorsToAssign.toString() + "\nSlot " +slotToAssign);
             cluster.assign(slotToAssign, topologyID, executorsToAssign);
             topologyIDSet.add(topologyID);
@@ -669,9 +674,10 @@ public class MatchingScheduler implements IScheduler {
     }
 
     private List<WorkerSlot> TwoSideMatching(Cluster cluster,
-                                             Map<WorkerSlot, Pair<String, ArrayList<ExecutorDetails>>> assignments,
-                                             HashMap<String, ArrayList<ArrayList<ExecutorDetails>>> executorByContainerForCurrentLayer,
-                                             List<WorkerSlot> allAvailableSlots, List<WorkerSlot> allocatedSlots)
+                                             Map<WorkerSlot, Container> assignments,
+                                             ArrayList<Container> containerForCurrentLayer,
+                                             List<WorkerSlot> allAvailableSlots, List<WorkerSlot> allocatedSlots,
+                                             HashMap<String, NodeResource> nodeResourceList)
             // ExecutorByContainerForLayer for each layer.
     {
         // Microservices will prefer the cheapest resoruces. Microserivces also want to spend less money.
@@ -680,6 +686,7 @@ public class MatchingScheduler implements IScheduler {
 
         //remove allocated slots from available slots
         Set<WorkerSlot> allAvailableSlotsSet = new HashSet<WorkerSlot>(allAvailableSlots);
+
         Set<WorkerSlot> allocatedSlotsSet = new HashSet<WorkerSlot>(allocatedSlots);
         allAvailableSlotsSet.removeAll(allocatedSlotsSet);
         List<WorkerSlot> availableSlots = new ArrayList<WorkerSlot>(allAvailableSlotsSet);
@@ -690,10 +697,21 @@ public class MatchingScheduler implements IScheduler {
             String message = "No slots are available for assigning executors for (components)";
             LOG.error("Peng " + message);
         }
+
+        // score each worker slot for matching
+        HashMap<String, Pair<Integer, Integer>> workerSlotScore = new HashMap<String, Pair<Integer, Integer>>();
+
+        for (WorkerSlot eachWorkerSlot : allAvailableSlotsSet){
+            String nodeID = eachWorkerSlot.getNodeId();
+            String workerSlotId = eachWorkerSlot.getId();
+            workerSlotScore.put(workerSlotId, new Pair<Integer, Integer>(3, 2));
+        }
+        // score each Container for matching
+
         // create the preference for container
-        ArrayList<Pair<String, ArrayList<ExecutorDetails>>> groupExecutorPreference = new ArrayList<Pair<String, ArrayList<ExecutorDetails>>>();
 
         // create the preference for worker slot.
+
         int[][] men = {
                 {0, 1, 2, 3},
                 {0, 1, 2, 3},
@@ -716,36 +734,24 @@ public class MatchingScheduler implements IScheduler {
         for (int key : set) {
             LOG.info("Woman: " + key + " is engaged with man: " + couples.get(key));
         }
+        //todo: update NodeResource.
+
 
         // Divide the executors evenly across the slots and get a map of slot to executors
         // using two side matching algorithm
         //Map<WorkerSlot, ArrayList<ExecutorDetails>> assignments = new HashMap<WorkerSlot, ArrayList<ExecutorDetails>>();
 
         int currentSlotIndex = 0;
-        for (Entry<String, ArrayList<ArrayList<ExecutorDetails>>> entry : executorByContainerForCurrentLayer.entrySet()) {
-            String topologyID = entry.getKey();
-            ArrayList<ArrayList<ExecutorDetails>> executorsToAssignList = entry.getValue();
+        for (Container container : containerForCurrentLayer) {
+            String topologyID = container.getTopologyId();
 
-            for (ArrayList<ExecutorDetails> containerExecutorList: executorsToAssignList){
-                WorkerSlot slotToAssign = availableSlots.get(currentSlotIndex);
-                newAllocatedSlots.add(slotToAssign);
-                for (ExecutorDetails containerExecutor : containerExecutorList){
-                    if (assignments.containsKey(slotToAssign)) {
-                        // If we've already seen this slot, then just add the executor to the existing ArrayList.
-                        ArrayList<ExecutorDetails> oldExecutorList = assignments.get(slotToAssign).getSecond();
-                        oldExecutorList.add(containerExecutor);
-                        assignments.get(slotToAssign).setSecond(oldExecutorList);
-                    } else {
-                        // If this slot is new, then create a new ArrayList,
-                        // add the current executor, and populate the map's slot entry with it.
-                        ArrayList<ExecutorDetails> newExecutorList = new ArrayList<ExecutorDetails>();
-                        newExecutorList.add(containerExecutor);
-                        assignments.put(slotToAssign, new Pair<String, ArrayList<ExecutorDetails>>(topologyID, newExecutorList));
-                    }
-                }
-                currentSlotIndex += 1;
-            }
+            ArrayList<ExecutorDetails> containerExecutorList = container.getExecutorDetailsList();
 
+            WorkerSlot slotToAssign = availableSlots.get(currentSlotIndex);
+            newAllocatedSlots.add(slotToAssign);
+            assignments.put(slotToAssign, container);
+
+            currentSlotIndex += 1;
         }
         LOG.info("PengAssignment" + assignments.toString());
 
