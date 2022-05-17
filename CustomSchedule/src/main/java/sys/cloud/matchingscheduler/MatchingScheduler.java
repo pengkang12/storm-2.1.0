@@ -682,6 +682,25 @@ public class MatchingScheduler implements IScheduler {
             i++;
         }
     }
+    private Map<String, List<String>> NodePreferContainer1(List<WorkerSlotExtern> availableSlot, ArrayList<Container> containersList){
+        Map<String, List<String>> girlPrefersMap = new HashMap<>();
+
+        for (WorkerSlotExtern slot : availableSlot){
+
+            //sort container by BandWidth
+            Collections.sort(containersList, new Comparator<Container>(){
+                public int compare(Container o1, Container o2){
+                    return o1.getBandWidth() - o2.getBandWidth();
+                }
+            });
+            List<String> girlPrefers = new ArrayList<>();
+            for (Container container: containersList){
+                girlPrefers.add(String.valueOf(container.getId()));
+            }
+            girlPrefersMap.put(String.valueOf(slot.getId()), girlPrefers);
+        }
+        return girlPrefersMap;
+    }
     private void ContainerPreferNode(List<WorkerSlotExtern> availableSlot, ArrayList<Container> containersList, int[][] m){
         int i = 0;
         for (Container container : containersList){
@@ -703,6 +722,30 @@ public class MatchingScheduler implements IScheduler {
             i++;
         }
     }
+
+    private Map<String, List<String>> ContainerPreferNode1(List<WorkerSlotExtern> availableSlot, ArrayList<Container> containersList){
+        Map<String, List<String>> guyPrefersMap = new HashMap<String, List<String>>();
+        for (Container container : containersList){
+            for (WorkerSlotExtern slot : availableSlot){
+                slot.calculateScore(container);
+            }
+            Collections.sort(availableSlot, new Comparator<WorkerSlotExtern>() {
+                @Override
+                public int compare(WorkerSlotExtern o1, WorkerSlotExtern o2) {
+                    return o1.getScore() - o2.getScore();
+                }
+            });
+
+            List<String> oneGuyPrefers = new ArrayList<>();
+            for (WorkerSlotExtern slot : availableSlot){
+                oneGuyPrefers.add(String.valueOf(slot.getId()));
+            }
+            guyPrefersMap.put(String.valueOf(container.getId()), oneGuyPrefers);
+
+        }
+        return guyPrefersMap;
+    }
+
     private List<WorkerSlot> TwoSideMatching(Cluster cluster,
                                              Map<WorkerSlot, Container> assignments,
                                              //container for current layer
@@ -741,39 +784,39 @@ public class MatchingScheduler implements IScheduler {
         // score each Container for matching
 
         // create the preference for container
-        int[][] men1 = new int[containersList.size()][workerSlotExternList.size()];
-        ContainerPreferNode(workerSlotExternList, containersList, men1);
-        for (int[] ints : men1) {
-            LOG.info("PengMen " + Arrays.toString(ints));
+
+        List<String> guys = new ArrayList<String>();
+        for(Container container: containersList){
+            guys.add(String.valueOf(container.getId()));
         }
+
+        Map<String, List<String>> guyPrefers = ContainerPreferNode1(workerSlotExternList, containersList);
+
+
         // create the preference for worker slot.
-        int [][] women1 = new int[workerSlotExternList.size()][containersList.size()];
-        NodePreferContainer(workerSlotExternList, containersList, women1);
-        for (int[] ints : women1) {
-            LOG.info("PengWomen " + Arrays.toString(ints));
+        List<String> girls = new ArrayList<String>();
+        for(WorkerSlotExtern slotExtern: workerSlotExternList){
+            girls.add(String.valueOf(slotExtern.getId()));
         }
 
+        Map<String, List<String>> girlPrefers = NodePreferContainer1(workerSlotExternList, containersList);
         //Start to match
-        StableMarriage sm = new StableMarriage();
-        HashMap<Integer, Integer> couples = sm.findCouples(men1, women1);
+        Map<String, String> matches = Stable.match(guys, guyPrefers, girlPrefers);
 
-        LOG.info("\n------------------Final Matching----------------------------");
-        Set<Integer> set = couples.keySet();
-        for (int key : set) {
-            LOG.info("Woman: " + key + " is engaged with man: " + couples.get(key));
+        for(Map.Entry<String, String> couple:matches.entrySet()){
+            LOG.info(
+                    couple.getKey() + " is engaged to " + couple.getValue());
         }
-
-        LOG.info("\n-----------------Assign workerSlot to Container.----------------");
-        Set<Integer> slotToContainer = couples.keySet();
-        for (int key : slotToContainer) {
-            LOG.info("Woman: " + key + " is engaged with man: " + couples.get(key));
-            if (couples.get(key) == null) {
+        Set<String> slotToContainer = matches.keySet();
+        for (String girl : slotToContainer) {
+            LOG.info("Woman: " + girl + " is engaged with man: " + matches.get(girl));
+            if (matches.get(girl) == null) {
                 continue;
             }
             //find slot
             WorkerSlot workerSlot = null;
             for (WorkerSlotExtern slotExtern : workerSlotExternList){
-                if (slotExtern.getId() == key){
+                if (String.valueOf(slotExtern.getId()) == girl){
                     workerSlot = slotExtern.getWorkerSlot();
                     break;
                 }
@@ -781,7 +824,7 @@ public class MatchingScheduler implements IScheduler {
             //find
             Container container = null;
             for (Container container1 : containersList){
-                if (container1.getId() == couples.get(key)){
+                if (String.valueOf(container1.getId()) == matches.get(girl)){
                     container = container1;
                     break;
                 }
@@ -794,7 +837,62 @@ public class MatchingScheduler implements IScheduler {
                 LOG.info("PengAssignment Can't find container or workerSlot");
             }
         }
-        LOG.info("PengAssignment" + assignments.toString());
+
+
+        // create the preference for container
+        int[][] men1 = new int[containersList.size()][workerSlotExternList.size()];
+        ContainerPreferNode(workerSlotExternList, containersList, men1);
+        for (int[] ints : men1) {
+            LOG.info("PengMen " + Arrays.toString(ints));
+        }
+        int [][] women1 = new int[workerSlotExternList.size()][containersList.size()];
+        NodePreferContainer(workerSlotExternList, containersList, women1);
+        for (int[] ints : women1) {
+            LOG.info("PengWomen " + Arrays.toString(ints));
+        }
+        //Start to match
+
+//        StableMarriage sm = new StableMarriage();
+//        HashMap<Integer, Integer> couples = sm.findCouples(men1, women1);
+//
+//        LOG.info("\n------------------Final Matching----------------------------");
+//        Set<Integer> set = couples.keySet();
+//        for (int key : set) {
+//            LOG.info("Woman: " + key + " is engaged with man: " + couples.get(key));
+//        }
+//
+//        LOG.info("\n-----------------Assign workerSlot to Container.----------------");
+//        Set<Integer> slotToContainer = couples.keySet();
+//        for (int key : slotToContainer) {
+//            LOG.info("Woman: " + key + " is engaged with man: " + couples.get(key));
+//            if (couples.get(key) == null) {
+//                continue;
+//            }
+//            //find slot
+//            WorkerSlot workerSlot = null;
+//            for (WorkerSlotExtern slotExtern : workerSlotExternList){
+//                if (slotExtern.getId() == key){
+//                    workerSlot = slotExtern.getWorkerSlot();
+//                    break;
+//                }
+//            }
+//            //find
+//            Container container = null;
+//            for (Container container1 : containersList){
+//                if (container1.getId() == couples.get(key)){
+//                    container = container1;
+//                    break;
+//                }
+//            }
+//            if (container != null && workerSlot != null){
+//                ArrayList<ExecutorDetails> containerExecutorList = container.getExecutorDetailsList();
+//                newAllocatedSlots.add(workerSlot);
+//                assignments.put(workerSlot, container);
+//            }else{
+//                LOG.info("PengAssignment Can't find container or workerSlot");
+//            }
+//        }
+//        LOG.info("PengAssignment" + assignments.toString());
 
         //todo: update NodeResource.
 
