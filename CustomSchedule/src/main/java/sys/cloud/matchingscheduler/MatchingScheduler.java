@@ -168,7 +168,7 @@ public class MatchingScheduler implements IScheduler {
         for (Container container : containerCollection){
             Collection<Container> predecessors = new ArrayList<>();
             Collection<Object> componentCollection = container.getComponentList();
-            if (componentCollection != null){
+            if (componentCollection == null){
                 continue;
             }
             for (Object component: componentCollection) {
@@ -189,6 +189,7 @@ public class MatchingScheduler implements IScheduler {
                 }
             }
             container.setPredecessors(predecessors);
+            LOG.info("PengSetPredecessors"+predecessors.toString());
         }
     }
     private <T> void populateComponentsByContainerForInternals(
