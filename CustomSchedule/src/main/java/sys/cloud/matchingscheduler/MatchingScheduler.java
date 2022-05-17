@@ -146,7 +146,8 @@ public class MatchingScheduler implements IScheduler {
                 if (inputs != null){
                     LOG.info("PengCommonComponent" + String.valueOf(commonComponent.get_inputs()));
                     for (Entry<GlobalStreamId, Grouping> entry : inputs.entrySet()){
-                        LOG.info("PengGrobalStreamId" + String.valueOf(entry.getKey()));
+                        LOG.info("PengGrobalStreamIdComponent" + String.valueOf(entry.getKey().get_componentId()));
+                        LOG.info("PengGrobalStreamIdStreamId" + String.valueOf(entry.getKey().get_streamId()));
                     }
                 }
                 LOG.info("PengCommonComponent" + String.valueOf(commonComponent.get_inputs()));
