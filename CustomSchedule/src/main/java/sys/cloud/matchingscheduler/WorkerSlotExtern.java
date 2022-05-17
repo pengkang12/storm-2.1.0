@@ -1,5 +1,6 @@
 package sys.cloud.matchingscheduler;
 
+import com.esotericsoftware.minlog.Log;
 import org.apache.storm.scheduler.WorkerSlot;
 
 import javax.xml.soap.Node;
@@ -64,6 +65,11 @@ public class WorkerSlotExtern {
             return new Random().nextInt(100);
         }
         for (Container container : prevContainerList){
+            if (container.getWorkerSlotExtern() == null){
+                latency = 20;
+                Log.info("PengContainerWorker slot is not existed!");
+                continue;
+            }
             String name1 = container.getWorkerSlotExtern().getNode().getNodeName();
             String name2 = container.getWorkerSlotExtern().getNode().getNodeName();
             if (latency > nodeLatencyMap.get(name1).get(name2)){

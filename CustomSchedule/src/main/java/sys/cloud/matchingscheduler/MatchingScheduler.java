@@ -201,6 +201,9 @@ public class MatchingScheduler implements IScheduler {
             i += 1;
         }
         for (Container container: containerCollection){
+            if (container.getPredecessors() == null){
+                continue;
+            }
             for (Object predecessor : container.getPredecessors()) {
                 G.addEdge(containerMap.get(predecessor), containerMap.get(container));
             }
@@ -211,6 +214,7 @@ public class MatchingScheduler implements IScheduler {
         for (Integer index: topologyOrder){
             newContainerCollection.add(containerCollection.get(index));
         }
+        LOG.info("PengTopologyOrder " + topologyOrder.toString());
         componentsByContainer.put(topologyID, newContainerCollection);
     }
     private <T> void populateComponentsByContainerForInternals(
@@ -846,6 +850,7 @@ public class MatchingScheduler implements IScheduler {
                 WorkerSlot workerSlot = workerSlotExtern.getWorkerSlot();
                 newAllocatedSlots.add(workerSlot);
                 assignments.put(workerSlot, container);
+                LOG.info("PengContainer " + container.getWorkerSlotExtern().toString());
             }else{
                 LOG.info("PengAssignment Can't find container or workerSlot");
             }
