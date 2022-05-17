@@ -5,8 +5,13 @@ import org.apache.storm.scheduler.WorkerSlot;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class Container {
+
+    private static final AtomicInteger idGen = new AtomicInteger(1);
+    private final Integer id;
     // cpu is 100 milicores
     Integer cpu = 100;
     Integer bandwidth = 10000;
@@ -20,14 +25,35 @@ public class Container {
     WorkerSlot workerSlot = null;
     String topologyId = null;
 
+    private Container(){
+        this.id = idGen.getAndIncrement();
+    }
 
-    Container(String topologyId, ArrayList<ExecutorDetails> executorDetailsList){
+    private Container(String topologyId, ArrayList<ExecutorDetails> executorDetailsList){
         this.topologyId = topologyId;
         this.executorDetailsList = executorDetailsList;
+        this.id = idGen.getAndIncrement();
     }
-    Container(int cpu, int bandwidth){
+    private Container(int cpu, int bandwidth){
         this.cpu = cpu;
         this.bandwidth = bandwidth;
+        this.id = idGen.getAndIncrement();
+    }
+
+    static Container createContainer(int cpu, int bandwidth) {
+        return new Container(cpu, bandwidth);
+    }
+
+    static Container createContainer(String topologyId, ArrayList<ExecutorDetails> executorDetailsList) {
+        return new Container(topologyId, executorDetailsList);
+    }
+
+    static Container createContainer() {
+        return new Container();
+    }
+
+    public int getId(){
+        return this.id;
     }
     public  void setWorkerSlot(WorkerSlot workerSlot){
         this.workerSlot = workerSlot;

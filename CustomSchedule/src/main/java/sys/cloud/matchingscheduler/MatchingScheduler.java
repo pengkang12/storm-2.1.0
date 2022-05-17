@@ -1,15 +1,8 @@
 package sys.cloud.matchingscheduler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Map;
-import java.util.Set;
-import java.util.Iterator;
 
 import org.apache.storm.generated.Bolt;
 import org.apache.storm.generated.ComponentCommon;
@@ -23,15 +16,12 @@ import org.apache.storm.scheduler.SupervisorDetails;
 import org.apache.storm.scheduler.Topologies;
 import org.apache.storm.scheduler.TopologyDetails;
 import org.apache.storm.scheduler.WorkerSlot;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import javax.xml.soap.Node;
 
 
 @SuppressWarnings("unused")
@@ -173,7 +163,7 @@ public class MatchingScheduler implements IScheduler {
             count += 1;
             newExecutorList.add(executorDetail);
             if (count %4 == 0){
-                Container container = new Container(topologyID, newExecutorList);
+                Container container = Container.createContainer(topologyID, newExecutorList);
                 if (componentsByContainer.containsKey(topologyID)) {
                     componentsByContainer.get(topologyID).add(container);
                 } else {
@@ -185,7 +175,7 @@ public class MatchingScheduler implements IScheduler {
             }
         }
         if (!newExecutorList.isEmpty()){
-            Container container = new Container(topologyID, newExecutorList);
+            Container container = Container.createContainer(topologyID, newExecutorList);
             componentsByContainer.get(topologyID).add(container);
         }
     }
@@ -224,7 +214,7 @@ public class MatchingScheduler implements IScheduler {
             count += 1;
             newExecutorList.add(executorDetail);
             if (count %4 == 0){
-                Container container = new Container(topologyID, newExecutorList);
+                Container container = Container.createContainer(topologyID, newExecutorList);
                 if (componentsByContainer.containsKey(topologyID)) {
                     componentsByContainer.get(topologyID).add(container);
                 } else {
@@ -673,10 +663,42 @@ public class MatchingScheduler implements IScheduler {
         return supervisorsConf;
     }
 
+    private void NodePreferContainer(List<WorkerSlot> availableSlot, ArrayList<Container> containersList, int[][] w){
+        int i = 0;
+        for (WorkerSlot slot : availableSlot){
+            int j = 0;
+
+            //sort container by BandWidth
+            Collections.sort(containersList, new Comparator<Container>(){
+                public int compare(Container o1, Container o2){
+                    return o1.getScore() - o2.getScore();
+                }
+            });
+
+            for (Container container: containersList){
+                w[i][j] = container.getId();
+                j++;
+            }
+            i++;
+        }
+    }
+    private void ContainerPreferNode(List<WorkerSlot> availableSlot, ArrayList<Container> containersList, int[][] m){
+        int i = 0;
+        for (Container container : containersList){
+            int j = 0;
+            for (WorkerSlot slot : availableSlot){
+                m[i][j] = j;
+                j++;
+            }
+            i++;
+        }
+    }
     private List<WorkerSlot> TwoSideMatching(Cluster cluster,
                                              Map<WorkerSlot, Container> assignments,
-                                             ArrayList<Container> containerForCurrentLayer,
-                                             List<WorkerSlot> allAvailableSlots, List<WorkerSlot> allocatedSlots,
+                                             //container for current layer
+                                             ArrayList<Container> containersList,
+                                             List<WorkerSlot> allAvailableSlots,
+                                             List<WorkerSlot> allocatedSlots,
                                              HashMap<String, NodeResource> nodeResourceList)
             // ExecutorByContainerForLayer for each layer.
     {
@@ -709,9 +731,17 @@ public class MatchingScheduler implements IScheduler {
         // score each Container for matching
 
         // create the preference for container
-
+        int[][] men1 = new int[containersList.size()][allAvailableSlots.size()];
+        ContainerPreferNode(allAvailableSlots, containersList, men1);
+        for (int[] ints : men1) {
+            LOG.info("PengMen " + Arrays.toString(ints));
+        }
         // create the preference for worker slot.
-
+        int [][] women1 = new int[allAvailableSlots.size()][containersList.size()];
+        NodePreferContainer(allAvailableSlots, containersList, women1);
+        for (int[] ints : women1) {
+            LOG.info("PengWomen " + Arrays.toString(ints));
+        }
         int[][] men = {
                 {0, 1, 2, 3},
                 {0, 1, 2, 3},
@@ -727,7 +757,7 @@ public class MatchingScheduler implements IScheduler {
                 {0, 1, 3, 2}
         };
         StableMarriage sm = new StableMarriage();
-        HashMap<Integer, Integer> couples = sm.findCouples(men, women);
+        HashMap<Integer, Integer> couples = sm.findCouples(men1, women1);
 
         LOG.info("\n------------------Final Matching----------------------------");
         Set<Integer> set = couples.keySet();
@@ -742,7 +772,7 @@ public class MatchingScheduler implements IScheduler {
         //Map<WorkerSlot, ArrayList<ExecutorDetails>> assignments = new HashMap<WorkerSlot, ArrayList<ExecutorDetails>>();
 
         int currentSlotIndex = 0;
-        for (Container container : containerForCurrentLayer) {
+        for (Container container : containersList) {
             String topologyID = container.getTopologyId();
 
             ArrayList<ExecutorDetails> containerExecutorList = container.getExecutorDetailsList();

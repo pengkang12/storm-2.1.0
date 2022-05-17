@@ -1,6 +1,11 @@
 package sys.cloud.matchingscheduler;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class NodeResource {
+    private static final AtomicInteger idGen = new AtomicInteger(1);
+    private final Integer id;
+
     // cpu is 100 milicores
     int cpu = 2000;
     int bandwidth = 10000;
@@ -9,10 +14,13 @@ public class NodeResource {
     int memory = 8000;
     // latency is 20ms.
     int latency = 20;
-    NodeResource(){}
+    NodeResource(){
+        this.id = idGen.getAndIncrement();
+    }
     NodeResource(int cpu, int bandwidth){
         this.cpu = cpu;
         this.bandwidth = bandwidth;
+        this.id = idGen.getAndIncrement();
     }
 
     public void setCpu(int cpu){
