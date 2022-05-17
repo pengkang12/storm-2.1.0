@@ -90,7 +90,7 @@ public class MatchingScheduler implements IScheduler {
             for (ExecutorDetails executor : executorsForComponent){
                 newExecutorList.add(executor);
                 if (newExecutorList.size() == 4 || i == executorsForComponent.size()-1){
-                    Container container = Container.createContainer(topologyID, executorsForComponent);
+                    Container container = Container.createContainer(topologyID, newExecutorList);
                     Collection<Object> componentList = new ArrayList<>();
                     componentList.add(component);
                     container.setComponentList(componentList);
@@ -267,12 +267,10 @@ public class MatchingScheduler implements IScheduler {
             // get A map of component to executors
             Map<String, List<ExecutorDetails>> executorsByComponent = cluster.getNeedsSchedulingComponentToExecutors(topologyDetails);
             Map<String, Collection<Container>> componentMapToContainer = new HashMap<>();
+            //put executor into container
             populateComponentsByContainer(executorsByContainer, spouts, topologyID, executorsByComponent, componentMapToContainer);
-            LOG.info("PengSpouts " + executorsByContainer);
             populateComponentsByContainer(executorsByContainer, bolts, topologyID, executorsByComponent, componentMapToContainer);
-            LOG.info("PengBolts " + executorsByContainer);
             populateComponentsByContainerForInternals(executorsByContainer, topologyID, executorsByComponent, componentMapToContainer);
-            //Todo: we ignore internal components, like __acker, etc. need to do in the future.
             updateContainerPredecessor(executorsByContainer, topologyID, componentMapToContainer);
         }
 
