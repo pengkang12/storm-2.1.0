@@ -17,11 +17,13 @@ public class NodeResource {
     int latency = 20;
     NodeResource(){
         this.id = idGen.getAndIncrement();
+        this.nodeName = "worker" + String.valueOf(this.id);
     }
     NodeResource(int cpu, int bandwidth){
         this.cpu = cpu;
         this.bandwidth = bandwidth;
         this.id = idGen.getAndIncrement();
+        this.nodeName = "worker" + String.valueOf(this.id);
     }
 
     public void setCpu(int cpu){
