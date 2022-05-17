@@ -138,6 +138,23 @@ public class MatchingScheduler implements IScheduler {
         for (Entry<String, T> componentEntry : components.entrySet()) {
             String componentID = componentEntry.getKey();
 
+            T component = componentEntry.getValue();
+
+            try {
+                // Get the component's conf irrespective of its type (via java reflection)
+                Method getCommonComponentMethod = component.getClass().getMethod("get_common");
+                ComponentCommon commonComponent = (ComponentCommon) getCommonComponentMethod.invoke(component);
+
+                LOG.info("PengCommonComponent" + String.valueOf(commonComponent.get_inputs()));
+                ComponentCommon._Fields fields = commonComponent.fieldForId(1);
+
+                LOG.info("PengCommonComponentField" + String.valueOf(commonComponent.getFieldValue(fields)));
+
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
+                ex.printStackTrace();
+            }
+
+
             // Fetch the executors for the current component ID
             List<ExecutorDetails> executorsForComponent = executorsByComponent.get(componentID);
 
@@ -162,7 +179,9 @@ public class MatchingScheduler implements IScheduler {
         for (ExecutorDetails executorDetail: executorList){
             count += 1;
             newExecutorList.add(executorDetail);
-            if (count %4 == 0){
+            if (count %6 == 0){
+
+            }else if (count %4 == 0){
                 Container container = Container.createContainer(topologyID, newExecutorList);
                 if (componentsByContainer.containsKey(topologyID)) {
                     componentsByContainer.get(topologyID).add(container);
@@ -808,7 +827,7 @@ public class MatchingScheduler implements IScheduler {
             LOG.info("PengGirl " + entry.getKey() + " " + entry.toString());
         }
         //Start to match
-        Map<String, String> matches = Stable.match(guys, guyPrefers, girlPrefers);
+        Map<String, String> matches = StableMatching.match(guys, guyPrefers, girlPrefers);
 
         for(Map.Entry<String, String> match:matches.entrySet()){
             LOG.info(

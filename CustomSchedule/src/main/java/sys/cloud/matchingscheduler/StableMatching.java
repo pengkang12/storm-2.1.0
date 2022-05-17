@@ -2,13 +2,11 @@ package sys.cloud.matchingscheduler;
 
 import java.util.*;
 
-public class Stable {
+public class StableMatching {
     static List<String> guys = Arrays.asList(
-            new String[]{
-                    "abe", "bob", "col", "dan", "ed", "fred", "gav", "hal", "ian", "jon"});
+            "abe", "bob", "col", "dan", "ed", "fred", "gav", "hal", "ian", "jon");
     static List<String> girls = Arrays.asList(
-            new String[]{
-                    "abi", "bea", "cath", "dee", "eve", "fay", "gay", "hope", "ivy", "jan"});
+            "abi", "bea", "cath", "dee", "eve", "fay", "gay", "hope", "ivy", "jan");
     static Map<String, List<String>> guyPrefers =
             new HashMap<String, List<String>>(){{
                 put("abe",
