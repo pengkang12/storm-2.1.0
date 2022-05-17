@@ -5,6 +5,7 @@ import org.apache.storm.scheduler.WorkerSlot;
 import javax.xml.soap.Node;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -59,6 +60,9 @@ public class WorkerSlotExtern {
     }
     public int getTwoNodeLatency(NodeResource n1, Collection<Container> prevContainerList){
         int latency = -1;
+        if (prevContainerList == null){
+            return new Random().nextInt(100);
+        }
         for (Container container : prevContainerList){
             String name1 = container.getWorkerSlotExtern().getNode().getNodeName();
             String name2 = container.getWorkerSlotExtern().getNode().getNodeName();
