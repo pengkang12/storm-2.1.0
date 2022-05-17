@@ -4,10 +4,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.Map.Entry;
 
-import org.apache.storm.generated.Bolt;
-import org.apache.storm.generated.ComponentCommon;
-import org.apache.storm.generated.SpoutSpec;
-import org.apache.storm.generated.StormTopology;
+import org.apache.storm.generated.*;
 import org.apache.storm.scheduler.Cluster;
 import org.apache.storm.scheduler.ExecutorDetails;
 import org.apache.storm.scheduler.IScheduler;
@@ -145,6 +142,13 @@ public class MatchingScheduler implements IScheduler {
                 Method getCommonComponentMethod = component.getClass().getMethod("get_common");
                 ComponentCommon commonComponent = (ComponentCommon) getCommonComponentMethod.invoke(component);
 
+                Map<GlobalStreamId, Grouping> inputs = commonComponent.get_inputs();
+                if (inputs != null){
+                    LOG.info("PengCommonComponent" + String.valueOf(commonComponent.get_inputs()));
+                    for (Entry<GlobalStreamId, Grouping> entry : inputs.entrySet()){
+                        LOG.info("PengGrobalStreamId" + String.valueOf(entry.getKey()));
+                    }
+                }
                 LOG.info("PengCommonComponent" + String.valueOf(commonComponent.get_inputs()));
                 ComponentCommon._Fields fields = commonComponent.fieldForId(1);
 
