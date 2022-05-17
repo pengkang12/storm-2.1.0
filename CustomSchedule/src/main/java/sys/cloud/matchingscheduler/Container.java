@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.Random;
 
-public class Container <T> {
+public class Container<Object> {
 
     private static final AtomicInteger idGen = new AtomicInteger(1);
     private final Integer id;
@@ -22,7 +22,7 @@ public class Container <T> {
 
     Collection<Container> predecessors = null;
     Collection<ExecutorDetails> executorDetailsList = null;
-    Collection<T> componentList = null;
+    Collection<Object> componentList = null;
 
     WorkerSlotExtern workerSlotExtern = null;
     String topologyId = null;
@@ -102,10 +102,10 @@ public class Container <T> {
     public void setPredecessors(Collection<Container> predecessors) {
         this.predecessors = predecessors;
     }
-    public void setComponentList(Collection<T> componentList){
+    public void setComponentList(Collection<Object> componentList){
         this.componentList = componentList;
     }
-    public Collection<T> getComponentList(){
+    public Collection<Object> getComponentList(){
         return this.componentList;
     }
     public Collection<Container> getPredecessors() {

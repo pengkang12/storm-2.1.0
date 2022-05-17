@@ -136,7 +136,7 @@ public class MatchingScheduler implements IScheduler {
                 continue;
             }
             Container container = Container.createContainer(topologyID, executorsForComponent);
-            Collection<T> componentList = new ArrayList<>();
+            Collection<Object> componentList = new ArrayList<>();
             componentList.add(component);
             container.setComponentList(componentList);
 
@@ -167,7 +167,11 @@ public class MatchingScheduler implements IScheduler {
         Collection<Container> containerCollection = componentsByContainer.get(topologyID);
         for (Container container : containerCollection){
             Collection<Container> predecessors = new ArrayList<>();
-            for (Object component: container.getComponentList()) {
+            Collection componentCollection = container.getComponentList();
+            if (componentCollction != null){
+                continue;
+            }
+            for (Object component: componentCollection) {
                 //Add predecessor
                 try {
                     // Get the component's conf irrespective of its type (via java reflection)
@@ -469,8 +473,8 @@ public class MatchingScheduler implements IScheduler {
             //get components from topology
             Map<String, Bolt> bolts = stormTopology.get_bolts();
             Map<String, SpoutSpec> spouts = stormTopology.get_spouts();
-            LOG.info(bolts.toString());
-            LOG.info(spouts.toString());
+            LOG.info("PengBolts" + bolts.toString());
+            LOG.info("PengSpouts", spouts.toString());
             // get A map of component to executors
             Map<String, List<ExecutorDetails>> executorsByComponent = cluster.getNeedsSchedulingComponentToExecutors(topologyDetails);
             Map<String, Collection<Container>> componentMapToContainer = new HashMap<>();
