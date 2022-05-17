@@ -167,8 +167,8 @@ public class MatchingScheduler implements IScheduler {
         Collection<Container> containerCollection = componentsByContainer.get(topologyID);
         for (Container container : containerCollection){
             Collection<Container> predecessors = new ArrayList<>();
-            Collection componentCollection = container.getComponentList();
-            if (componentCollction != null){
+            Collection<Object> componentCollection = container.getComponentList();
+            if (componentCollection != null){
                 continue;
             }
             for (Object component: componentCollection) {
