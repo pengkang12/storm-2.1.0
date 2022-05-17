@@ -4,15 +4,11 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.Map.Entry;
 
-import org.apache.commons.collections.map.HashedMap;
+
 import org.apache.storm.generated.*;
 import org.apache.storm.scheduler.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 
 @SuppressWarnings("unused")
@@ -89,7 +85,7 @@ public class MatchingScheduler implements IScheduler {
             List<ExecutorDetails> newExecutorList = new ArrayList<>();
             for (ExecutorDetails executor : executorsForComponent){
                 newExecutorList.add(executor);
-                if (newExecutorList.size() == 4 || i == executorsForComponent.size()-1){
+                if (newExecutorList.size() == 8 || i == executorsForComponent.size()-1){
                     Container container = Container.createContainer(topologyID, newExecutorList);
                     Collection<Object> componentList = new ArrayList<>();
                     componentList.add(component);
@@ -255,7 +251,9 @@ public class MatchingScheduler implements IScheduler {
 
         //PengAddStart
         Map<String, ArrayList<Container>> executorsByContainer = new HashMap<String, ArrayList<Container>>();
-
+        if (cluster.needsSchedulingTopologies().size() < 2){
+            return;
+        }
         for (TopologyDetails topologyDetails: cluster.needsSchedulingTopologies()) {
             StormTopology stormTopology = topologyDetails.getTopology();
             String topologyID = topologyDetails.getId();
@@ -528,6 +526,7 @@ public class MatchingScheduler implements IScheduler {
     }
 
     @Override
-    public void schedule(Topologies topologies, Cluster cluster) {MatchingSchedule(topologies, cluster);
+    public void schedule(Topologies topologies, Cluster cluster) {
+        MatchingSchedule(topologies, cluster);
     }
 }
