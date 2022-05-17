@@ -73,7 +73,7 @@ public class WorkerSlotExtern {
         return latency;
     }
     public void calculateScore(Container container){
-        int scores = container.getBandWidth()/this.node.getBandwidth() + container.getCpu()/this.node.getCpu() + getTwoNodeLatency(this.node, container.getPrevious());
+        int scores = container.getBandWidth()/this.node.getBandwidth() + container.getCpu()/this.node.getCpu() + getTwoNodeLatency(this.node, container.getPredecessors());
         setScore(scores);
     }
 }

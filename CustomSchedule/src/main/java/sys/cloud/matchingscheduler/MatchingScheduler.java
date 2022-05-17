@@ -128,7 +128,8 @@ public class MatchingScheduler implements IScheduler {
             Map<String, ArrayList<Container>>  componentsByContainer,
             Map<String, T> components,
             String topologyID,
-            Map<String, List<ExecutorDetails>> executorsByComponent
+            Map<String, List<ExecutorDetails>> executorsByComponent,
+            Map<String, Collection<Container>> componentMapToContainer
     ) {
         ArrayList<ExecutorDetails> executorList = new ArrayList<ExecutorDetails>();
 
@@ -136,7 +137,14 @@ public class MatchingScheduler implements IScheduler {
             String componentID = componentEntry.getKey();
 
             T component = componentEntry.getValue();
+            // Fetch the executors for the current component ID
+            List<ExecutorDetails> executorsForComponent = executorsByComponent.get(componentID);
+            if (executorsForComponent == null) {
+                continue;
+            }
+            Container container = Container.createContainer(topologyID, executorsForComponent);
 
+            //Add predecessor
             try {
                 // Get the component's conf irrespective of its type (via java reflection)
                 Method getCommonComponentMethod = component.getClass().getMethod("get_common");
@@ -144,70 +152,39 @@ public class MatchingScheduler implements IScheduler {
 
                 Map<GlobalStreamId, Grouping> inputs = commonComponent.get_inputs();
                 if (inputs != null){
-                    LOG.info("PengCommonComponent" + String.valueOf(commonComponent.get_inputs()));
+                    Collection<Container> predecessorContainer = new ArrayList<Container>();
                     for (Entry<GlobalStreamId, Grouping> entry : inputs.entrySet()){
-                        LOG.info("PengGrobalStreamIdComponent" + String.valueOf(entry.getKey().get_componentId()));
-                        LOG.info("PengGrobalStreamIdStreamId" + String.valueOf(entry.getKey().get_streamId()));
+                        predecessorContainer.addAll(componentMapToContainer.get(entry.getKey().get_componentId()));
                     }
+                    container.setPredecessors(predecessorContainer);
                 }
-                LOG.info("PengCommonComponent" + String.valueOf(commonComponent.get_inputs()));
-                ComponentCommon._Fields fields = commonComponent.fieldForId(1);
-
-                LOG.info("PengCommonComponentField" + String.valueOf(commonComponent.getFieldValue(fields)));
-
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
                 ex.printStackTrace();
             }
 
-
-            // Fetch the executors for the current component ID
-            List<ExecutorDetails> executorsForComponent = executorsByComponent.get(componentID);
-
-            if (executorsForComponent == null) {
-                continue;
+            if (componentMapToContainer.containsKey(componentID)){
+                componentMapToContainer.get(componentID).add(container);
+            }else{
+                Collection<Container> containerCollection = new ArrayList<>();
+                containerCollection.add(container);
+                componentMapToContainer.put(componentID, containerCollection);
             }
 
-            // Convert the list of executors to a set
-            Set<ExecutorDetails> executorsToAssignForComponent = new HashSet<ExecutorDetails>(
-                    executorsForComponent
-            );
-            // Remove already assigned executors from the set of executors to assign, if any
-            //executorsToAssignForComponent.removeAll(aliveExecutors);
-
-            // Add the component's waiting to be assigned executors to the current container
-            executorList.addAll(executorsToAssignForComponent);
-        }
-        ArrayList<String> executorPerContainerList = new ArrayList<String>();
-        int count = 0;
-        ArrayList<ExecutorDetails> newExecutorList = new ArrayList<ExecutorDetails>();
-
-        for (ExecutorDetails executorDetail: executorList){
-            count += 1;
-            newExecutorList.add(executorDetail);
-            if (count %6 == 0){
-
-            }else if (count %4 == 0){
-                Container container = Container.createContainer(topologyID, newExecutorList);
-                if (componentsByContainer.containsKey(topologyID)) {
-                    componentsByContainer.get(topologyID).add(container);
-                } else {
-                    ArrayList<Container> containersList = new ArrayList<Container>();
-                    containersList.add(container);
-                    componentsByContainer.put(topologyID, containersList);
-                }
-                newExecutorList = new ArrayList<ExecutorDetails>();
+            if (componentsByContainer.containsKey(topologyID)) {
+                componentsByContainer.get(topologyID).add(container);
+            } else {
+                ArrayList<Container> containersList = new ArrayList<Container>();
+                containersList.add(container);
+                componentsByContainer.put(topologyID, containersList);
             }
-        }
-        if (!newExecutorList.isEmpty()){
-            Container container = Container.createContainer(topologyID, newExecutorList);
-            componentsByContainer.get(topologyID).add(container);
         }
     }
 
     private <T> void populateComponentsByContainerForInternals(
             Map<String, ArrayList<Container>>  componentsByContainer,
             String topologyID,
-            Map<String, List<ExecutorDetails>> executorsByComponent
+            Map<String, List<ExecutorDetails>> executorsByComponent,
+            Map<String, Collection<Container>> componentMapToContainer
 
     ) {
         ArrayList<ExecutorDetails> executorList = new ArrayList<ExecutorDetails>();
@@ -219,26 +196,16 @@ public class MatchingScheduler implements IScheduler {
                 if (executorsForComponent == null) {
                     continue;
                 }
+
                 // Convert the list of executors to a set
                 Set<ExecutorDetails> executorsToAssignForComponent = new HashSet<ExecutorDetails>(
                         executorsForComponent
                 );
                 // Remove already assigned executors from the set of executors to assign, if any
                 //executorsToAssignForComponent.removeAll(aliveExecutors);
-
                 // Add the component's waiting to be assigned executors to the current container
-                executorList.addAll(executorsToAssignForComponent);
-            }
-        }
-        ArrayList<String> executorPerContainerList = new ArrayList<String>();
-        int count = 0;
-        ArrayList<ExecutorDetails> newExecutorList = new ArrayList<ExecutorDetails>();
+                Container container = Container.createContainer(topologyID, executorsToAssignForComponent);
 
-        for (ExecutorDetails executorDetail: executorList){
-            count += 1;
-            newExecutorList.add(executorDetail);
-            if (count %4 == 0){
-                Container container = Container.createContainer(topologyID, newExecutorList);
                 if (componentsByContainer.containsKey(topologyID)) {
                     componentsByContainer.get(topologyID).add(container);
                 } else {
@@ -246,33 +213,9 @@ public class MatchingScheduler implements IScheduler {
                     containersList.add(container);
                     componentsByContainer.put(topologyID, containersList);
                 }
-                newExecutorList = new ArrayList<ExecutorDetails>();
             }
         }
-    }
-    private void populateComponentsByTagWithStormInternals(
-            Map<String, ArrayList<String>> componentsByTag,
-            Set<String> components
-    ) {
-        // Storm uses some internal components, like __acker.
-        // These components are topology-agnostic and are therefore not accessible through a StormTopology object.
-        // While a bit hacky, this is a way to make sure that we schedule those components along with our topology ones:
-        // we treat these internal components as regular untagged components and add them to the componentsByTag map.
 
-        for (String componentID : components) {
-            if (componentID.startsWith("__")) {
-                if (componentsByTag.containsKey(untaggedTag)) {
-                    // If we've already seen untagged components, then just add the component to the existing ArrayList.
-                    componentsByTag.get(untaggedTag).add(componentID);
-                } else {
-                    // If this is the first untagged component we see, then create a new ArrayList,
-                    // add the current component, and populate the map's untagged entry with it.
-                    ArrayList<String> newComponentList = new ArrayList<String>();
-                    newComponentList.add(componentID);
-                    componentsByTag.put(untaggedTag, newComponentList);
-                }
-            }
-        }
     }
 
     private Set<ExecutorDetails> getAliveExecutors(Cluster cluster, TopologyDetails topologyDetails) {
@@ -523,11 +466,12 @@ public class MatchingScheduler implements IScheduler {
             LOG.info(spouts.toString());
             // get A map of component to executors
             Map<String, List<ExecutorDetails>> executorsByComponent = cluster.getNeedsSchedulingComponentToExecutors(topologyDetails);
-            populateComponentsByContainer(executorsByContainer, spouts, topologyID, executorsByComponent);
+            Map<String, Collection<Container>> componentMapToContainer = new HashMap<>();
+            populateComponentsByContainer(executorsByContainer, spouts, topologyID, executorsByComponent, componentMapToContainer);
             LOG.info("PengSpouts " + executorsByContainer);
-            populateComponentsByContainer(executorsByContainer, bolts, topologyID, executorsByComponent);
+            populateComponentsByContainer(executorsByContainer, bolts, topologyID, executorsByComponent, componentMapToContainer);
             LOG.info("PengBolts " + executorsByContainer);
-            populateComponentsByContainerForInternals(executorsByContainer, topologyID, executorsByComponent);
+            populateComponentsByContainerForInternals(executorsByContainer, topologyID, executorsByComponent, componentMapToContainer);
             //Todo: we ignore internal components, like __acker, etc. need to do in the future.
         }
 
@@ -578,7 +522,7 @@ public class MatchingScheduler implements IScheduler {
             WorkerSlot slotToAssign = entry.getKey();
             Container container = entry.getValue();
             String topologyID = container.getTopologyId();
-            ArrayList<ExecutorDetails> executorsToAssign = container.getExecutorDetailsList();
+            Collection<ExecutorDetails> executorsToAssign = container.getExecutorDetailsList();
             LOG.info("PengAllocated " + topologyID + " \n executor " + executorsToAssign.toString() + "\nSlot " +slotToAssign);
             cluster.assign(slotToAssign, topologyID, executorsToAssign);
             topologyIDSet.add(topologyID);
@@ -861,7 +805,7 @@ public class MatchingScheduler implements IScheduler {
                 }
             }
             if (container != null && workerSlot != null){
-                ArrayList<ExecutorDetails> containerExecutorList = container.getExecutorDetailsList();
+                Collection<ExecutorDetails> containerExecutorList = container.getExecutorDetailsList();
                 newAllocatedSlots.add(workerSlot);
                 assignments.put(workerSlot, container);
             }else{

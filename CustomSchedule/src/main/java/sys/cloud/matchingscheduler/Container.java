@@ -19,8 +19,8 @@ public class Container {
     // memory is 1000M
     Integer memory = 1000;
 
-    Collection<Container> previous = null;
-    ArrayList<ExecutorDetails> executorDetailsList = null;
+    Collection<Container> predecessors = null;
+    Collection<ExecutorDetails> executorDetailsList = null;
 
     WorkerSlotExtern workerSlotExtern = null;
     String topologyId = null;
@@ -29,7 +29,7 @@ public class Container {
         this.id = idGen.getAndIncrement();
     }
 
-    private Container(String topologyId, ArrayList<ExecutorDetails> executorDetailsList){
+    private Container(String topologyId, Collection<ExecutorDetails> executorDetailsList){
         this.topologyId = topologyId;
         this.executorDetailsList = executorDetailsList;
         this.id = idGen.getAndIncrement();
@@ -46,7 +46,7 @@ public class Container {
         return new Container(cpu, bandwidth);
     }
 
-    static Container createContainer(String topologyId, ArrayList<ExecutorDetails> executorDetailsList) {
+    static Container createContainer(String topologyId, Collection<ExecutorDetails> executorDetailsList) {
         return new Container(topologyId, executorDetailsList);
     }
 
@@ -76,7 +76,7 @@ public class Container {
     public void setExecutorDetailsList(ArrayList<ExecutorDetails> executorDetailsList){
         this.executorDetailsList = executorDetailsList;
     }
-    public ArrayList<ExecutorDetails> getExecutorDetailsList(){
+    public Collection<ExecutorDetails> getExecutorDetailsList(){
         return this.executorDetailsList;
     }
     public void setCpu(int cpu){
@@ -97,11 +97,11 @@ public class Container {
         return score;
     }
 
-    public void setPrevious(Collection<Container> previous) {
-        this.previous = previous;
+    public void setPredecessors(Collection<Container> previous) {
+        this.predecessors = previous;
     }
 
-    public Collection<Container> getPrevious() {
-        return this.previous;
+    public Collection<Container> getPredecessors() {
+        return this.predecessors;
     }
 }
