@@ -64,60 +64,7 @@ public class MatchingScheduler implements IScheduler {
 
         return supervisorsByTag;
     }
-    private <T> void populateComponentsByTag(
-            Map<String, ArrayList<String>> componentsByTag,
-            Map<String, T> components
-    ) {
-        // Type T can be either Bolt or SpoutSpec, so that this logic can be reused for both component types
-        JSONParser parser = new JSONParser();
 
-        for (Entry<String, T> componentEntry : components.entrySet()) {
-            JSONObject conf = null;
-
-            String componentID = componentEntry.getKey();
-            T component = componentEntry.getValue();
-
-            try {
-                // Get the component's conf irrespective of its type (via java reflection)
-                Method getCommonComponentMethod = component.getClass().getMethod("get_common");
-                ComponentCommon commonComponent = (ComponentCommon) getCommonComponentMethod.invoke(component);
-                conf = (JSONObject) parser.parse(commonComponent.get_json_conf());
-            } catch (ParseException | NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
-                ex.printStackTrace();
-            }
-
-            String tags;
-
-            // If there's no config, use a fake tag to group all untagged components
-            if (conf == null) {
-                tags = untaggedTag;
-            } else {
-                tags = (String) conf.get("tags");
-
-                // If there are no tags, use a fake tag to group all untagged components
-                if (tags == null) {
-                    tags = untaggedTag;
-                }
-            }
-
-            // If the component has tags attached to it, handle it by populating the componentsByTag map.
-            // Loop through each of the tags to handle individually
-            for (String tag : tags.split(",")) {
-                tag = tag.trim();
-
-                if (componentsByTag.containsKey(tag)) {
-                    // If we've already seen this tag, then just add the component to the existing ArrayList.
-                    componentsByTag.get(tag).add(componentID);
-                } else {
-                    // If this tag is new, then create a new ArrayList,
-                    // add the current component, and populate the map's tag entry with it.
-                    ArrayList<String> newComponentList = new ArrayList<String>();
-                    newComponentList.add(componentID);
-                    componentsByTag.put(tag, newComponentList);
-                }
-            }
-        }
-    }
     private <T> void populateComponentsByContainer(
             Map<String, ArrayList<Container>>  componentsByContainer,
             Map<String, T> components,
@@ -126,6 +73,7 @@ public class MatchingScheduler implements IScheduler {
             Map<String, Collection<Container>> componentMapToContainer
     ) {
         ArrayList<ExecutorDetails> executorList = new ArrayList<ExecutorDetails>();
+
 
         for (Entry<String, T> componentEntry : components.entrySet()) {
             String componentID = componentEntry.getKey();
@@ -136,25 +84,34 @@ public class MatchingScheduler implements IScheduler {
             if (executorsForComponent == null) {
                 continue;
             }
-            Container container = Container.createContainer(topologyID, executorsForComponent);
-            Collection<Object> componentList = new ArrayList<>();
-            componentList.add(component);
-            container.setComponentList(componentList);
 
-            if (componentMapToContainer.containsKey(componentID)){
-                componentMapToContainer.get(componentID).add(container);
-            }else{
-                Collection<Container> containerCollection = new ArrayList<>();
-                containerCollection.add(container);
-                componentMapToContainer.put(componentID, containerCollection);
-            }
+            int i = 0;
+            List<ExecutorDetails> newExecutorList = new ArrayList<>();
+            for (ExecutorDetails executor : executorsForComponent){
+                newExecutorList.add(executor);
+                if (newExecutorList.size() == 4 || i == executorsForComponent.size()-1){
+                    Container container = Container.createContainer(topologyID, executorsForComponent);
+                    Collection<Object> componentList = new ArrayList<>();
+                    componentList.add(component);
+                    container.setComponentList(componentList);
+                    if (componentMapToContainer.containsKey(componentID)){
+                        componentMapToContainer.get(componentID).add(container);
+                    }else{
+                        Collection<Container> containerCollection = new ArrayList<>();
+                        containerCollection.add(container);
+                        componentMapToContainer.put(componentID, containerCollection);
+                    }
 
-            if (componentsByContainer.containsKey(topologyID)) {
-                componentsByContainer.get(topologyID).add(container);
-            } else {
-                ArrayList<Container> containersList = new ArrayList<Container>();
-                containersList.add(container);
-                componentsByContainer.put(topologyID, containersList);
+                    if (componentsByContainer.containsKey(topologyID)) {
+                        componentsByContainer.get(topologyID).add(container);
+                    } else {
+                        ArrayList<Container> containersList = new ArrayList<Container>();
+                        containersList.add(container);
+                        componentsByContainer.put(topologyID, containersList);
+                    }
+                    newExecutorList = new ArrayList<>();
+                }
+                i += 1;
             }
         }
     }
@@ -250,76 +207,18 @@ public class MatchingScheduler implements IScheduler {
                     containersList.add(container);
                     componentsByContainer.put(topologyID, containersList);
                 }
-            }
-        }
 
-    }
-
-    private Set<ExecutorDetails> getAliveExecutors(Cluster cluster, TopologyDetails topologyDetails) {
-        // Get the existing assignment of the current topology as it's live in the cluster
-        SchedulerAssignment existingAssignment = cluster.getAssignmentById(topologyDetails.getId());
-
-        // Return alive executors, if any, otherwise an empty set
-        if (existingAssignment != null) {
-            return existingAssignment.getExecutors();
-        } else {
-            return new HashSet<ExecutorDetails>();
-        }
-    }
-
-    private Map<String, ArrayList<ExecutorDetails>> getExecutorsToBeScheduledByTag(
-            Cluster cluster,
-            TopologyDetails topologyDetails,
-            Map<String, ArrayList<String>> componentsPerTag
-    ) {
-        // Initialise the return value
-        Map<String, ArrayList<ExecutorDetails>> executorsByTag = new HashMap<String, ArrayList<ExecutorDetails>>();
-
-        // Find which topology executors are already assigned
-        Set<ExecutorDetails> aliveExecutors = getAliveExecutors(cluster, topologyDetails);
-
-        // Get a map of component to executors for the topology that need scheduling
-        Map<String, List<ExecutorDetails>> executorsByComponent = cluster.getNeedsSchedulingComponentToExecutors(
-                topologyDetails
-        );
-
-        // Loop through componentsPerTag to populate the map
-        for (Entry<String, ArrayList<String>> entry : componentsPerTag.entrySet()) {
-            String tag = entry.getKey();
-            ArrayList<String> componentIDs = entry.getValue();
-
-            // Initialise the map entry for the current tag
-            ArrayList<ExecutorDetails> executorsForTag = new ArrayList<ExecutorDetails>();
-
-            // Loop through this tag's component IDs
-            for (String componentID : componentIDs) {
-                // Fetch the executors for the current component ID
-                List<ExecutorDetails> executorsForComponent = executorsByComponent.get(componentID);
-
-                if (executorsForComponent == null) {
-                    continue;
+                if (componentMapToContainer.containsKey(componentID)){
+                    componentMapToContainer.get(componentID).add(container);
+                }else{
+                    Collection<Container> containerCollection = new ArrayList<>();
+                    containerCollection.add(container);
+                    componentMapToContainer.put(componentID, containerCollection);
                 }
 
-                // Convert the list of executors to a set
-                Set<ExecutorDetails> executorsToAssignForComponent = new HashSet<ExecutorDetails>(
-                        executorsForComponent
-                );
-
-                // Remove already assigned executors from the set of executors to assign, if any
-                executorsToAssignForComponent.removeAll(aliveExecutors);
-
-                // Add the component's waiting to be assigned executors to the current tag executors
-                executorsForTag.addAll(executorsToAssignForComponent);
-            }
-
-            // Populate the map of executors by tag after looping through all of the tag's components,
-            // if there are any executors to be scheduled
-            if (!executorsForTag.isEmpty()) {
-                executorsByTag.put(tag, executorsForTag);
             }
         }
 
-        return executorsByTag;
     }
 
 
@@ -347,143 +246,7 @@ public class MatchingScheduler implements IScheduler {
         }
     }
 
-    private List<WorkerSlot> getSlotsToAssign(
-            Cluster cluster,
-            TopologyDetails topologyDetails,
-            List<SupervisorDetails> supervisors,
-            List<String> componentsForTag,
-            String tag
-    ) throws Exception {
-        String topologyID = topologyDetails.getId();
 
-        // Collect the available slots of each of the supervisors we were given in a list
-        List<WorkerSlot> availableSlots = new ArrayList<WorkerSlot>();
-        for (SupervisorDetails supervisor : supervisors) {
-            availableSlots.addAll(cluster.getAvailableSlots(supervisor));
-        }
-
-        if (availableSlots.isEmpty()) {
-            // This is bad, we have supervisors and executors to assign, but no available slots!
-            String message = String.format(
-                    "No slots are available for assigning executors for tag %s (components: %s)",
-                    tag, componentsForTag
-            );
-            handleUnsuccessfulScheduling(cluster, topologyDetails, message);
-        }
-
-        Set<WorkerSlot> aliveSlots = getAliveSlots(cluster, topologyDetails);
-
-        int numAvailableSlots = availableSlots.size();
-        int numSlotsNeeded = topologyDetails.getNumWorkers() - aliveSlots.size();
-
-        // We want to check that we have enough available slots
-        // based on the topology's number of workers and already assigned slots.
-        if (numAvailableSlots < numSlotsNeeded) {
-            // This is bad, we don't have enough slots to assign to!
-            String message = String.format(
-                    "Not enough slots available for assigning executors for tag %s (components: %s). "
-                            + "Need %s slots to schedule but found only %s",
-                    tag, componentsForTag, numSlotsNeeded, numAvailableSlots
-            );
-            handleUnsuccessfulScheduling(cluster, topologyDetails, message);
-        }
-
-        // Now we can use only as many slots as are required.
-        return availableSlots.subList(0, numSlotsNeeded);
-    }
-
-    private Map<WorkerSlot, ArrayList<ExecutorDetails>> getExecutorsBySlot(
-            List<WorkerSlot> slots,
-            List<ExecutorDetails> executors
-    ) {
-        // todo: use two matching algorithm to reschedule it.
-        // todo: need to sort slot by resources.
-//        Initialize all men and women to free
-//        while there exist a free man m who still has a woman w to propose to
-//        {
-//            w = m's highest ranked such woman to whom he has not yet proposed
-//            if w is free
-//                (m, w) become engaged
-//            else some pair (m', w) already exists
-//                if w prefers m to m'
-//                      (m, w) become engaged
-//                      m' becomes free
-//                else
-//                      (m', w) remain engaged
-//        }
-        // men is executor
-        // women is slot.
-        // 1. merge executor to a group
-
-        Map<WorkerSlot, ArrayList<ExecutorDetails>> assignments = new HashMap<WorkerSlot, ArrayList<ExecutorDetails>>();
-
-        int numberOfSlots = slots.size();
-
-        // We want to split the executors as evenly as possible, across each slot available,
-        // so we assign each executor to a slot via round robin
-        for (int i = 0; i < executors.size(); i++) {
-            WorkerSlot slotToAssign = slots.get(i % numberOfSlots);
-            ExecutorDetails executorToAssign = executors.get(i);
-
-            if (assignments.containsKey(slotToAssign)) {
-                // If we've already seen this slot, then just add the executor to the existing ArrayList.
-                assignments.get(slotToAssign).add(executorToAssign);
-            } else {
-                // If this slot is new, then create a new ArrayList,
-                // add the current executor, and populate the map's slot entry with it.
-                ArrayList<ExecutorDetails> newExecutorList = new ArrayList<ExecutorDetails>();
-                newExecutorList.add(executorToAssign);
-                assignments.put(slotToAssign, newExecutorList);
-            }
-        }
-
-        return assignments;
-    }
-
-    private void populateComponentExecutorsToSlotsMap(
-            Map<WorkerSlot, ArrayList<ExecutorDetails>> componentExecutorsToSlotsMap,
-            Cluster cluster,
-            TopologyDetails topologyDetails,
-            List<SupervisorDetails> supervisors,
-            List<ExecutorDetails> executors,
-            List<String> componentsForTag,
-            String tag
-    ) throws Exception {
-        String topologyID = topologyDetails.getId();
-
-        if (supervisors == null) {
-            // This is bad, we don't have any supervisors but have executors to assign!
-            String message = String.format(
-                    "No supervisors given for executors %s of topology %s and tag %s (components: %s)",
-                    executors, topologyID, tag, componentsForTag
-            );
-            handleUnsuccessfulScheduling(cluster, topologyDetails, message);
-        }
-
-        List<WorkerSlot> slotsToAssign = getSlotsToAssign(
-                cluster, topologyDetails, supervisors, componentsForTag, tag
-        );
-
-        // Divide the executors evenly across the slots and get a map of slot to executors
-        // using two side matching algorithm
-
-
-        Map<WorkerSlot, ArrayList<ExecutorDetails>> executorsBySlot = getExecutorsBySlot(
-                slotsToAssign, executors
-        );
-
-        for (Entry<WorkerSlot, ArrayList<ExecutorDetails>> entry : executorsBySlot.entrySet()) {
-            WorkerSlot slotToAssign = entry.getKey();
-            ArrayList<ExecutorDetails> executorsToAssign = entry.getValue();
-
-            // Assign the topology's executors to slots in the cluster's supervisors
-            //componentExecutorsToSlotsMap.put(slotToAssign, executorsToAssign);
-            if (!componentExecutorsToSlotsMap.containsKey(slotToAssign))
-                componentExecutorsToSlotsMap.put(slotToAssign, executorsToAssign);
-            else
-                componentExecutorsToSlotsMap.get(slotToAssign).addAll(executorsToAssign);
-        }
-    }
 
     private void MatchingSchedule(Topologies topologies, Cluster cluster) {
         Collection<SupervisorDetails> supervisorDetails = cluster.getSupervisors().values();
@@ -573,69 +336,6 @@ public class MatchingScheduler implements IScheduler {
         }
         return ;
         ///PengAddEnd
-
-//        for (TopologyDetails topologyDetails : cluster.needsSchedulingTopologies()) {
-//            StormTopology stormTopology = topologyDetails.getTopology();
-//            String topologyID = topologyDetails.getId();
-//
-//            // Get components from topology
-//            Map<String, Bolt> bolts = stormTopology.get_bolts();
-//            Map<String, SpoutSpec> spouts = stormTopology.get_spouts();
-//            // Get a map of component to executors
-//            Map<String, List<ExecutorDetails>> executorsByComponent = cluster.getNeedsSchedulingComponentToExecutors(
-//                    topologyDetails
-//            );
-//            // Get a map of tag to
-//            Map<String, ArrayList<String>> componentsByTag = new HashMap<String, ArrayList<String>>();
-//            populateComponentsByTag(componentsByTag, bolts);
-//            populateComponentsByTag(componentsByTag, spouts);
-//            populateComponentsByTagWithStormInternals(componentsByTag, executorsByComponent.keySet());
-//
-//            // Get a map of tag to executors
-//            Map<String, ArrayList<ExecutorDetails>> executorsToBeScheduledByTag = getExecutorsToBeScheduledByTag(
-//                    cluster, topologyDetails, componentsByTag
-//            );
-//
-//            // Initialise a map of slot -> executors
-//            Map<WorkerSlot, ArrayList<ExecutorDetails>> componentExecutorsToSlotsMap = (
-//                    new HashMap<WorkerSlot, ArrayList<ExecutorDetails>>()
-//            );
-//
-//            // Time to match everything up!
-//            for (Entry<String, ArrayList<ExecutorDetails>> entry : executorsToBeScheduledByTag.entrySet()) {
-//                String tag = entry.getKey();
-//
-//                ArrayList<ExecutorDetails> executorsForTag = entry.getValue();
-//                ArrayList<SupervisorDetails> supervisorsForTag = supervisorsByTag.get(tag);
-//                ArrayList<String> componentsForTag = componentsByTag.get(tag);
-//
-//                try {
-//                    populateComponentExecutorsToSlotsMap(
-//                            componentExecutorsToSlotsMap,
-//                            cluster, topologyDetails, supervisorsForTag, executorsForTag, componentsForTag, tag
-//                    );
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//
-//                    // Cut this scheduling short to avoid partial scheduling.
-//                    return;
-//                }
-//            }
-//
-//            // Do the actual assigning
-//            // We do this as a separate step to only perform any assigning if there have been no issues so far.
-//            // That's aimed at avoiding partial scheduling from occurring, with some components already scheduled
-//            // and alive, while others cannot be scheduled.
-//            for (Entry<WorkerSlot, ArrayList<ExecutorDetails>> entry : componentExecutorsToSlotsMap.entrySet()) {
-//                WorkerSlot slotToAssign = entry.getKey();
-//                ArrayList<ExecutorDetails> executorsToAssign = entry.getValue();
-//
-//                cluster.assign(slotToAssign, topologyID, executorsToAssign);
-//            }
-//
-//            // If we've reached this far, then scheduling must have been successful
-//            cluster.setStatus(topologyID, "SCHEDULING SUCCESSFUL");
-//        }
     }
 
 
@@ -669,25 +369,7 @@ public class MatchingScheduler implements IScheduler {
         return supervisorsConf;
     }
 
-    private void NodePreferContainer(List<WorkerSlotExtern> availableSlot, ArrayList<Container> containersList, int[][] w){
-        int i = 0;
-        for (WorkerSlotExtern slot : availableSlot){
-            int j = 0;
 
-            //sort container by BandWidth
-            Collections.sort(containersList, new Comparator<Container>(){
-                public int compare(Container o1, Container o2){
-                    return o1.getBandWidth() - o2.getBandWidth();
-                }
-            });
-
-            for (Container container: containersList){
-                w[i][j] = container.getId();
-                j++;
-            }
-            i++;
-        }
-    }
     private Map<String, List<String>> NodePreferContainer1(List<WorkerSlotExtern> availableSlot, ArrayList<Container> containersList){
         Map<String, List<String>> girlPrefersMap = new HashMap<>();
 
@@ -706,27 +388,6 @@ public class MatchingScheduler implements IScheduler {
             girlPrefersMap.put(String.valueOf(slot.getId()), girlPrefers);
         }
         return girlPrefersMap;
-    }
-    private void ContainerPreferNode(List<WorkerSlotExtern> availableSlot, ArrayList<Container> containersList, int[][] m){
-        int i = 0;
-        for (Container container : containersList){
-            int j = 0;
-            for (WorkerSlotExtern slot : availableSlot){
-                slot.calculateScore(container);
-            }
-            Collections.sort(availableSlot, new Comparator<WorkerSlotExtern>() {
-                @Override
-                public int compare(WorkerSlotExtern o1, WorkerSlotExtern o2) {
-                    return o1.getScore() - o2.getScore();
-                }
-            });
-
-            for (WorkerSlotExtern slot : availableSlot){
-                m[i][j] = slot.getId();
-                j++;
-            }
-            i++;
-        }
     }
 
     private Map<String, List<String>> ContainerPreferNode1(List<WorkerSlotExtern> availableSlot, ArrayList<Container> containersList){
@@ -855,86 +516,6 @@ public class MatchingScheduler implements IScheduler {
                 LOG.info("PengAssignment Can't find container or workerSlot");
             }
         }
-
-
-//        // create the preference for container
-//        int[][] men1 = new int[containersList.size()][workerSlotExternList.size()];
-//        ContainerPreferNode(workerSlotExternList, containersList, men1);
-//        for (int[] ints : men1) {
-//            LOG.info("PengMen " + Arrays.toString(ints));
-//        }
-//        int [][] women1 = new int[workerSlotExternList.size()][containersList.size()];
-//        NodePreferContainer(workerSlotExternList, containersList, women1);
-//        for (int[] ints : women1) {
-//            LOG.info("PengWomen " + Arrays.toString(ints));
-//        }
-        //Start to match
-
-//        StableMarriage sm = new StableMarriage();
-//        HashMap<Integer, Integer> couples = sm.findCouples(men1, women1);
-//
-//        LOG.info("\n------------------Final Matching----------------------------");
-//        Set<Integer> set = couples.keySet();
-//        for (int key : set) {
-//            LOG.info("Woman: " + key + " is engaged with man: " + couples.get(key));
-//        }
-//
-//        LOG.info("\n-----------------Assign workerSlot to Container.----------------");
-//        Set<Integer> slotToContainer = couples.keySet();
-//        for (int key : slotToContainer) {
-//            LOG.info("Woman: " + key + " is engaged with man: " + couples.get(key));
-//            if (couples.get(key) == null) {
-//                continue;
-//            }
-//            //find slot
-//            WorkerSlot workerSlot = null;
-//            for (WorkerSlotExtern slotExtern : workerSlotExternList){
-//                if (slotExtern.getId() == key){
-//                    workerSlot = slotExtern.getWorkerSlot();
-//                    break;
-//                }
-//            }
-//            //find
-//            Container container = null;
-//            for (Container container1 : containersList){
-//                if (container1.getId() == couples.get(key)){
-//                    container = container1;
-//                    break;
-//                }
-//            }
-//            if (container != null && workerSlot != null){
-//                ArrayList<ExecutorDetails> containerExecutorList = container.getExecutorDetailsList();
-//                newAllocatedSlots.add(workerSlot);
-//                assignments.put(workerSlot, container);
-//            }else{
-//                LOG.info("PengAssignment Can't find container or workerSlot");
-//            }
-//        }
-//        LOG.info("PengAssignment" + assignments.toString());
-
-        //todo: update NodeResource.
-
-
-        // Divide the executors evenly across the slots and get a map of slot to executors
-        // using two side matching algorithm
-        //Map<WorkerSlot, ArrayList<ExecutorDetails>> assignments = new HashMap<WorkerSlot, ArrayList<ExecutorDetails>>();
-
-//        int currentSlotIndex = 0;
-//        for (Container container : containersList) {
-//            String topologyID = container.getTopologyId();
-//
-//            ArrayList<ExecutorDetails> containerExecutorList = container.getExecutorDetailsList();
-//
-//            WorkerSlot slotToAssign = availableSlots.get(currentSlotIndex);
-//            newAllocatedSlots.add(slotToAssign);
-//            assignments.put(slotToAssign, container);
-//
-//            currentSlotIndex += 1;
-//        }
-//        LOG.info("PengAssignment" + assignments.toString());
-
-        // We want to split the executors as evenly as possible, across each slot available,
-        // so we assign each executor to a slot via round robin
         return newAllocatedSlots;
 
     }

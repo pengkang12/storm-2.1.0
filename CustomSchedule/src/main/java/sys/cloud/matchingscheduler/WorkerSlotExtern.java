@@ -72,10 +72,12 @@ public class WorkerSlotExtern {
             }
             String name1 = container.getWorkerSlotExtern().getNode().getNodeName();
             String name2 = container.getWorkerSlotExtern().getNode().getNodeName();
-            if (latency > nodeLatencyMap.get(name1).get(name2)){
-                latency = nodeLatencyMap.get(name1).get(name2);
-            }
+            //if (latency > nodeLatencyMap.get(name1).get(name2)){
+            //    latency = nodeLatencyMap.get(name1).get(name2);
+            //}
         }
+        //Todo
+        latency = 50;
         return latency;
     }
     public void calculateScore(Container container){
