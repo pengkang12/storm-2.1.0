@@ -1,5 +1,6 @@
 package sys.cloud.matchingscheduler;
 
+import org.apache.storm.scheduler.Component;
 import org.apache.storm.scheduler.ExecutorDetails;
 import org.apache.storm.scheduler.WorkerSlot;
 
@@ -8,7 +9,7 @@ import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.Random;
 
-public class Container {
+public class Container <T> {
 
     private static final AtomicInteger idGen = new AtomicInteger(1);
     private final Integer id;
@@ -21,6 +22,7 @@ public class Container {
 
     Collection<Container> predecessors = null;
     Collection<ExecutorDetails> executorDetailsList = null;
+    Collection<T> componentList = null;
 
     WorkerSlotExtern workerSlotExtern = null;
     String topologyId = null;
@@ -97,10 +99,15 @@ public class Container {
         return score;
     }
 
-    public void setPredecessors(Collection<Container> previous) {
-        this.predecessors = previous;
+    public void setPredecessors(Collection<Container> predecessors) {
+        this.predecessors = predecessors;
     }
-
+    public void setComponentList(Collection<T> componentList){
+        this.componentList = componentList;
+    }
+    public Collection<T> getComponentList(){
+        return this.componentList;
+    }
     public Collection<Container> getPredecessors() {
         return this.predecessors;
     }

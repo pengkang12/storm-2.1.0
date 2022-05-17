@@ -5,14 +5,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import org.apache.storm.generated.*;
-import org.apache.storm.scheduler.Cluster;
-import org.apache.storm.scheduler.ExecutorDetails;
-import org.apache.storm.scheduler.IScheduler;
-import org.apache.storm.scheduler.SchedulerAssignment;
-import org.apache.storm.scheduler.SupervisorDetails;
-import org.apache.storm.scheduler.Topologies;
-import org.apache.storm.scheduler.TopologyDetails;
-import org.apache.storm.scheduler.WorkerSlot;
+import org.apache.storm.scheduler.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -143,24 +136,9 @@ public class MatchingScheduler implements IScheduler {
                 continue;
             }
             Container container = Container.createContainer(topologyID, executorsForComponent);
-
-            //Add predecessor
-            try {
-                // Get the component's conf irrespective of its type (via java reflection)
-                Method getCommonComponentMethod = component.getClass().getMethod("get_common");
-                ComponentCommon commonComponent = (ComponentCommon) getCommonComponentMethod.invoke(component);
-
-                Map<GlobalStreamId, Grouping> inputs = commonComponent.get_inputs();
-                if (inputs != null){
-                    Collection<Container> predecessorContainer = new ArrayList<Container>();
-                    for (Entry<GlobalStreamId, Grouping> entry : inputs.entrySet()){
-                        predecessorContainer.addAll(componentMapToContainer.get(entry.getKey().get_componentId()));
-                    }
-                    container.setPredecessors(predecessorContainer);
-                }
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
-                ex.printStackTrace();
-            }
+            Collection<T> componentList = new ArrayList<>();
+            componentList.add(component);
+            container.setComponentList(componentList);
 
             if (componentMapToContainer.containsKey(componentID)){
                 componentMapToContainer.get(componentID).add(container);
@@ -180,6 +158,35 @@ public class MatchingScheduler implements IScheduler {
         }
     }
 
+    private <T> void updateContainerPredecessor(
+            Map<String, ArrayList<Container>>  componentsByContainer,
+            String topologyID,
+            Map<String, Collection<Container>> componentMapToContainer
+    ) {
+        ArrayList<ExecutorDetails> executorList = new ArrayList<ExecutorDetails>();
+        Collection<Container> containerCollection = componentsByContainer.get(topologyID);
+        for (Container container : containerCollection){
+            Collection<Container> predecessors = new ArrayList<>();
+            for (Object component: container.getComponentList()) {
+                //Add predecessor
+                try {
+                    // Get the component's conf irrespective of its type (via java reflection)
+                    Method getCommonComponentMethod = component.getClass().getMethod("get_common");
+                    ComponentCommon commonComponent = (ComponentCommon) getCommonComponentMethod.invoke(component);
+
+                    Map<GlobalStreamId, Grouping> inputs = commonComponent.get_inputs();
+                    if (inputs != null){
+                        for (Entry<GlobalStreamId, Grouping> entry : inputs.entrySet()){
+                            predecessors.addAll(componentMapToContainer.get(entry.getKey().get_componentId()));
+                        }
+                    }
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            container.setPredecessors(predecessors);
+        }
+    }
     private <T> void populateComponentsByContainerForInternals(
             Map<String, ArrayList<Container>>  componentsByContainer,
             String topologyID,
@@ -473,6 +480,7 @@ public class MatchingScheduler implements IScheduler {
             LOG.info("PengBolts " + executorsByContainer);
             populateComponentsByContainerForInternals(executorsByContainer, topologyID, executorsByComponent, componentMapToContainer);
             //Todo: we ignore internal components, like __acker, etc. need to do in the future.
+            updateContainerPredecessor(executorsByContainer, topologyID, componentMapToContainer);
         }
 
         // get all available slots
