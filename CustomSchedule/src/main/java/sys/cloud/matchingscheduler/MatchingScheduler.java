@@ -823,7 +823,7 @@ public class MatchingScheduler implements IScheduler {
             //find slot
             WorkerSlot workerSlot = null;
             for (WorkerSlotExtern slotExtern : workerSlotExternList){
-                if (String.valueOf(slotExtern.getId()) == girl){
+                if (Objects.equals(String.valueOf(slotExtern.getId()), girl)){
                     workerSlot = slotExtern.getWorkerSlot();
                     break;
                 }
@@ -831,7 +831,7 @@ public class MatchingScheduler implements IScheduler {
             //find
             Container container = null;
             for (Container container1 : containersList){
-                if (String.valueOf(container1.getId()) == matches.get(girl)){
+                if (String.valueOf(container1.getId()).equals(matches.get(girl))){
                     container = container1;
                     break;
                 }
