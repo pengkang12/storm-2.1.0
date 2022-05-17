@@ -695,8 +695,10 @@ public class MatchingScheduler implements IScheduler {
                     return o1.getScore() - o2.getScore();
                 }
             });
+
             for (WorkerSlotExtern slot : availableSlot){
                 m[i][j] = slot.getId();
+                j++;
             }
             i++;
         }
@@ -788,6 +790,8 @@ public class MatchingScheduler implements IScheduler {
                 ArrayList<ExecutorDetails> containerExecutorList = container.getExecutorDetailsList();
                 newAllocatedSlots.add(workerSlot);
                 assignments.put(workerSlot, container);
+            }else{
+                LOG.info("PengAssignment Can't find container or workerSlot");
             }
         }
         LOG.info("PengAssignment" + assignments.toString());
