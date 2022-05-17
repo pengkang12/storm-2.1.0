@@ -84,4 +84,29 @@ public class StableMarriage {
         //than the man she had accepted earlier
         return pref_currentBachelor < pref_alreadyAcceptedMan;
     }
+    // Driver Code, for testing code.
+    public static void main(String[] args)
+    {
+        int[][] men = {
+                {0, 1, 2, 3},
+                {0, 1, 2, 3},
+                {0, 1, 2, 3},
+                {0, 1, 2, 3}
+        };
+
+        // Preference order for 3 women
+        int[][] women = {
+                {1, 0, 2, 3},
+                {1, 2, 3, 0},
+                {0, 1, 3, 2},
+                {0, 1, 3, 2}
+        };
+        StableMarriage sm = new StableMarriage();
+        HashMap<Integer, Integer> couples = sm.findCouples(men, women);
+        System.out.println("\n------------------Final Matching----------------------------");
+        Set<Integer> set = couples.keySet();
+        for (int key : set) {
+            System.out.println("Woman: " + key + " is engaged with man: " + couples.get(key));
+        }
+    }
 }

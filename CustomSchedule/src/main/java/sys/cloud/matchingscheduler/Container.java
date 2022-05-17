@@ -6,7 +6,7 @@ import org.apache.storm.scheduler.WorkerSlot;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
-
+import java.util.Random;
 
 public class Container {
 
@@ -22,7 +22,7 @@ public class Container {
     Collection<Container> previous = null;
     ArrayList<ExecutorDetails> executorDetailsList = null;
 
-    WorkerSlot workerSlot = null;
+    WorkerSlotExtern workerSlotExtern = null;
     String topologyId = null;
 
     private Container(){
@@ -33,6 +33,8 @@ public class Container {
         this.topologyId = topologyId;
         this.executorDetailsList = executorDetailsList;
         this.id = idGen.getAndIncrement();
+        Random rand = new Random();
+        this.bandwidth = this.id * 1000 * rand.nextInt(10);
     }
     private Container(int cpu, int bandwidth){
         this.cpu = cpu;
@@ -55,12 +57,12 @@ public class Container {
     public int getId(){
         return this.id;
     }
-    public  void setWorkerSlot(WorkerSlot workerSlot){
-        this.workerSlot = workerSlot;
+    public  void setWorkerSlotExtern(WorkerSlotExtern workerSlot){
+        this.workerSlotExtern = workerSlot;
     }
 
-    public WorkerSlot getWorkerSlot() {
-        return this.workerSlot;
+    public WorkerSlotExtern getWorkerSlotExtern() {
+        return this.workerSlotExtern;
     }
 
     public void setTopologyId(String topologyId){
@@ -80,12 +82,26 @@ public class Container {
     public void setCpu(int cpu){
         this.cpu = cpu;
     }
+    public int getCpu(){
+        return this.cpu;
+    }
     public void setBandwidth(int bandwidth){
         this.bandwidth = bandwidth;
+    }
+    public int getBandWidth(){
+        return this.bandwidth;
     }
     public int getScore(){
         int score = 0;
         score = cpu/ 1000 + bandwidth/10000;
         return score;
+    }
+
+    public void setPrevious(Collection<Container> previous) {
+        this.previous = previous;
+    }
+
+    public Collection<Container> getPrevious() {
+        return this.previous;
     }
 }

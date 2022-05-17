@@ -663,15 +663,15 @@ public class MatchingScheduler implements IScheduler {
         return supervisorsConf;
     }
 
-    private void NodePreferContainer(List<WorkerSlot> availableSlot, ArrayList<Container> containersList, int[][] w){
+    private void NodePreferContainer(List<WorkerSlotExtern> availableSlot, ArrayList<Container> containersList, int[][] w){
         int i = 0;
-        for (WorkerSlot slot : availableSlot){
+        for (WorkerSlotExtern slot : availableSlot){
             int j = 0;
 
             //sort container by BandWidth
             Collections.sort(containersList, new Comparator<Container>(){
                 public int compare(Container o1, Container o2){
-                    return o1.getScore() - o2.getScore();
+                    return o1.getBandWidth() - o2.getBandWidth();
                 }
             });
 
@@ -682,13 +682,21 @@ public class MatchingScheduler implements IScheduler {
             i++;
         }
     }
-    private void ContainerPreferNode(List<WorkerSlot> availableSlot, ArrayList<Container> containersList, int[][] m){
+    private void ContainerPreferNode(List<WorkerSlotExtern> availableSlot, ArrayList<Container> containersList, int[][] m){
         int i = 0;
         for (Container container : containersList){
             int j = 0;
-            for (WorkerSlot slot : availableSlot){
-                m[i][j] = j;
-                j++;
+            for (WorkerSlotExtern slot : availableSlot){
+                slot.calculateScore(container);
+            }
+            Collections.sort(availableSlot, new Comparator<WorkerSlotExtern>() {
+                @Override
+                public int compare(WorkerSlotExtern o1, WorkerSlotExtern o2) {
+                    return o1.getScore() - o2.getScore();
+                }
+            });
+            for (WorkerSlotExtern slot : availableSlot){
+                m[i][j] = slot.getId();
             }
             i++;
         }
@@ -699,7 +707,7 @@ public class MatchingScheduler implements IScheduler {
                                              ArrayList<Container> containersList,
                                              List<WorkerSlot> allAvailableSlots,
                                              List<WorkerSlot> allocatedSlots,
-                                             HashMap<String, NodeResource> nodeResourceList)
+                                             HashMap<String, NodeResource> nodeResourceMap)
             // ExecutorByContainerForLayer for each layer.
     {
         // Microservices will prefer the cheapest resoruces. Microserivces also want to spend less money.
@@ -721,41 +729,29 @@ public class MatchingScheduler implements IScheduler {
         }
 
         // score each worker slot for matching
-        HashMap<String, Pair<Integer, Integer>> workerSlotScore = new HashMap<String, Pair<Integer, Integer>>();
-
-        for (WorkerSlot eachWorkerSlot : allAvailableSlotsSet){
-            String nodeID = eachWorkerSlot.getNodeId();
-            String workerSlotId = eachWorkerSlot.getId();
-            workerSlotScore.put(workerSlotId, new Pair<Integer, Integer>(3, 2));
+        List<WorkerSlotExtern> workerSlotExternList = new ArrayList<WorkerSlotExtern>();
+        for (WorkerSlot slot : allAvailableSlotsSet){
+            WorkerSlotExtern slotExtern = new WorkerSlotExtern();
+            slotExtern.setWorkerSlot(slot);
+            slotExtern.setNode(nodeResourceMap.get(slot.getNodeId()));
+            workerSlotExternList.add(slotExtern);
         }
         // score each Container for matching
 
         // create the preference for container
-        int[][] men1 = new int[containersList.size()][allAvailableSlots.size()];
-        ContainerPreferNode(allAvailableSlots, containersList, men1);
+        int[][] men1 = new int[containersList.size()][workerSlotExternList.size()];
+        ContainerPreferNode(workerSlotExternList, containersList, men1);
         for (int[] ints : men1) {
             LOG.info("PengMen " + Arrays.toString(ints));
         }
         // create the preference for worker slot.
-        int [][] women1 = new int[allAvailableSlots.size()][containersList.size()];
-        NodePreferContainer(allAvailableSlots, containersList, women1);
+        int [][] women1 = new int[workerSlotExternList.size()][containersList.size()];
+        NodePreferContainer(workerSlotExternList, containersList, women1);
         for (int[] ints : women1) {
             LOG.info("PengWomen " + Arrays.toString(ints));
         }
-        int[][] men = {
-                {0, 1, 2, 3},
-                {0, 1, 2, 3},
-                {0, 1, 2, 3},
-                {0, 1, 2, 3}
-        };
 
-        // Preference order for 3 women
-        int[][] women = {
-                {1, 0, 2, 3},
-                {1, 2, 3, 0},
-                {0, 1, 3, 2},
-                {0, 1, 3, 2}
-        };
+        //Start to match
         StableMarriage sm = new StableMarriage();
         HashMap<Integer, Integer> couples = sm.findCouples(men1, women1);
 
@@ -764,6 +760,38 @@ public class MatchingScheduler implements IScheduler {
         for (int key : set) {
             LOG.info("Woman: " + key + " is engaged with man: " + couples.get(key));
         }
+
+        LOG.info("\n-----------------Assign workerSlot to Container.----------------");
+        Set<Integer> slotToContainer = couples.keySet();
+        for (int key : slotToContainer) {
+            LOG.info("Woman: " + key + " is engaged with man: " + couples.get(key));
+            if (couples.get(key) == null) {
+                continue;
+            }
+            //find slot
+            WorkerSlot workerSlot = null;
+            for (WorkerSlotExtern slotExtern : workerSlotExternList){
+                if (slotExtern.getId() == key){
+                    workerSlot = slotExtern.getWorkerSlot();
+                    break;
+                }
+            }
+            //find
+            Container container = null;
+            for (Container container1 : containersList){
+                if (container1.getId() == couples.get(key)){
+                    container = container1;
+                    break;
+                }
+            }
+            if (container != null && workerSlot != null){
+                ArrayList<ExecutorDetails> containerExecutorList = container.getExecutorDetailsList();
+                newAllocatedSlots.add(workerSlot);
+                assignments.put(workerSlot, container);
+            }
+        }
+        LOG.info("PengAssignment" + assignments.toString());
+
         //todo: update NodeResource.
 
 
@@ -771,19 +799,19 @@ public class MatchingScheduler implements IScheduler {
         // using two side matching algorithm
         //Map<WorkerSlot, ArrayList<ExecutorDetails>> assignments = new HashMap<WorkerSlot, ArrayList<ExecutorDetails>>();
 
-        int currentSlotIndex = 0;
-        for (Container container : containersList) {
-            String topologyID = container.getTopologyId();
-
-            ArrayList<ExecutorDetails> containerExecutorList = container.getExecutorDetailsList();
-
-            WorkerSlot slotToAssign = availableSlots.get(currentSlotIndex);
-            newAllocatedSlots.add(slotToAssign);
-            assignments.put(slotToAssign, container);
-
-            currentSlotIndex += 1;
-        }
-        LOG.info("PengAssignment" + assignments.toString());
+//        int currentSlotIndex = 0;
+//        for (Container container : containersList) {
+//            String topologyID = container.getTopologyId();
+//
+//            ArrayList<ExecutorDetails> containerExecutorList = container.getExecutorDetailsList();
+//
+//            WorkerSlot slotToAssign = availableSlots.get(currentSlotIndex);
+//            newAllocatedSlots.add(slotToAssign);
+//            assignments.put(slotToAssign, container);
+//
+//            currentSlotIndex += 1;
+//        }
+//        LOG.info("PengAssignment" + assignments.toString());
 
         // We want to split the executors as evenly as possible, across each slot available,
         // so we assign each executor to a slot via round robin
