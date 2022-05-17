@@ -760,8 +760,10 @@ public class MatchingScheduler implements IScheduler {
             WorkerSlotExtern slotExtern = new WorkerSlotExtern();
             slotExtern.setWorkerSlot(slot);
             slotExtern.setNode(nodeResourceMap.get(slot.getNodeId()));
+
             workerSlotExternList.add(slotExtern);
         }
+
         // score each Container for matching
 
         // create the preference for container
@@ -802,10 +804,10 @@ public class MatchingScheduler implements IScheduler {
                 continue;
             }
             //find slot
-            WorkerSlot workerSlot = null;
+            WorkerSlotExtern workerSlotExtern = null;
             for (WorkerSlotExtern slotExtern : workerSlotExternList){
                 if (Objects.equals(String.valueOf(slotExtern.getId()), girl)){
-                    workerSlot = slotExtern.getWorkerSlot();
+                    workerSlotExtern = slotExtern;
                     break;
                 }
             }
@@ -817,8 +819,10 @@ public class MatchingScheduler implements IScheduler {
                     break;
                 }
             }
-            if (container != null && workerSlot != null){
+            if (container != null && workerSlotExtern != null){
+                container.setWorkerSlotExtern(workerSlotExtern);
                 Collection<ExecutorDetails> containerExecutorList = container.getExecutorDetailsList();
+                WorkerSlot workerSlot = workerSlotExtern.getWorkerSlot();
                 newAllocatedSlots.add(workerSlot);
                 assignments.put(workerSlot, container);
             }else{
