@@ -791,7 +791,10 @@ public class MatchingScheduler implements IScheduler {
         }
 
         Map<String, List<String>> guyPrefers = ContainerPreferNode1(workerSlotExternList, containersList);
+        for (Entry<String, List<String>> entry : guyPrefers.entrySet()) {
 
+            LOG.info("PengGuy " + entry.getKey() + " " + entry.toString());
+        }
 
         // create the preference for worker slot.
         List<String> girls = new ArrayList<String>();
@@ -800,12 +803,16 @@ public class MatchingScheduler implements IScheduler {
         }
 
         Map<String, List<String>> girlPrefers = NodePreferContainer1(workerSlotExternList, containersList);
+        for (Entry<String, List<String>> entry : girlPrefers.entrySet()) {
+
+            LOG.info("PengGirl " + entry.getKey() + " " + entry.toString());
+        }
         //Start to match
         Map<String, String> matches = Stable.match(guys, guyPrefers, girlPrefers);
 
-        for(Map.Entry<String, String> couple:matches.entrySet()){
+        for(Map.Entry<String, String> match:matches.entrySet()){
             LOG.info(
-                    couple.getKey() + " is engaged to " + couple.getValue());
+                    match.getKey() + " is engaged to " + match.getValue());
         }
         Set<String> slotToContainer = matches.keySet();
         for (String girl : slotToContainer) {
@@ -839,17 +846,17 @@ public class MatchingScheduler implements IScheduler {
         }
 
 
-        // create the preference for container
-        int[][] men1 = new int[containersList.size()][workerSlotExternList.size()];
-        ContainerPreferNode(workerSlotExternList, containersList, men1);
-        for (int[] ints : men1) {
-            LOG.info("PengMen " + Arrays.toString(ints));
-        }
-        int [][] women1 = new int[workerSlotExternList.size()][containersList.size()];
-        NodePreferContainer(workerSlotExternList, containersList, women1);
-        for (int[] ints : women1) {
-            LOG.info("PengWomen " + Arrays.toString(ints));
-        }
+//        // create the preference for container
+//        int[][] men1 = new int[containersList.size()][workerSlotExternList.size()];
+//        ContainerPreferNode(workerSlotExternList, containersList, men1);
+//        for (int[] ints : men1) {
+//            LOG.info("PengMen " + Arrays.toString(ints));
+//        }
+//        int [][] women1 = new int[workerSlotExternList.size()][containersList.size()];
+//        NodePreferContainer(workerSlotExternList, containersList, women1);
+//        for (int[] ints : women1) {
+//            LOG.info("PengWomen " + Arrays.toString(ints));
+//        }
         //Start to match
 
 //        StableMarriage sm = new StableMarriage();
