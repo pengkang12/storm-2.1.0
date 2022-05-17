@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.Map.Entry;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.storm.generated.*;
 import org.apache.storm.scheduler.*;
 import org.slf4j.Logger;
@@ -164,7 +165,7 @@ public class MatchingScheduler implements IScheduler {
             Map<String, Collection<Container>> componentMapToContainer
     ) {
         ArrayList<ExecutorDetails> executorList = new ArrayList<ExecutorDetails>();
-        Collection<Container> containerCollection = componentsByContainer.get(topologyID);
+        ArrayList<Container> containerCollection = componentsByContainer.get(topologyID);
         for (Container container : containerCollection){
             Collection<Container> predecessors = new ArrayList<>();
             Collection<Object> componentCollection = container.getComponentList();
@@ -191,6 +192,26 @@ public class MatchingScheduler implements IScheduler {
             container.setPredecessors(predecessors);
             LOG.info("PengSetPredecessors"+predecessors.toString());
         }
+
+        Graph G = new Graph(containerCollection.size());
+        HashMap<Container, Integer> containerMap = new HashMap<>();
+        int i = 0;
+        for (Container container : containerCollection){
+            containerMap.put(container, i);
+            i += 1;
+        }
+        for (Container container: containerCollection){
+            for (Object predecessor : container.getPredecessors()) {
+                G.addEdge(containerMap.get(predecessor), containerMap.get(container));
+            }
+        }
+        ArrayList<Integer> topologyOrder = G.topologicalSort();
+
+        ArrayList<Container> newContainerCollection = new ArrayList<Container>();
+        for (Integer index: topologyOrder){
+            newContainerCollection.add(containerCollection.get(index));
+        }
+        componentsByContainer.put(topologyID, newContainerCollection);
     }
     private <T> void populateComponentsByContainerForInternals(
             Map<String, ArrayList<Container>>  componentsByContainer,
