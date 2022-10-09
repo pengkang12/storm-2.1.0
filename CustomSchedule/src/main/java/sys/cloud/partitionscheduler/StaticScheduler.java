@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.storm.Config;
 import org.apache.storm.generated.Bolt;
 import org.apache.storm.generated.ComponentCommon;
 import org.apache.storm.generated.SpoutSpec;
@@ -30,7 +29,7 @@ import org.json.simple.parser.ParseException;
 
 
 @SuppressWarnings("unused")
-public class TagAwareScheduler implements IScheduler {
+public class StaticScheduler implements IScheduler {
     
     
     private final String untaggedTag = "untagged";
@@ -360,7 +359,7 @@ public class TagAwareScheduler implements IScheduler {
         }
     }
 
-    private void tagAwareSchedule(Topologies topologies, Cluster cluster) {
+    private void staticSchedule(Topologies topologies, Cluster cluster) {
         Collection<SupervisorDetails> supervisorDetails = cluster.getSupervisors().values();
 
         // Get the lists of tagged and unreserved supervisors.
@@ -443,6 +442,6 @@ public class TagAwareScheduler implements IScheduler {
 
     @Override
     public void schedule(Topologies topologies, Cluster cluster) {
-        tagAwareSchedule(topologies, cluster);
+        staticSchedule(topologies, cluster);
     }
 }
