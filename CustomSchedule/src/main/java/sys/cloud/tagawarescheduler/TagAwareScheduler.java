@@ -27,12 +27,26 @@ import org.apache.storm.scheduler.WorkerSlot;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/**
+ * How to run this scheduler.
+ * 1. For nimbus server, add configuration storm/conf/storm.yaml
+ *      storm.scheduler: "sys.cloud.tagAwareScheduler.TagAwareScheduler"
+ * 2. For supervisor server, add configuration storm/conf/storm.yaml
+ *      supervisor.scheduler.meta: tags: edge1
+ * 3. add tag information at topology.
+ *      For each operator, add api. For example,
+ *          builder.setBolt("bolt3", new ExampleBolt3(), 1).shuffleGrouping("bolt2");
+ *      modify as:
+ *          builder.setBolt("bolt3", new ExampleBolt3(), 1).shuffleGrouping("bolt2").addConfiguration("tags", "edge1");
+ * **/
 
 @SuppressWarnings("unused")
 public class TagAwareScheduler implements IScheduler {
-    
-    
+    private static final Logger LOG = LoggerFactory.getLogger(TagAwareScheduler.class);
+
     private final String untaggedTag = "untagged";
 
     private Map<String, ArrayList<SupervisorDetails>> getSupervisorsByTag(
@@ -365,6 +379,7 @@ public class TagAwareScheduler implements IScheduler {
 
         // Get the lists of tagged and unreserved supervisors.
         Map<String, ArrayList<SupervisorDetails>> supervisorsByTag = getSupervisorsByTag(supervisorDetails);
+        LOG.info("PengSupervisor", supervisorsByTag.toString());
 
         for (TopologyDetails topologyDetails : cluster.needsSchedulingTopologies()) {
             StormTopology stormTopology = topologyDetails.getTopology();
