@@ -397,10 +397,11 @@ public class TagAwareScheduler implements IScheduler {
             // Get a map of tag to
             Map<String, ArrayList<String>> componentsByTag = new HashMap<String, ArrayList<String>>();
             populateComponentsByTag(componentsByTag, bolts);
+            LOG.info("ComponentsByTagBolts " + componentsByTag.toString());
             populateComponentsByTag(componentsByTag, spouts);
-            LOG.info("This is new line to this place.");
+            LOG.info("ComponentsByTagSpouts" + componentsByTag.toString());
             populateComponentsByTagWithStormInternals(componentsByTag, executorsByComponent.keySet());
-
+            LOG.info("ComponentsByTagInternals" + componentsByTag.toString());
             // Get a map of tag to executors
             Map<String, ArrayList<ExecutorDetails>> executorsToBeScheduledByTag = getExecutorsToBeScheduledByTag(
                     cluster, topologyDetails, componentsByTag
