@@ -58,8 +58,6 @@ public class TagAwareScheduler implements IScheduler {
         for (SupervisorDetails supervisor : supervisorDetails) {
             @SuppressWarnings("unchecked")
             Map<String, String> metadata = (Map<String, String>) supervisor.getSchedulerMeta();
-            LOG.info(supervisor.getSchedulerMeta().toString());
-            LOG.info(metadata.toString());
             String tags;
 
             if (metadata == null) {
@@ -89,7 +87,6 @@ public class TagAwareScheduler implements IScheduler {
                     supervisorsByTag.put(tag, newSupervisorList);
                 }
             }
-            LOG.info(supervisorsByTag.toString());
         }
 
         return supervisorsByTag;
@@ -382,7 +379,7 @@ public class TagAwareScheduler implements IScheduler {
 
         // Get the lists of tagged and unreserved supervisors.
         Map<String, ArrayList<SupervisorDetails>> supervisorsByTag = getSupervisorsByTag(supervisorDetails);
-        LOG.info("PengSupervisor", supervisorsByTag);
+        LOG.info("SupervisorsByTag " +supervisorsByTag.toString());
 
         for (TopologyDetails topologyDetails : cluster.needsSchedulingTopologies()) {
             StormTopology stormTopology = topologyDetails.getTopology();
@@ -401,6 +398,7 @@ public class TagAwareScheduler implements IScheduler {
             Map<String, ArrayList<String>> componentsByTag = new HashMap<String, ArrayList<String>>();
             populateComponentsByTag(componentsByTag, bolts);
             populateComponentsByTag(componentsByTag, spouts);
+            LOG.info("This is new line to this place.");
             populateComponentsByTagWithStormInternals(componentsByTag, executorsByComponent.keySet());
 
             // Get a map of tag to executors
