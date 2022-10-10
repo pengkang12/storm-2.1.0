@@ -315,20 +315,18 @@ public class TagAwareScheduler implements IScheduler {
 
         int numberOfSlots = slots.size();
 
-        // We want to split the executors as evenly as possible, across each slot available,
-        // so we assign each executor to a slot via round robin
-        for (int i = 0; i < executors.size(); i++) {
-            WorkerSlot slotToAssign = slots.get(i % numberOfSlots);
-            ExecutorDetails executorToAssign = executors.get(i);
-
+        // We want to put all executor, which has the same tag, to a same slot for each application.
+        for (ExecutorDetails executor : executors) {
+            //WorkerSlot slotToAssign = slots.get(i % numberOfSlots);
+            WorkerSlot slotToAssign = slots.get(0);
             if (assignments.containsKey(slotToAssign)) {
                 // If we've already seen this slot, then just add the executor to the existing ArrayList.
-                assignments.get(slotToAssign).add(executorToAssign);
+                assignments.get(slotToAssign).add(executor);
             } else {
                 // If this slot is new, then create a new ArrayList,
                 // add the current executor, and populate the map's slot entry with it.
                 ArrayList<ExecutorDetails> newExecutorList = new ArrayList<ExecutorDetails>();
-                newExecutorList.add(executorToAssign);
+                newExecutorList.add(executor);
                 assignments.put(slotToAssign, newExecutorList);
             }
         }
@@ -407,6 +405,7 @@ public class TagAwareScheduler implements IScheduler {
                     cluster, topologyDetails, componentsByTag
             );
 
+            LOG.info("executorsToBeScheduledByTag " + executorsToBeScheduledByTag.toString());
             // Initialise a map of slot -> executors
             Map<WorkerSlot, ArrayList<ExecutorDetails>> componentExecutorsToSlotsMap = (
                     new HashMap<WorkerSlot, ArrayList<ExecutorDetails>>()
@@ -432,6 +431,7 @@ public class TagAwareScheduler implements IScheduler {
                     return;
                 }
             }
+            LOG.info("componentExecutorsToSlotsMap " + componentExecutorsToSlotsMap.toString());
 
             // Do the actual assigning
             // We do this as a separate step to only perform any assigning if there have been no issues so far.
