@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 public class TagAwareScheduler implements IScheduler {
     private static final Logger LOG = LoggerFactory.getLogger(TagAwareScheduler.class);
 
-    private final String untaggedTag = "edge1";
+    private final String untaggedTag = "core1";
 
     private Map<String, ArrayList<SupervisorDetails>> getSupervisorsByTag(
             Collection<SupervisorDetails> supervisorDetails
