@@ -105,9 +105,9 @@
 #        class: "org.apache.storm.metrics2.filters.RegexFilter"
 #        expression: ".*my_component.*emitted.*"
 storm.zookeeper.servers:
-    - "zkserver"
+    - "192.168.122.204"
 storm.local.dir: "/home/cc/storm/data"
-nimbus.seeds: ["192.168.122.204", "nimbus"]
+nimbus.seeds: ["192.168.122.204"]
 nimbus.thrift.port: 6667
 supervisor.slots.ports:
     - 6700
@@ -115,5 +115,7 @@ supervisor.slots.ports:
     - 6702
     - 6703
 #storm.scheduler: "org.apache.storm.scheduler.resource.ResourceAwareScheduler"
-storm.scheduler: "sys.cloud.matchingscheduler.MatchingScheduler"
+#storm.scheduler: "sys.cloud.matchingscheduler.MatchingScheduler"
+# this scheduler is working for static scheduler
+#storm.scheduler: "sys.cloud.tagawarescheduler.TagAwareScheduler"
 

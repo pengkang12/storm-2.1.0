@@ -1,0 +1,4 @@
+1. build application.
+2. restart nimbus
+3. create application.
+4. check nimbus log at main node.
