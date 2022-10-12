@@ -396,7 +396,7 @@ public class TagAwareScheduler implements IScheduler {
             LOG.info("ComponentsByTagBolts " + componentsByTag.toString());
             populateComponentsByTag(componentsByTag, spouts);
             LOG.info("ComponentsByTagSpouts" + componentsByTag.toString());
-            //populateComponentsByTagWithStormInternals(componentsByTag, executorsByComponent.keySet());
+            populateComponentsByTagWithStormInternals(componentsByTag, executorsByComponent.keySet());
             LOG.info("ComponentsByTagInternals" + componentsByTag.toString());
             // Get a map of tag to executors
             Map<String, ArrayList<ExecutorDetails>> executorsToBeScheduledByTag = getExecutorsToBeScheduledByTag(
