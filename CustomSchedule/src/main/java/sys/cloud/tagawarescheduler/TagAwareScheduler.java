@@ -154,7 +154,10 @@ public class TagAwareScheduler implements IScheduler {
         // we treat these internal components as regular untagged components and add them to the componentsByTag map.
 
         for (String componentID : components) {
+            LOG.info("Internal components" + componentID.toString());
             if (componentID.startsWith("__")) {
+                LOG.info("Internal components__" + componentID.toString());
+
                 if (componentsByTag.containsKey(untaggedTag)) {
                     // If we've already seen untagged components, then just add the component to the existing ArrayList.
                     componentsByTag.get(untaggedTag).add(componentID);
