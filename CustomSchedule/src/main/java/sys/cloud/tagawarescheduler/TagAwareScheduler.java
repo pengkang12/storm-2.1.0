@@ -212,7 +212,7 @@ public class TagAwareScheduler implements IScheduler {
             for (String componentID : componentIDs) {
                 // Fetch the executors for the current component ID
                 List<ExecutorDetails> executorsForComponent = executorsByComponent.get(componentID);
-
+                LOG.info("ExecutorForComponent with ID"+componentID.toString()+" "+executorsByComponent.toString());
                 if (executorsForComponent == null) {
                     continue;
                 }
