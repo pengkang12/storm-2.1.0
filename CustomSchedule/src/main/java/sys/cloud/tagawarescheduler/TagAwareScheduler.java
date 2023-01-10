@@ -315,11 +315,13 @@ public class TagAwareScheduler implements IScheduler {
         Map<WorkerSlot, ArrayList<ExecutorDetails>> assignments = new HashMap<WorkerSlot, ArrayList<ExecutorDetails>>();
 
         int numberOfSlots = slots.size();
-
+        // put each executor as a worker node.
+        int currentSlot = 0;
         // We want to put all executor, which has the same tag, to a same slot for each application.
         for (ExecutorDetails executor : executors) {
             //WorkerSlot slotToAssign = slots.get(i % numberOfSlots);
-            WorkerSlot slotToAssign = slots.get(0);
+            WorkerSlot slotToAssign = slots.get(currentSlot);
+            currentSlot++;
             if (assignments.containsKey(slotToAssign)) {
                 // If we've already seen this slot, then just add the executor to the existing ArrayList.
                 assignments.get(slotToAssign).add(executor);
