@@ -305,8 +305,7 @@ public class TagAwareScheduler implements IScheduler {
         }
 
         // Now we can use only as many slots as are required.
-        //return availableSlots.subList(0, numSlotsNeeded);
-        return availableSlots;
+        return availableSlots.subList(0, numSlotsNeeded);
     }
 
     private Map<WorkerSlot, ArrayList<ExecutorDetails>> getExecutorsBySlot(
@@ -321,8 +320,7 @@ public class TagAwareScheduler implements IScheduler {
         // We want to put all executor, which has the same tag, to a same slot for each application.
         for (ExecutorDetails executor : executors) {
             //WorkerSlot slotToAssign = slots.get(i % numberOfSlots);
-            WorkerSlot slotToAssign = slots.get(currentSlot % numberOfSlots);
-            currentSlot++;
+            WorkerSlot slotToAssign = slots.get(currentSlot);
             if (assignments.containsKey(slotToAssign)) {
                 // If we've already seen this slot, then just add the executor to the existing ArrayList.
                 assignments.get(slotToAssign).add(executor);
