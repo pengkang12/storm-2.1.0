@@ -305,7 +305,8 @@ public class TagAwareScheduler implements IScheduler {
         }
 
         // Now we can use only as many slots as are required.
-        return availableSlots.subList(0, numSlotsNeeded);
+        //return availableSlots.subList(0, numSlotsNeeded);
+        return availableSlots;
     }
 
     private Map<WorkerSlot, ArrayList<ExecutorDetails>> getExecutorsBySlot(
