@@ -332,12 +332,13 @@ public class TagAwareScheduler implements IScheduler {
                 newExecutorList.add(executor);
                 assignments.put(slotToAssign, newExecutorList);
             }
+            // the latency result is not good when I use this methods.
             allocatedExecutorCount += 1;
             if (allocatedExecutorCount == 5){
                 allocatedExecutorCount = 0;
-                currentSlot += 1;
-                if (currentSlot >= numberOfSlots)
-                    currentSlot = 0;
+                // currentSlot += 1;
+                //if (currentSlot >= numberOfSlots)
+                //    currentSlot = 0;
             }
         }
 
