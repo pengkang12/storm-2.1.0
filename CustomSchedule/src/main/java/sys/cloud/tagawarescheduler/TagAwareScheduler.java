@@ -336,6 +336,8 @@ public class TagAwareScheduler implements IScheduler {
             if (allocatedExecutorCount == 5){
                 allocatedExecutorCount = 0;
                 currentSlot += 1;
+                if (currentSlot >= numberOfSlots)
+                    currentSlot = 0;
             }
         }
 
