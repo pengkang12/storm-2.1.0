@@ -14,12 +14,8 @@ sleep 1
 
 sleep 5
 
-ssh worker1 bash kill_storm.sh
-sleep 1
-ssh worker1 ~/storm/bin/storm supervisor &
 
-
-for edge in "edge1" "edge2" "edge3" "edge4" "edge5"
+for edge in "worker1" "worker2" "edge1" "edge2" "edge3" "edge4" "edge5"
 do
 ssh $edge bash kill_storm.sh
 sleep 1
