@@ -1,6 +1,7 @@
 # Compiled class file
 *.class
-
+riot-bench
+examples/*
 storm_rocks
 data
 logs/*

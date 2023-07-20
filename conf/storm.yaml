@@ -114,8 +114,14 @@ supervisor.slots.ports:
     - 6701
     - 6702
     - 6703
-#storm.scheduler: "org.apache.storm.scheduler.resource.ResourceAwareScheduler"
-#storm.scheduler: "sys.cloud.matchingscheduler.MatchingScheduler"
+    - 6704
+    - 6705
+    - 6706
+    - 6707
+supervisor.scheduler.meta:
+  tags: "core1"
+# storm.scheduler: "org.apache.storm.scheduler.resource.ResourceAwareScheduler"
+# storm.scheduler: "sys.cloud.matchingscheduler.MatchingScheduler"
 # this scheduler is working for static scheduler
-#storm.scheduler: "sys.cloud.tagawarescheduler.TagAwareScheduler"
+storm.scheduler: "sys.cloud.tagawarescheduler.TagAwareScheduler"
 
