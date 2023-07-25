@@ -119,7 +119,7 @@ supervisor.slots.ports:
     - 6706
     - 6707
 supervisor.scheduler.meta:
-  tags: "core1"
+  tags: "master"
 # storm.scheduler: "org.apache.storm.scheduler.resource.ResourceAwareScheduler"
 # storm.scheduler: "sys.cloud.matchingscheduler.MatchingScheduler"
 # this scheduler is working for static scheduler

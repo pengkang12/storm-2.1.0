@@ -16,7 +16,7 @@
         "env": [
 	   {
     		"name": "TAG_NAME", 
-      		"value": "$tagName"
+      		"value": "storm-$nodeName-$tagName"
            }
         ], 
         "ports": [

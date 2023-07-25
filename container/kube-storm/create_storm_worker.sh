@@ -8,8 +8,7 @@
 # kubectl label node edge4 name=edge4
 
 
-#for name in "core" "worker1" "worker2" "edge1" "edge2" "edge3" "edge4" "edge5"
-for name in "master"
+for name in "master" "core" "worker1" "worker2" "edge1" "edge2" "edge3" "edge4" "edge5"
 do
 
 export tagName=etl-sys
