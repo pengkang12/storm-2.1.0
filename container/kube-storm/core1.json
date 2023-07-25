@@ -1,0 +1,47 @@
+{
+  "kind": "Pod",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "storm-core1",
+    "labels": {
+      "name": "storm-core1",
+      "uses": "nimbus"
+    }
+  },
+  "spec": {
+    "containers": [
+      {
+        "name": "core1",
+        "image": "kevin2333/storm-worker:latest",
+	"imagePullPolicy": "Always",
+        "env": [
+	   {
+    		"name": "TAG_NAME", 
+      		"value": "core1"
+           }
+        ], 
+        "ports": [
+           {
+                "name": "w6700",
+                "containerPort": 6700
+           },
+           {
+                "name": "w6701",
+                "containerPort": 6701
+           }
+         ],
+         "resources": {
+            "limits": {
+                "cpu": "400m"
+            },
+	    "requests":{
+	      	"cpu": "400m"
+	    }
+         }
+      }
+    ],
+    "nodeSelector": {
+       "name" : "master"
+    }
+  }
+}

@@ -1,4 +1,5 @@
 # Compiled class file
+container/docker-storm/base/storm
 *.class
 riot-bench
 examples/*

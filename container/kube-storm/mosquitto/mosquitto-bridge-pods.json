@@ -1,0 +1,45 @@
+{
+  "kind": "List",
+  "apiVersion": "v1",
+  "id": "mosquitto",
+  "items":[
+    {
+      "kind": "Pod",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "mosquitto-1",
+        "labels": {
+          "name": "mosquitto",
+          "server-id": "1"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "server",
+            "image": "kevin2333/mosquitto",
+            "env":[
+              {
+                "name": "POD_NAMESPACE",
+                "valueFrom": {
+                  "fieldRef": {
+                    "apiVersion": "v1",
+                    "fieldPath": "metadata.namespace"
+                  }
+                }
+              }
+            ],
+            "ports":[
+              {
+                "containerPort": 1883
+              }
+            ]
+          }
+        ],
+        "nodeSelector": {
+          "name" : "master"
+        }
+      }
+    }
+  ]
+}

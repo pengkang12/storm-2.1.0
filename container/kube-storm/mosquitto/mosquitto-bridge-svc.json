@@ -1,0 +1,31 @@
+{
+  "kind": "List",
+  "apiVersion": "v1",
+  "id": "mosquitto",
+  "items":[
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "mosquitto-1",
+        "labels": {
+          "name": "mosquitto-1"
+        }
+      },
+      "spec": {
+        "type": "NodePort",
+        "ports": [
+          {
+            "name": "broker",
+            "port": 1883,
+            "targetPort": 1883,
+            "protocol": "TCP"
+          }
+        ],
+        "selector": {
+          "server-id": "1"
+        }
+      }
+    }
+  ]
+}

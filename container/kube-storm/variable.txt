@@ -1,0 +1,3 @@
+storm-worker-core-predict-taxi
+core-predict-taxi
+core
