@@ -1,0 +1,10 @@
+10.42.0.2 storm-core-etl-sys
+10.32.0.5 storm-core1
+10.44.0.1 storm-edge1-etl-sys
+10.34.0.0 storm-edge2-etl-sys
+10.40.128.1 storm-edge3-etl-sys
+10.41.0.1 storm-edge4-etl-sys
+10.47.0.1 storm-edge5-etl-sys
+10.32.0.4 storm-master-etl-sys
+10.37.0.3 storm-worker1-etl-sys
+10.38.0.0 storm-worker2-etl-sys

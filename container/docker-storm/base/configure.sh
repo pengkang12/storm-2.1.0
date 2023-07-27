@@ -14,9 +14,6 @@ fi
 if [ -n "$2" ]; then
    cat >> conf/storm.yaml <<EOF
 nimbus.seeds: ["$2"]
-supervisor.slots.ports:
-    - 6700
-    - 6701
 EOF
 fi   
 

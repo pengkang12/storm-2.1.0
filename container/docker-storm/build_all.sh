@@ -1,7 +1,7 @@
 # Apache Storm images for Docker
-#docker image rm -f `docker image ls | grep kevin2333 | awk '{print $3}'`
-#docker image rm -f `docker image ls | grep none | awk '{print $3}'`
-
+docker image rm -f `docker image ls | grep kevin2333 | awk '{print $3}'`
+docker image rm -f `docker image ls | grep none | awk '{print $3}'`
+exit
 docker build -t kevin2333/storm-base base
 base_tag=`docker image ls | grep kevin2333/storm | grep latest | grep base | awk '{print $3}'`
 docker tag $base_tag kevin2333/storm-base:latest

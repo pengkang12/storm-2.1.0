@@ -1,6 +1,8 @@
-kubectl delete -f zookeeper.json
+cd ..
 
-kubectl delete -f zookeeper-service.json
+kubectl delete -f zookeeper/zookeeper.json
+
+kubectl delete -f zookeeper/zookeeper-service.json
 
 kubectl delete -f storm-nimbus.json
 

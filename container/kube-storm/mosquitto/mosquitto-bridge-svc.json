@@ -7,9 +7,9 @@
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
-        "name": "mosquitto-1",
+        "name": "mosquitto1",
         "labels": {
-          "name": "mosquitto-1"
+          "name": "mosquitto1"
         }
       },
       "spec": {

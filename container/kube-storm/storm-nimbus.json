@@ -19,7 +19,9 @@
         ],
         "resources": {
           "limits": {
-            "cpu": "1600m"
+            "cpu": "1600m",
+            "memory": "2Gi",
+            "ephemeral-storage": "4Gi"
           }
         }
       }

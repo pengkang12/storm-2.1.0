@@ -7,7 +7,7 @@
       "kind": "Pod",
       "apiVersion": "v1",
       "metadata": {
-        "name": "mosquitto-1",
+        "name": "mosquitto1",
         "labels": {
           "name": "mosquitto",
           "server-id": "1"
@@ -37,7 +37,7 @@
           }
         ],
         "nodeSelector": {
-          "name" : "master"
+          "name" : "core"
         }
       }
     }

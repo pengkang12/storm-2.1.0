@@ -17,6 +17,10 @@
 	   {
     		"name": "TAG_NAME", 
       		"value": "storm-$nodeName-$tagName"
+           },
+           {
+    		"name": "SLOT_NUM", 
+      		"value": "$slotNum"
            }
         ], 
         "ports": [
