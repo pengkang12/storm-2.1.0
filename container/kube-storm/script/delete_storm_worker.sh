@@ -15,7 +15,7 @@ do
 
 export tagName=$tag
 export nodeName=$name
-envsubst < storm-worker-template.json | kubectl create  -f -
+envsubst < storm-worker-template.json | kubectl delete -f -
 
 done
 done
@@ -24,6 +24,6 @@ kubectl get pod
 export tagName=core1
 export nodeName=master
 export slotNum=8
-envsubst < storm-master.json | kubectl create -f -
+envsubst < storm-master.json | kubectl delete -f -
 
 
