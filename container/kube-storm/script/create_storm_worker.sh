@@ -15,6 +15,7 @@ do
 
 export tagName=$tag
 export nodeName=$name
+export slotNum=2
 envsubst < storm-worker-template.json | kubectl create  -f -
 
 done

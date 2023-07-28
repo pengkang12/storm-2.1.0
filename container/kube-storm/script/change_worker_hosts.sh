@@ -1,10 +1,11 @@
 pods=`kubectl get pod | grep storm | grep -v "ui" | awk '{print $1}'`
 
+#kubectl get pod -o wide | grep storm | grep -v "ui" | awk '{print $8, $1}' > host_ip.txt 
+
+
 for pod in $pods
 do
 echo $pod
-kubectl get pod -o wide | grep storm | grep -v "ui" | awk '{print $6, $1}' > host_ip.txt 
-
 input="host_ip.txt"
 while IFS= read -r host_ip
 do
