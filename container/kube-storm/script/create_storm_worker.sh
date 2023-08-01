@@ -10,21 +10,43 @@ cd ..
 
 for tag in "etl-sys" "etl-taxi" "predict-taxi" "predict-sys"
 do
-for name in "master" "core" "worker1" "worker2" "edge1" "edge2" "edge3" "edge4" "edge5"
-do
 
+for name in "master" "core" 
+do
 export tagName=$tag
 export nodeName=$name
 export slotNum=2
 envsubst < storm-worker-template.json | kubectl create  -f -
+done
+done
 
+for tag in "etl-sys" "etl-taxi" 
+do
+for name in "worker1"  "edge1" "edge2" "edge3"
+do
+export tagName=$tag
+export nodeName=$name
+export slotNum=2
+envsubst < storm-worker-template.json | kubectl create  -f -
 done
 done
+
+for tag in  "predict-taxi" "predict-sys"
+do
+for name in  "worker2" "edge4" "edge5"
+do
+export tagName=$tag
+export nodeName=$name
+export slotNum=2
+envsubst < storm-worker-template.json | kubectl create  -f -
+done
+done
+
+
 kubectl get pod
 
 export tagName=core1
 export nodeName=master
 export slotNum=8
 envsubst < storm-master.json | kubectl create -f -
-
 

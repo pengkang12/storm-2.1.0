@@ -51,7 +51,7 @@
          ],
          "resources": {
             "limits": {
-                "cpu": "400m"
+                "cpu": "800m"
             },
 	    "requests":{
 	      	"cpu": "400m"

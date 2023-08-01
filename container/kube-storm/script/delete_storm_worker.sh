@@ -10,7 +10,7 @@ cd ..
 
 for tag in "etl-sys" "etl-taxi" "predict-taxi" "predict-sys"
 do
-for name in "edge5" #"master" "core" "worker1" "worker2" "edge1" "edge2" "edge3" "edge4" "edge5"
+for name in "master" "core" "worker1" "worker2" "edge1" "edge2" "edge3" "edge4" "edge5"
 do
 
 export tagName=$tag
@@ -19,7 +19,6 @@ envsubst < storm-worker-template.json | kubectl delete -f -
 
 done
 done
-exit
 kubectl get pod
 
 export tagName=core1
