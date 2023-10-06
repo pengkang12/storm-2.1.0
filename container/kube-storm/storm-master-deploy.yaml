@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storm-$nodeName-$tagName
+  labels:
+    app: storm-$nodeName-$tagName
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storm-$nodeName-$tagName  
+  template:
+    metadata:
+      labels:
+        app: storm-$nodeName-$tagName
+    spec:
+      containers:
+      - name: storm-$nodeName-$tagName
+        image: kevin2333/storm-worker:latest
+        env:
+          - name: TAG_NAME
+            value: "core1"
+          - name: SLOT_NUM 
+            value: "$slotNum"
+        ports:
+          - name: w6700
+            containerPort: 6700
+          - name: w6701
+            containerPort: 6701
+          - name: w6702
+            containerPort: 6702
+          - name: w6703
+            containerPort: 6703
+          - name: w6704
+            containerPort: 6704
+          - name: w6705
+            containerPort: 6705
+

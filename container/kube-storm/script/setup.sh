@@ -24,7 +24,7 @@ sleep 30
 kubectl get pods,services,rc
 sleep 10
 
-echo "syscloud" | sudo -S bash nginx-proxy.sh
+echo "syscloud" | sudo -S bash /home/cc/storm/container/kube-storm/script/nginx-proxy.sh
 
 sleep 10
 #bash change_worker_hosts.sh

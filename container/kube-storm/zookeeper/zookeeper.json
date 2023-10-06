@@ -12,6 +12,7 @@
       {
         "name": "zookeeper",
         "image": "mattf/zookeeper",
+	"imagePullPolicy": "Always",
         "ports": [
           {
             "containerPort": 2181
