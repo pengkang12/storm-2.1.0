@@ -1,0 +1,27 @@
+{
+  "kind": "Service",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "storm-$nodeName-$tagName",
+    "labels": {
+      "name": "storm-$nodeName-$tagName"
+    }
+  },
+  "spec": {
+    "ports": [
+      {
+        "port": 6700,
+        "name": "w6700",
+        "targetPort": 6700 
+      },
+      {
+        "port": 6701,
+        "name": "w6701",
+        "targetPort": 6701 
+      }
+    ],
+    "selector": {
+      "name": "storm-$nodeName-$tagName"
+    }
+  }
+}

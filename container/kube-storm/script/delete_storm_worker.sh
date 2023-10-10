@@ -20,7 +20,6 @@ envsubst < storm-worker-template.json | kubectl delete -f -
 done
 done
 kubectl get pod
-
 export tagName=core1
 export nodeName=master
 export slotNum=8

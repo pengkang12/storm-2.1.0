@@ -14,6 +14,15 @@ spec:
       labels:
         app: storm-$nodeName-$tagName
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: name
+                operator: In
+                values:
+                  - $nodeName 
       containers:
       - name: storm-$nodeName-$tagName
         image: kevin2333/storm-worker:latest
