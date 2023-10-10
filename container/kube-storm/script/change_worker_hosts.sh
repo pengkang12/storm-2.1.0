@@ -21,12 +21,22 @@ do
   string=($string)
   data=$(echo "${host[1]}" | awk -F "-" '{print $3}')
   app=$(echo "${host[1]}"| awk -F "-" '{print $4}')
+  
+  if [[ $host_ip == *"master-core1"* ]] && test -z ${string[1]}
+  then
+     kubectl exec $pod -- sh -c "echo ${host_ip} >> /etc/hosts"
+  fi
+  
   if [[ $pod == *"$data"* ]]  && [[ $pod == *"$app"* ]] && test -z ${string[1]}
   then
      echo $data $app $pod $string
      kubectl exec $pod -- sh -c "echo ${host_ip} >> /etc/hosts"
-  else
-     echo "existing" $pod 
+  fi
+  
+  if [[ $pod == *"master-core1"* ]] && test -z ${string[1]}
+  then
+     echo $data $app $pod $string
+     kubectl exec $pod -- sh -c "echo ${host_ip} >> /etc/hosts"
   fi
   #sleep 1
 done < "$input"
