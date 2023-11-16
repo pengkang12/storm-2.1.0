@@ -35,13 +35,9 @@
          ],
          "resources": {
             "limits": {
-                "cpu": "400m",
                 "memory": "1Gi",
                 "ephemeral-storage": "2Gi"
-            },
-	    "requests":{
-	      	"cpu": "400m"
-	    }
+            }
          }
       }
     ],

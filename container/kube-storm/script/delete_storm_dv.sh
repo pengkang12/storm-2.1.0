@@ -8,7 +8,7 @@ cd ..
 # kubectl label node edge3 name=edge3
 # kubectl label node edge4 name=edge4
 
-for tag in "etl-sys" "etl-taxi" #"predict-taxi" "predict-sys"
+for tag in "etl-sys" "etl-taxi" "predict-taxi" "predict-sys"
 do
 
 for name in "master" "core" 

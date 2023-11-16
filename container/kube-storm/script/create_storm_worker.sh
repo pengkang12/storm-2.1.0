@@ -16,8 +16,8 @@ do
 export tagName=$tag
 export nodeName=$name
 export slotNum=2
-#envsubst < storm-worker-template.json | kubectl create  -f -
-envsubst < storm-worker-deploy-template.yaml | kubectl create -f -
+envsubst < storm-worker-template.json | kubectl create  -f -
+#envsubst < storm-worker-deploy-template.yaml | kubectl create -f -
 #envsubst < storm-worker-service-template.json | kubectl apply -f -
 done
 done
@@ -30,8 +30,8 @@ export tagName=$tag
 export nodeName=$name
 export slotNum=2
 echo ""
-#envsubst < storm-worker-template.json | kubectl create  -f -
-envsubst < storm-worker-deploy-template.yaml | kubectl create -f -
+envsubst < storm-worker-template.json | kubectl create  -f -
+#envsubst < storm-worker-deploy-template.yaml | kubectl create -f -
 #envsubst < storm-worker-service-template.json | kubectl apply  -f -
 done
 done
@@ -43,8 +43,8 @@ do
 export tagName=$tag
 export nodeName=$name
 export slotNum=2
-#envsubst < storm-worker-template.json | kubectl create  -f -
-envsubst < storm-worker-deploy-template.yaml | kubectl create  -f -
+envsubst < storm-worker-template.json | kubectl create  -f -
+#envsubst < storm-worker-deploy-template.yaml | kubectl create  -f -
 #envsubst < storm-worker-service-template.json | kubectl apply  -f -
 done
 done
@@ -55,9 +55,22 @@ kubectl get pod
 export tagName=core1
 export nodeName=master
 export slotNum=8
-#envsubst < storm-master.json | kubectl create -f -
-envsubst < storm-master-deploy.yaml | kubectl create -f -
+envsubst < storm-master.json | kubectl create -f -
+#envsubst < storm-master-deploy.yaml | kubectl create -f -
 #envsubst < storm-master-service.json | kubectl apply -f -
+
+
+kubectl delete pod storm-core-predict-sys
+kubectl delete pod storm-edge1-predict-taxi
+kubectl delete pod storm-edge2-predict-sys
+kubectl delete pod storm-edge3-predict-taxi
+kubectl delete pod storm-edge4-etl-sys
+kubectl delete pod storm-edge5-etl-taxi
+
+
+
+
+
 
 
 

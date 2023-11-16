@@ -1,6 +1,6 @@
 pods=`kubectl get pod | grep storm | grep -v "ui" | awk '{print $1}'`
 
-kubectl get pod -o wide | grep storm | grep -v "ui" | awk '{print $6, $1}' > host_ip.txt 
+#kubectl get pod -o wide | grep storm | grep -v "ui" | awk '{print $6, $1}' > host_ip.txt 
 cat host_ip.txt
 
 read -p "check the host ip is correct " yes
@@ -21,22 +21,28 @@ do
   string=($string)
   data=$(echo "${host[1]}" | awk -F "-" '{print $3}')
   app=$(echo "${host[1]}"| awk -F "-" '{print $4}')
+
+  if test -z ${string[1]}
+  then
+     kubectl exec $pod -- sh -c "echo ${host_ip} >> /etc/hosts"
+  fi
   
   if [[ $host_ip == *"master-core1"* ]] && test -z ${string[1]}
   then
-     kubectl exec $pod -- sh -c "echo ${host_ip} >> /etc/hosts"
+     echo ""
+     #kubectl exec $pod -- sh -c "echo ${host_ip} >> /etc/hosts"
   fi
   
   if [[ $pod == *"$data"* ]]  && [[ $pod == *"$app"* ]] && test -z ${string[1]}
   then
      echo $data $app $pod $string
-     kubectl exec $pod -- sh -c "echo ${host_ip} >> /etc/hosts"
+     #kubectl exec $pod -- sh -c "echo ${host_ip} >> /etc/hosts"
   fi
   
   if [[ $pod == *"master-core1"* ]] && test -z ${string[1]}
   then
      echo $data $app $pod $string
-     kubectl exec $pod -- sh -c "echo ${host_ip} >> /etc/hosts"
+     #kubectl exec $pod -- sh -c "echo ${host_ip} >> /etc/hosts"
   fi
   #sleep 1
 done < "$input"
