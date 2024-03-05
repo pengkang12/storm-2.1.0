@@ -1,6 +1,11 @@
 #!/bin/bash 
 cd $HOME/storm/container/kube-storm/
 
+
+# build mqtt
+kubectl create -f mosquitto/mosquitto-bridge-pods.json
+kubectl create -f mosquitto/mosquitto-bridge-svc.json
+
 kubectl create -f zookeeper/zookeeper.json
 
 sleep 1m

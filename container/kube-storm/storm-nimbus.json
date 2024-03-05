@@ -12,6 +12,7 @@
       {
         "name": "nimbus",
         "image": "kevin2333/storm-nimbus:latest",
+	"imagePullPolicy": "Always",
         "ports": [
           {
             "containerPort": 6627

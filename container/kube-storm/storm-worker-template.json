@@ -35,7 +35,7 @@
          ],
          "resources": {
             "limits": {
-                "memory": "1Gi",
+                "memory": "512Mi",
                 "ephemeral-storage": "2Gi"
             }
          }
