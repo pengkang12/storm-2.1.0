@@ -34,7 +34,7 @@ sleep 10
 bash script/create_storm_worker.sh
 
 sleep 200
-bash script/change_worker_hosts.sh
+bash script/update_storm_worker_hostname.sh
 
 # setup nginx gateway if necessary
 echo "YourServerPassword" | sudo -S bash /home/cc/storm/container/kube-storm/script/nginx-proxy.sh

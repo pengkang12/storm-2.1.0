@@ -45,19 +45,5 @@ case "$option" in
 esac
 echo "$inputrate $topologyMap"
 
- 
-cd ~/storm/riot-bench/
-
-#~/maven/bin/mvn clean compile package -DskipTests
-
-cd -
-
-#sleep 60
-
 ${home_path}storm/bin/storm jar $app_path in.dream_lab.bm.stream_iot.storm.topo.apps.${app_name} C ${app_name} $input_name SENML-210 $inputRate $output_path ${home_source}tasks_TAXI.properties test $topologyMap
 
-#  Command Meaning: topology-fully-qualified-name <local-or-cluster> <Topo-name> <input-dataset-path-name> <Experi-Run-id> <scaling-factor> 
-#<output dir name> <tasks properites filename> <tasks name>
-
-# <task name> only uses in micro. 
-#    Example command: SampleTopology L NA /var/tmp/bangalore.csv E01-01 0.001

@@ -20,7 +20,7 @@ supervisor.scheduler.meta:
 
 ### copy lib file to storm/lib/
 
-	cp target/tagawarescheduler-1.0.jar  $STORM_HOME/lib/
+	cp target/CustomScheduler-1.0.jar $STORM_HOME/lib/
 
 ### Add the following content to configuration file $STORM_HOME/conf/storm.yaml
 

@@ -1,6 +1,6 @@
 pods=`kubectl get pod | grep storm | grep -v "ui" | awk '{print $1}'`
 
-#kubectl get pod -o wide | grep storm | grep -v "ui" | awk '{print $6, $1}' > host_ip.txt 
+kubectl get pod -o wide | grep storm | grep -v "ui" | awk '{print $6, $1}' > host_ip.txt 
 cat host_ip.txt
 
 read -p "check the host ip is correct " yes
