@@ -1,52 +1,22 @@
-# Storm example
-
-Following this example, you will create a functional [Apache
-Storm](http://storm.apache.org/) cluster using Kubernetes and
-[Docker](http://docker.io).
+### Storm example
 
 You will setup an [Apache ZooKeeper](http://zookeeper.apache.org/)
 service, a Storm master service (a.k.a. Nimbus server), and a set of
 Storm workers (a.k.a. supervisors).
 
-For the impatient expert, jump straight to the [tl;dr](#tldr)
-section.
-
 ### Sources
-
 Source is freely available at:
-* Docker image - https://github.com/mattf/docker-storm
-* Docker Trusted Build - https://registry.hub.docker.com/search?q=mattf/storm
+* Docker image - https://github.com/kevin2333/EdgeStreamProcessing/docker-storm
+* Docker Trusted Build - https://registry.hub.docker.com/search?q=kevin2333/storm
 
-## Step Zero: Prerequisites
 
-This example assumes you have a Kubernetes cluster installed and
-running, and that you have installed the ```kubectl``` command line
-tool somewhere in your path. Please see the [getting
-started](https://kubernetes.io/docs/user-journeys/users/application-developer/foundational/#section-1) for installation
-instructions for your platform.
+## Build all with one script
 
-## Step One: Start your ZooKeeper service
+setup zookeep, storm nimbus, and storm ui, storm worker
 
-ZooKeeper is a distributed coordination [service](https://kubernetes.io/docs/concepts/services-networking/service/) that Storm uses as a
-bootstrap and for state storage.
-
-Use the [`examples/storm/zookeeper.json`](zookeeper.json) file to create a [pod](https://kubernetes.io/docs/concepts/workloads/pods/pod/) running
-the ZooKeeper service.
-
-```sh
-$ kubectl create -f examples/storm/zookeeper.json
 ```
-
-Then, use the [`examples/storm/zookeeper-service.json`](zookeeper-service.json) file to create a
-logical service endpoint that Storm can use to access the ZooKeeper
-pod.
-
-```sh
-$ kubectl create -f examples/storm/zookeeper-service.json
+bash scripts/setup.sh
 ```
-
-You should make sure the ZooKeeper pod is Running and accessible
-before proceeding.
 
 ### Check to see if ZooKeeper is running
 
@@ -70,26 +40,6 @@ imok
 
 ## Step Two: Start your Nimbus service
 
-The Nimbus service is the master (or head) service for a Storm
-cluster. It depends on a functional ZooKeeper service.
-
-Use the [`examples/storm/storm-nimbus.json`](storm-nimbus.json) file to create a pod running
-the Nimbus service.
-
-```sh
-$ kubectl create -f examples/storm/storm-nimbus.json
-```
-
-Then, use the [`examples/storm/storm-nimbus-service.json`](storm-nimbus-service.json) file to
-create a logical service endpoint that Storm workers can use to access
-the Nimbus pod.
-
-```sh
-$ kubectl create -f examples/storm/storm-nimbus-service.json
-```
-
-Ensure that the Nimbus service is running and functional.
-
 ### Check to see if Nimbus is running and accessible
 
 ```sh
@@ -99,21 +49,18 @@ kubernetes          component=apiserver,provider=kubernetes   <none>            
 zookeeper           name=zookeeper                            name=zookeeper      10.254.139.141      2181
 nimbus              name=nimbus                               name=nimbus         10.254.115.208      6627
 
-$ sudo docker run -it -w /opt/apache-storm mattf/storm-base sh -c '/configure.sh 10.254.139.141 10.254.115.208; ./bin/storm list'
+$ sudo docker run -it -w /opt/apache-storm kevin2333/storm-nimbus sh -c '/configure.sh 10.254.139.141 10.254.115.208; ./bin/storm list'
 ...
 No topologies running.
 ```
 
 ## Step Three: Start your Storm workers
 
-The Storm workers (or supervisors) do the heavy lifting in a Storm
-cluster. They run your stream processing topologies and are managed by
-the Nimbus service.
+The Storm workers (or supervisors) do the heavy lifting in a Storm cluster. They run your stream processing topologies and are managed by the Nimbus service.
 
-The Storm workers need both the ZooKeeper and Nimbus services to be
-running.
+The Storm workers need both the ZooKeeper and Nimbus services to be running.
 
-Use the [`examples/storm/storm-worker-controller.yaml`](storm-worker-controller.yaml) file to create a
+Use the [`storm-worker-controller.yaml`](storm-worker-controller.yaml) file to create a
 [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) that manages the worker pods.
 
 ```sh
@@ -171,11 +118,6 @@ test
 bin/storm jar examples/storm-starter/storm-starter-2.1.0.jar org.apache.storm.starter.WordCountTopology wordCountTopology
 ```
 
-# pay attention
+## pay attention
 
-if we want to runing an application into different pods. We must modify pod's /etc/hosts file to write the information about host and ip. Otherwise, the application can't recognize the hostname. 
-
-
-<!-- BEGIN MUNGE: GENERATED_ANALYTICS -->
-[![Analytics](https://kubernetes-site.appspot.com/UA-36037335-10/GitHub/examples/storm/README.md?pixel)]()
-<!-- END MUNGE: GENERATED_ANALYTICS -->
+If we want to runing an application into different pods. We must modify pod's /etc/hosts file to write the information about host and ip. Otherwise, the application can't recognize the hostname. 

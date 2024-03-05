@@ -1,7 +1,7 @@
 #!/bin/bash 
-cd ..
-kubectl create -f zookeeper/zookeeper.json
+cd $HOME/storm/container/kube-storm/
 
+kubectl create -f zookeeper/zookeeper.json
 
 sleep 1m
 #echo ruok | nc `kubectl get service | grep zookeeper | awk '{print $3}'` 2181; echo
@@ -24,7 +24,13 @@ sleep 30
 kubectl get pods,services,rc
 sleep 10
 
-echo "syscloud" | sudo -S bash /home/cc/storm/container/kube-storm/script/nginx-proxy.sh
-
 sleep 10
-#bash change_worker_hosts.sh
+
+bash script/create_storm_worker.sh
+
+sleep 200
+bash script/change_worker_hosts.sh
+
+# setup nginx gateway if necessary
+echo "YourServerPassword" | sudo -S bash /home/cc/storm/container/kube-storm/script/nginx-proxy.sh
+

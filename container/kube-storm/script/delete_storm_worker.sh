@@ -1,24 +1,20 @@
-cd ..
-# kubectl label node master name=core1
-# kubectl label node core name=core
-# kubectl label node worker1 name=worker1
-# kubectl label node worker2 name=worker2
-# kubectl label node edge1 name=edge1
-# kubectl label node edge2 name=edge2
-# kubectl label node edge3 name=edge3
-# kubectl label node edge4 name=edge4
+cd $HOME/storm/container/kube-storm/
+# application name
+declare -a applicationList=("etl-sys" "etl-taxi" "predict-taxi" "predict-sys")
+# change this to match your cluster
+declare -a nodeList=("master" "core" "worker1" "worker2" "edge1" "edge2" "edge3" "edge4" "edge5")
 
-for tag in "etl-sys" "etl-taxi" "predict-taxi" "predict-sys"
+# create container for each node
+for tag in ${applicationList[@]}
 do
-for name in "master" "core" "worker1" "worker2" "edge1" "edge2" "edge3" "edge4" "edge5"
+for name in ${nodeList[@]}
 do
-
 export tagName=$tag
 export nodeName=$name
 envsubst < storm-worker-template.json | kubectl delete -f -
+done
+done
 
-done
-done
 kubectl get pod
 export tagName=core1
 export nodeName=master

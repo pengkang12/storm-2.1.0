@@ -1,73 +1,39 @@
-cd ..
-# kubectl label node master name=core1
-# kubectl label node core name=core
-# kubectl label node worker1 name=worker1
-# kubectl label node worker2 name=worker2
-# kubectl label node edge1 name=edge1
-# kubectl label node edge2 name=edge2
-# kubectl label node edge3 name=edge3
-# kubectl label node edge4 name=edge4
+cd $HOME/storm/container/kube-storm/
 
-for tag in "etl-sys" "etl-taxi" "predict-taxi" "predict-sys"
-do
+# application name
+declare -a applicationList=("etl-sys" "etl-taxi" "predict-taxi" "predict-sys")
+# change this to match your cluster
+declare -a nodeList=("master" "core" "worker1" "worker2" "edge1" "edge2" "edge3" "edge4" "edge5")
 
-for name in "master" "core" 
+# label each node
+for name in ${nodeList[@]}
 do
-export tagName=$tag
-export nodeName=$name
-export slotNum=2
-envsubst < storm-worker-template.json | kubectl create  -f -
-#envsubst < storm-worker-deploy-template.yaml | kubectl create -f -
-#envsubst < storm-worker-service-template.json | kubectl apply -f -
+kubectl label node $name name=$name
 done
-done
+kubectl label node master name=core1
 
-for tag in "predict-sys" "predict-taxi" 
+# create container for each node
+for tag in ${applicationList[@]}
 do
-for name in "worker1"  "edge1" "edge2" "edge3"
-do
-export tagName=$tag
-export nodeName=$name
-export slotNum=2
-echo ""
-envsubst < storm-worker-template.json | kubectl create  -f -
-#envsubst < storm-worker-deploy-template.yaml | kubectl create -f -
-#envsubst < storm-worker-service-template.json | kubectl apply  -f -
-done
-done
-
-for tag in  "etl-sys" "etl-taxi" 
-do
-for name in  "worker2" "edge4" "edge5"
+for name in ${nodeList[@]}
 do
 export tagName=$tag
 export nodeName=$name
 export slotNum=2
 envsubst < storm-worker-template.json | kubectl create  -f -
-#envsubst < storm-worker-deploy-template.yaml | kubectl create  -f -
-#envsubst < storm-worker-service-template.json | kubectl apply  -f -
 done
 done
 
-
+# create master node with more slot configuration
 kubectl get pod
-
 export tagName=core1
 export nodeName=master
 export slotNum=8
 envsubst < storm-master.json | kubectl create -f -
-#envsubst < storm-master-deploy.yaml | kubectl create -f -
-#envsubst < storm-master-service.json | kubectl apply -f -
 
+sleep 10
 
-kubectl delete pod storm-core-predict-sys
-kubectl delete pod storm-edge1-predict-taxi
-kubectl delete pod storm-edge2-predict-sys
-kubectl delete pod storm-edge3-predict-taxi
-kubectl delete pod storm-edge4-etl-sys
-kubectl delete pod storm-edge5-etl-taxi
-
-
+kubectl get pod
 
 
 
