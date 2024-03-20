@@ -1,40 +1,45 @@
 #!/bin/bash 
 cd $HOME/storm/container/kube-storm/
 
+kube_pod(){
+    # $2 is pod's file
+    # $1 is node name
+    # create a pod to specified node
+    export nodeName=$2
+    envsubst < $1 | kubectl create  -f -
+}
 
-# build mqtt
-kubectl create -f mosquitto/mosquitto-bridge-pods.json
-kubectl create -f mosquitto/mosquitto-bridge-svc.json
+# label master'name as master
+nodeName="master"
+kubectl label master name=$nodeName
 
-kubectl create -f zookeeper/zookeeper.json
 
+# build mqtt, specify which node to host mosquitto
+kube_pod mosquitto/mosquitto-bridge-pods.json $nodeName
+kube_pod mosquitto/mosquitto-bridge-pods.json 
+
+kube_pod zookeeper/zookeeper.json $nodeName
 sleep 1m
 #echo ruok | nc `kubectl get service | grep zookeeper | awk '{print $3}'` 2181; echo
-
-kubectl create -f zookeeper/zookeeper-service.json
-kubectl create -f storm-nimbus.json
+kube_pod zookeeper/zookeeper-service.json
+kube_pod storm-nimbus.json $nodeName
 sleep 1m
 
-kubectl create -f storm-nimbus-service.json
-
-kubectl create -f storm-ui.json
-
+kube_pod storm-nimbus-service.json
+kube_pod storm-ui.json $nodeName
 sleep 30
-
-kubectl create -f storm-ui-service.json
-
+kube_pod storm-ui-service.json
 sleep 30
 
 #echo stat | nc `kubectl get service | grep zookeeper | awk '{print $3}'` 2181; echo
 kubectl get pods,services,rc
 sleep 10
-
-sleep 10
+exit
 
 bash script/create_storm_worker.sh
 
 sleep 200
-bash script/update_storm_worker_hostname.sh
+bash script/change_worker_hosts.sh
 
 # setup nginx gateway if necessary
 echo "YourServerPassword" | sudo -S bash /home/cc/storm/container/kube-storm/script/nginx-proxy.sh

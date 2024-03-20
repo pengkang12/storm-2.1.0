@@ -28,7 +28,7 @@
       }
     ],
     "nodeSelector": {
-       "name" : "master"
+       "name" : "$nodeName"
     }
   }
 }
