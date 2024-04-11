@@ -6,6 +6,7 @@ kube_pod(){
     # $1 is node name
     # create a pod to specified node
     export nodeName=$2
+    echo "create $2"
     envsubst < $1 | kubectl create  -f -
 }
 
@@ -13,28 +14,26 @@ kube_pod(){
 nodeName="master"
 kubectl label master name=$nodeName
 
-
 # build mqtt, specify which node to host mosquitto
 kube_pod mosquitto/mosquitto-bridge-pods.json $nodeName
-kube_pod mosquitto/mosquitto-bridge-pods.json 
-
 kube_pod zookeeper/zookeeper.json $nodeName
-sleep 1m
-#echo ruok | nc `kubectl get service | grep zookeeper | awk '{print $3}'` 2181; echo
-kube_pod zookeeper/zookeeper-service.json
+sleep 60
 kube_pod storm-nimbus.json $nodeName
-sleep 1m
-
-kube_pod storm-nimbus-service.json
+sleep 30
 kube_pod storm-ui.json $nodeName
 sleep 30
+
+kubectl get pod --show-labels
+
+kube_pod zookeeper/zookeeper-service.json
+kube_pod storm-nimbus-service.json
 kube_pod storm-ui-service.json
+
 sleep 30
 
 #echo stat | nc `kubectl get service | grep zookeeper | awk '{print $3}'` 2181; echo
 kubectl get pods,services,rc
 sleep 10
-exit
 
 bash script/create_storm_worker.sh
 
