@@ -16,3 +16,5 @@ EXPOSE 1883
 WORKDIR /usr/sbin
 
 ENTRYPOINT ["/usr/sbin/config-run.sh"]
+
+

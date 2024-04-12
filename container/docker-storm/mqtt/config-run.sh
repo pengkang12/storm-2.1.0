@@ -2,4 +2,4 @@
 
 mosquitto_passwd -b /etc/mosquitto/passwd admin password 
 
-exec /usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf
+exec /usr/sbin/mosquitto -v -c /etc/mosquitto/mosquitto.conf
