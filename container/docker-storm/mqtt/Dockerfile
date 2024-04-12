@@ -1,8 +1,10 @@
-FROM ubuntu:16.04
+FROM ubuntu:20.04
 
 MAINTAINER Peng Kang<123kangpeng@gmail.edu>
 
 RUN apt-get update -y
+
+RUN mkfifo /tmp/dlt
 
 RUN apt-get install mosquitto -y
 
